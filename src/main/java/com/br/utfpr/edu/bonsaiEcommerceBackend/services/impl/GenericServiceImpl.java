@@ -6,11 +6,13 @@ import com.br.utfpr.edu.bonsaiEcommerceBackend.services.GenericService;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.GenericMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public abstract class GenericServiceImpl<M extends GenericModel, E extends GenericEntity>
         implements GenericService<M> {
 
