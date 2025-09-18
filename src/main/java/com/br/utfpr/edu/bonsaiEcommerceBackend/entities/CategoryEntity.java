@@ -10,6 +10,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class CategoryEntity extends GenericEntity {
 
-    @Column(nullable = false)
-    private String nome;
+    @Column(name = "name", nullable = false)
+    private String name;
 }

@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CategoryModel extends GenericModel {
+public class UserModel extends GenericModel {
     private String name;
+    private String password;
+    private String email;
 }
