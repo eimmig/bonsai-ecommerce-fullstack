@@ -1,4 +1,4 @@
-package com.br.utfpr.edu.bonsaiEcommerceBackend.utils;
+package com.br.utfpr.edu.bonsaiEcommerceBackend.utils.mappers;
 
 import com.br.utfpr.edu.bonsaiEcommerceBackend.dtos.user.UserInputDTO;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.dtos.user.UserOutputDTO;

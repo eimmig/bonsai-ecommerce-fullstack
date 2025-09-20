@@ -3,7 +3,7 @@ package com.br.utfpr.edu.bonsaiEcommerceBackend.services.impl;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.entities.GenericEntity;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.models.GenericModel;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.services.GenericService;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.GenericMapper;
+import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.mappers.GenericMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;

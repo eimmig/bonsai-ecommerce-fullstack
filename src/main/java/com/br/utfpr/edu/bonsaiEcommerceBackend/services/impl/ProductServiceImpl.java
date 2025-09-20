@@ -4,7 +4,7 @@ import com.br.utfpr.edu.bonsaiEcommerceBackend.entities.ProductEntity;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.models.ProductModel;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.repositories.ProductRepository;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.services.ProductService;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.ProductMapper;
+import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.mappers.ProductMapper;
 import org.springframework.stereotype.Service;
 
 @Service

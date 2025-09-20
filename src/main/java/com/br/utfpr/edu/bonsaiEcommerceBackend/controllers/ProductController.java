@@ -5,7 +5,7 @@ import com.br.utfpr.edu.bonsaiEcommerceBackend.dtos.product.ProductOutputDTO;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.entities.ProductEntity;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.models.ProductModel;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.services.ProductService;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.ProductMapper;
+import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.mappers.ProductMapper;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -5,7 +5,7 @@ import com.br.utfpr.edu.bonsaiEcommerceBackend.dtos.address.AddressOutputDTO;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.entities.AddressEntity;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.models.AddressModel;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.services.AddressService;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.AddressMapper;
+import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.mappers.AddressMapper;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

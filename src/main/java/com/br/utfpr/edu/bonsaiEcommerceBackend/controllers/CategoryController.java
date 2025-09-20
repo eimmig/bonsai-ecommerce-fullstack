@@ -5,7 +5,7 @@ import com.br.utfpr.edu.bonsaiEcommerceBackend.dtos.category.CategoryOutputDTO;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.entities.CategoryEntity;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.models.CategoryModel;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.services.CategoryService;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.CategoryMapper;
+import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.mappers.CategoryMapper;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

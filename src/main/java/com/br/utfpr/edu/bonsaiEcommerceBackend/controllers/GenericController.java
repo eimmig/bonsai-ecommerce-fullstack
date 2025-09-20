@@ -3,7 +3,7 @@ package com.br.utfpr.edu.bonsaiEcommerceBackend.controllers;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.entities.GenericEntity;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.models.GenericModel;
 import com.br.utfpr.edu.bonsaiEcommerceBackend.services.GenericService;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.GenericMapper;
+import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.mappers.GenericMapper;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
