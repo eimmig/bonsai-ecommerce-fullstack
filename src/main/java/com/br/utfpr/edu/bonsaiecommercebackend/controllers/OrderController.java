@@ -1,11 +1,11 @@
-package com.br.utfpr.edu.bonsaiEcommerceBackend.controllers;
+package com.br.utfpr.edu.bonsaiecommercebackend.controllers;
 
-import com.br.utfpr.edu.bonsaiEcommerceBackend.dtos.order.OrderInputDTO;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.dtos.order.OrderOutputDTO;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.entities.OrderEntity;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.models.OrderModel;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.services.OrderService;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.OrderMapper;
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.order.OrderInputDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.order.OrderOutputDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.entities.OrderEntity;
+import com.br.utfpr.edu.bonsaiecommercebackend.models.OrderModel;
+import com.br.utfpr.edu.bonsaiecommercebackend.services.OrderService;
+import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.OrderMapper;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

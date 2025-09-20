@@ -19,8 +19,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Optional;
 
 @Configuration
 @EnableWebSecurity
@@ -46,32 +48,38 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // Filtro JWT
     public static final class JwtAuthFilter extends OncePerRequestFilter {
         private final JwtUtil jwtUtil;
+        
         public JwtAuthFilter(JwtUtil jwtUtil) {
             this.jwtUtil = jwtUtil;
         }
+        
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
                 throws ServletException, IOException {
-            String authHeader = request.getHeader("Authorization");
-            String token = null;
-            String username = null;
-            if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                token = authHeader.substring(7);
-                try {
-                    username = jwtUtil.extractUsername(token);
-                } catch (Exception e) {
-                    LOGGER.log(Level.WARNING, "Falha ao extrair username do token JWT", e);
-                }
-            }
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null && jwtUtil.validateToken(token, username)) {
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                        new User(username, "", Collections.emptyList()), null, Collections.emptyList());
-                SecurityContextHolder.getContext().setAuthentication(auth);
-            }
+            
+            Optional.ofNullable(request.getHeader("Authorization"))
+                    .filter(header -> header.startsWith("Bearer "))
+                    .map(header -> header.substring(7))
+                    .ifPresent(this::authenticateUser);
+            
             filterChain.doFilter(request, response);
+        }
+        
+        private void authenticateUser(String token) {
+            try {
+                UUID userId = jwtUtil.extractUserId(token);
+                if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null 
+                    && jwtUtil.validateToken(token, userId)) {
+                    
+                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                            userId.toString(), null, Collections.emptyList());
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                }
+            } catch (Exception e) {
+                LOGGER.log(Level.WARNING, "Falha ao processar token JWT", e);
+            }
         }
     }
 }

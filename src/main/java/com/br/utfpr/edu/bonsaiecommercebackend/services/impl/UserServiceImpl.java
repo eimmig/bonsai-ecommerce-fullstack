@@ -1,4 +1,4 @@
-package com.br.utfpr.edu.bonsaiEcommerceBackend.services.impl;
+package com.br.utfpr.edu.bonsaiecommercebackend.services.impl;
 
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.UserEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.UserModel;

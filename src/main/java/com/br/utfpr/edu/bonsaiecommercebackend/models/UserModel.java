@@ -1,4 +1,4 @@
-package br.utfpr.bonsaiecommercebackend.models;
+package com.br.utfpr.edu.bonsaiecommercebackend.models;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

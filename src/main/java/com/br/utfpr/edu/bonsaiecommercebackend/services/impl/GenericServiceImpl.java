@@ -6,6 +6,7 @@ import com.br.utfpr.edu.bonsaiecommercebackend.services.GenericService;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.GenericMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,27 +27,30 @@ public abstract class GenericServiceImpl<M extends GenericModel, E extends Gener
 
     @Override
     @Transactional
-    public M save(M model) {
+    @NonNull
+    public M save(@NonNull M model) {
         E entity = mapper.toEntity(model);
         entity = repository.save(entity);
         return mapper.toModel(entity);
     }
 
     @Override
+    @NonNull
     public List<M> getAll() {
         List<E> entities = repository.findAll();
         return mapper.toModelList(entities);
     }
 
     @Override
-    public Optional<M> getById(UUID id) {
+    @NonNull
+    public Optional<M> getById(@NonNull UUID id) {
         return repository.findById(id)
                 .map(mapper::toModel);
     }
 
     @Override
     @Transactional
-    public void delete(UUID id) throws RuntimeException {
+    public void delete(@NonNull UUID id) throws RuntimeException {
         if (repository.existsById(id)) {
             repository.deleteById(id);
             return;
@@ -56,7 +60,8 @@ public abstract class GenericServiceImpl<M extends GenericModel, E extends Gener
 
     @Override
     @Transactional
-    public M update(UUID id, M model) throws RuntimeException {
+    @NonNull
+    public M update(@NonNull UUID id, @NonNull M model) throws RuntimeException {
         if (repository.existsById(id)) {
             model.setId(id);
             E entity = mapper.toEntity(model);

@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ProductEntity extends GenericEntity {

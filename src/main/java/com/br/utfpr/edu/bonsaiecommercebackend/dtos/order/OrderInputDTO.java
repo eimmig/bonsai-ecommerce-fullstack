@@ -1,4 +1,4 @@
-package com.br.utfpr.edu.bonsaiEcommerceBackend.dtos.order;
+package com.br.utfpr.edu.bonsaiecommercebackend.dtos.order;
 
 import jakarta.validation.constraints.NotNull;
 

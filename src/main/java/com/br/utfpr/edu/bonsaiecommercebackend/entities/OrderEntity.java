@@ -1,4 +1,4 @@
-package com.br.utfpr.edu.bonsaiEcommerceBackend.entities;
+package com.br.utfpr.edu.bonsaiecommercebackend.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;

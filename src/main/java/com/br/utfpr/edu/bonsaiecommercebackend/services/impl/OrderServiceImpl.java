@@ -1,10 +1,10 @@
-package com.br.utfpr.edu.bonsaiEcommerceBackend.services.impl;
+package com.br.utfpr.edu.bonsaiecommercebackend.services.impl;
 
-import com.br.utfpr.edu.bonsaiEcommerceBackend.entities.OrderEntity;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.models.OrderModel;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.repositories.OrderRepository;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.services.OrderService;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.OrderMapper;
+import com.br.utfpr.edu.bonsaiecommercebackend.entities.OrderEntity;
+import com.br.utfpr.edu.bonsaiecommercebackend.models.OrderModel;
+import com.br.utfpr.edu.bonsaiecommercebackend.repositories.OrderRepository;
+import com.br.utfpr.edu.bonsaiecommercebackend.services.OrderService;
+import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.OrderMapper;
 import org.springframework.stereotype.Service;
 
 @Service

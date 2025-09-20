@@ -11,8 +11,7 @@ import java.util.stream.Collectors;
 
 public abstract class GenericMapper<M extends GenericModel, E extends GenericEntity, I, O> {
 
-    @Autowired
-    protected ModelMapper modelMapper;
+    protected final ModelMapper modelMapper;
 
     private final Class<M> modelClass;
     private final Class<E> entityClass;
@@ -20,7 +19,8 @@ public abstract class GenericMapper<M extends GenericModel, E extends GenericEnt
 
 
     @SuppressWarnings("unchecked")
-    protected GenericMapper() {
+    protected GenericMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
         ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
         this.modelClass = (Class<M>) genericSuperclass.getActualTypeArguments()[0];
         this.entityClass = (Class<E>) genericSuperclass.getActualTypeArguments()[1];

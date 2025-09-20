@@ -1,12 +1,11 @@
-package com.br.utfpr.edu.bonsaiEcommerceBackend.controllers;
+package com.br.utfpr.edu.bonsaiecommercebackend.controllers;
 
-import com.br.utfpr.edu.bonsaiEcommerceBackend.dtos.user.UserInputDTO;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.dtos.user.UserOutputDTO;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.entities.UserEntity;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.models.UserModel;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.services.UserService;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.utils.UserMapper;
-import org.springframework.stereotype.Controller;
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.user.UserInputDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.user.UserOutputDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.entities.UserEntity;
+import com.br.utfpr.edu.bonsaiecommercebackend.models.UserModel;
+import com.br.utfpr.edu.bonsaiecommercebackend.services.UserService;
+import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.UserMapper;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

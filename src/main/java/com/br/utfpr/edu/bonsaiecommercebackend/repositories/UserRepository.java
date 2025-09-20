@@ -1,4 +1,4 @@
-package com.br.utfpr.edu.bonsaiEcommerceBackend.repositories;
+package com.br.utfpr.edu.bonsaiecommercebackend.repositories;
 
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

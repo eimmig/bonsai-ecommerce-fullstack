@@ -1,6 +1,6 @@
-package com.br.utfpr.edu.bonsaiEcommerceBackend.services;
+package com.br.utfpr.edu.bonsaiecommercebackend.services;
 
-import com.br.utfpr.edu.bonsaiEcommerceBackend.models.OrderModel;
+import com.br.utfpr.edu.bonsaiecommercebackend.models.OrderModel;
 
 public interface OrderService extends GenericService<OrderModel> {
 }

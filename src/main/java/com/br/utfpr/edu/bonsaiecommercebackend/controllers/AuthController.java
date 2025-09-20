@@ -31,7 +31,7 @@ public class AuthController {
         if (!encoder.matches(request.getPassword(), user.getPassword())) {
             return ResponseEntity.status(401).body("Usuário ou senha inválidos");
         }
-        String token = jwtUtil.generateToken(user.getEmail());
+        String token = jwtUtil.generateToken(user.getId());
         return ResponseEntity.ok(new AuthResponseDTO(token));
     }
 }

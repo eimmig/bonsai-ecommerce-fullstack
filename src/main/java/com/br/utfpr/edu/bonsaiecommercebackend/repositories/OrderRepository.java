@@ -1,7 +1,6 @@
-package com.br.utfpr.edu.bonsaiEcommerceBackend.repositories;
+package com.br.utfpr.edu.bonsaiecommercebackend.repositories;
 
-import com.br.utfpr.edu.bonsaiEcommerceBackend.entities.CategoryEntity;
-import com.br.utfpr.edu.bonsaiEcommerceBackend.entities.OrderEntity;
+import com.br.utfpr.edu.bonsaiecommercebackend.entities.OrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

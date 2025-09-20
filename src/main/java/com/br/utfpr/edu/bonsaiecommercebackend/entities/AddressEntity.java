@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name = "address")
+@Table(name = "addresses")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class AddressEntity extends GenericEntity {
