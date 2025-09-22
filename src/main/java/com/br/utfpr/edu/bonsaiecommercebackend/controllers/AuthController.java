@@ -31,14 +31,14 @@ public class AuthController {
      * @return Token JWT em caso de sucesso ou erro padronizado em caso de falha.
      */
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody @Valid AuthRequestDTO request) {
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody @Valid AuthRequestDTO request) {
         try {
             AuthResponseDTO response = authService.authenticate(request);
             return ResponseEntity.ok(response);
         } catch (AuthenticationException ex) {
             logger.warn("Authentication failed: {}", ex.getMessage());
             return ResponseEntity.status(401)
-                    .body(new ErrorOutputDTO("Invalid username or password", null));
+                    .body(null);
         }
     }
 }

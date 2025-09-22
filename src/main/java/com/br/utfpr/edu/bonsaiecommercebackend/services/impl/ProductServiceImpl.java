@@ -7,6 +7,8 @@ import com.br.utfpr.edu.bonsaiecommercebackend.repositories.ProductRepository;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.CategoryService;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.ProductService;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.ProductMapper;
+import lombok.NonNull;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +24,7 @@ public class ProductServiceImpl extends GenericServiceImpl<ProductModel, Product
 
     @Override
     @Transactional
-    public ProductModel save(ProductModel model) {
+    public @NonNull ProductModel save(@NonNull ProductModel model) {
         if (model.getCategory() == null || model.getCategory().getId() == null) {
             throw new ResourceNotFoundException("Category is required for the product.");
         }

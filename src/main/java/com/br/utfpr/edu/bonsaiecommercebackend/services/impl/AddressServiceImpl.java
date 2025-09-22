@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.UserService;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.UserModel;
 import com.br.utfpr.edu.bonsaiecommercebackend.exceptions.ResourceNotFoundException;
+import lombok.NonNull;
 
 @Service
 public class AddressServiceImpl extends GenericServiceImpl<AddressModel, AddressEntity>
@@ -24,7 +25,7 @@ public class AddressServiceImpl extends GenericServiceImpl<AddressModel, Address
 
     @Override
     @Transactional
-    public AddressModel save(AddressModel model) {
+    public @NonNull AddressModel save(@NonNull AddressModel model) {
         if (model.getUser() == null || model.getUser().getId() == null) {
             throw new ResourceNotFoundException("User is required for the address.");
         }

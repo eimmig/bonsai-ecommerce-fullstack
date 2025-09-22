@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DTO para validação de erros.
+ * Contém uma lista de mensagens para campos inválidos
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

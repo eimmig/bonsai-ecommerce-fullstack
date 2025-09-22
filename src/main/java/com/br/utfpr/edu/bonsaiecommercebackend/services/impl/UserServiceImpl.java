@@ -6,6 +6,8 @@ import com.br.utfpr.edu.bonsaiecommercebackend.models.UserModel;
 import com.br.utfpr.edu.bonsaiecommercebackend.repositories.UserRepository;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.UserService;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.UserMapper;
+import lombok.NonNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ public class UserServiceImpl extends GenericServiceImpl<UserModel, UserEntity>
     }
 
     @Override
-    public UserModel save(UserModel model) {
+    public @NonNull UserModel save(@NonNull UserModel model) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         model.setPassword(encoder.encode(model.getPassword()));
         return super.save(model);

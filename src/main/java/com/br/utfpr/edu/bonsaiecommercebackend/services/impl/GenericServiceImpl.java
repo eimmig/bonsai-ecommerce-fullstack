@@ -1,6 +1,7 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.services.impl;
 
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.GenericEntity;
+import com.br.utfpr.edu.bonsaiecommercebackend.exceptions.ResourceNotFoundException;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.GenericModel;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.GenericService;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.GenericMapper;
@@ -46,6 +47,12 @@ public abstract class GenericServiceImpl<M extends GenericModel, E extends Gener
     public Optional<M> getById(@NonNull UUID id) {
         return repository.findById(id)
                 .map(mapper::toModel);
+    }
+
+    @Override
+    public M findByIdOrThrow(UUID id) {
+        return getById(id).orElseThrow(() -> new ResourceNotFoundException(
+                this.getClass().getSimpleName().replace("ServiceImpl", "") + " not found with id: " + id));
     }
 
     @Override
