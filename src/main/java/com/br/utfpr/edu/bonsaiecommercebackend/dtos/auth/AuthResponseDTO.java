@@ -5,8 +5,4 @@ package com.br.utfpr.edu.bonsaiecommercebackend.dtos.auth;
  * Retorna o token JWT gerado após login bem-sucedido.
  */
 public record AuthResponseDTO(String token) {
-
-    public static AuthResponseDTO fromToken(String token) {
-        return new AuthResponseDTO(token);
-    }
 }

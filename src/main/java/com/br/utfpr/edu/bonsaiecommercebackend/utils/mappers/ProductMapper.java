@@ -3,7 +3,6 @@ package com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers;
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.product.ProductInputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.product.ProductOutputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.ProductEntity;
-import com.br.utfpr.edu.bonsaiecommercebackend.exceptions.ResourceNotFoundException;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.ProductModel;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.CategoryService;
 import org.modelmapper.ModelMapper;
