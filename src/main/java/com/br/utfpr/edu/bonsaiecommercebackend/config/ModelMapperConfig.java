@@ -4,6 +4,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuração do bean ModelMapper para mapeamento automático entre DTOs, Models e Entities.
+ * Permite injeção do ModelMapper em toda a aplicação.
+ */
 @Configuration
 public class ModelMapperConfig {
 

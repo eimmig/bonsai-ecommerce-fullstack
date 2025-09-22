@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class AddressModel extends GenericModel {
-    private Long userId;
+    private UserModel user;
     private String street;
     private String complement;
     private String zipCode;

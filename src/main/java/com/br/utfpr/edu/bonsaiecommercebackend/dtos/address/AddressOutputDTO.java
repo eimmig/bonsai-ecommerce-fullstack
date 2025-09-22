@@ -3,6 +3,10 @@ package com.br.utfpr.edu.bonsaiecommercebackend.dtos.address;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * DTO de saída para exibição de endereços.
+ * Inclui informações de auditoria (createdAt, updatedAt).
+ */
 public record AddressOutputDTO(
         UUID id,
         Long userId,

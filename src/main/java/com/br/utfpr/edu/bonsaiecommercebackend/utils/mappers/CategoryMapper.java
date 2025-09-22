@@ -7,6 +7,10 @@ import com.br.utfpr.edu.bonsaiecommercebackend.models.CategoryModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+/**
+ * Mapper responsável por converter entre CategoryModel, CategoryEntity, CategoryInputDTO e CategoryOutputDTO.
+ * Utiliza ModelMapper para facilitar o mapeamento automático.
+ */
 @Component
 public class CategoryMapper extends GenericMapper<CategoryModel, CategoryEntity, CategoryInputDTO, CategoryOutputDTO> {
     protected CategoryMapper(ModelMapper modelMapper) {

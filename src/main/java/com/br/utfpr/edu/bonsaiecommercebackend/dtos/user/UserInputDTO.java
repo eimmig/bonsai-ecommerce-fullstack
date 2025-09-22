@@ -1,11 +1,14 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.dtos.user;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
-import jakarta.validation.constraints.Email;
 import java.util.UUID;
 
+/**
+ * DTO de entrada para cadastro e atualização de usuários.
+ * Contém validações para nome, senha e email.
+ */
 public record UserInputDTO(
         UUID id,
 

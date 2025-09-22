@@ -1,37 +1,44 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.controllers;
 
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.error.ErrorOutputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.user.AuthRequestDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.user.AuthResponseDTO;
-import com.br.utfpr.edu.bonsaiecommercebackend.entities.UserEntity;
-import com.br.utfpr.edu.bonsaiecommercebackend.repositories.UserRepository;
-import com.br.utfpr.edu.bonsaiecommercebackend.utils.JwtUtil;
+import com.br.utfpr.edu.bonsaiecommercebackend.exceptions.AuthenticationException;
+import com.br.utfpr.edu.bonsaiecommercebackend.services.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/**
+ * Controller responsável pela autenticação de usuários.
+ * Orquestra o fluxo de login e delega a lógica para AuthService.
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private final AuthService authService;
 
-    private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
-
-    public AuthController(UserRepository userRepository, JwtUtil jwtUtil) {
-        this.userRepository = userRepository;
-        this.jwtUtil = jwtUtil;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
+    /**
+     * Realiza o login do usuário.
+     * @param request DTO contendo email e senha.
+     * @return Token JWT em caso de sucesso ou erro padronizado em caso de falha.
+     */
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthRequestDTO request) {
-        UserEntity user = userRepository.findByEmail(request.getEmail()).orElse(null);
-        if (user == null) {
-            return ResponseEntity.status(401).body("Usuário ou senha inválidos");
+    public ResponseEntity<Object> login(@RequestBody @Valid AuthRequestDTO request) {
+        try {
+            AuthResponseDTO response = authService.authenticate(request);
+            return ResponseEntity.ok(response);
+        } catch (AuthenticationException ex) {
+            logger.warn("Authentication failed: {}", ex.getMessage());
+            return ResponseEntity.status(401)
+                    .body(new ErrorOutputDTO("Invalid username or password", null));
         }
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        if (!encoder.matches(request.getPassword(), user.getPassword())) {
-            return ResponseEntity.status(401).body("Usuário ou senha inválidos");
-        }
-        String token = jwtUtil.generateToken(user.getId());
-        return ResponseEntity.ok(new AuthResponseDTO(token));
     }
 }

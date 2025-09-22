@@ -9,5 +9,5 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class OrderModel extends GenericModel{
     private LocalDateTime orderDate;
-    private UserModel userId;
+    private UserModel user;
 }

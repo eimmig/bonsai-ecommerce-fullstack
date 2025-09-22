@@ -17,6 +17,6 @@ public class OrderEntity extends GenericEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private UserEntity userId;
+    private UserEntity user;
 
 }

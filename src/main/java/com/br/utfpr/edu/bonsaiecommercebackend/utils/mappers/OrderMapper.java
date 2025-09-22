@@ -7,10 +7,13 @@ import com.br.utfpr.edu.bonsaiecommercebackend.models.OrderModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+/**
+ * Mapper responsável por converter entre OrderModel, OrderEntity, OrderInputDTO e OrderOutputDTO.
+ * Utiliza ModelMapper para facilitar o mapeamento automático.
+ */
 @Component
 public class OrderMapper extends GenericMapper<OrderModel, OrderEntity, OrderInputDTO, OrderOutputDTO> {
-    
-    public OrderMapper(ModelMapper modelMapper) {
+    protected OrderMapper(ModelMapper modelMapper) {
         super(modelMapper);
     }
 }

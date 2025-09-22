@@ -11,6 +11,10 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Implementação de AuditorAware para auditoria automática de entidades JPA.
+ * Recupera o usuário autenticado do contexto de segurança.
+ */
 @Component("auditorAwareImpl")
 @RequiredArgsConstructor
 public class AuditorAwareImpl implements AuditorAware<UserEntity> {

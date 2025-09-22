@@ -24,6 +24,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Optional;
 
+/**
+ * Configuração de segurança da aplicação.
+ * Define as regras de autenticação, autorização e integração com JWT.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {

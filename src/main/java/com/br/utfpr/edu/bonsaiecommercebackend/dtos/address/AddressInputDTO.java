@@ -8,6 +8,10 @@ import jakarta.validation.constraints.Pattern;
 
 import java.util.UUID;
 
+/**
+ * DTO de entrada para cadastro e atualização de endereços.
+ * Contém validações para todos os campos obrigatórios.
+ */
 public record AddressInputDTO(
         UUID id,
 

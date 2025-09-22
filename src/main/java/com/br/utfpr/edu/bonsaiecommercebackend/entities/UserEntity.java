@@ -6,6 +6,10 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Entidade JPA que representa um usuário do sistema.
+ * Contém informações de autenticação e identificação.
+ */
 @Entity
 @Table(name = "users")
 @Data
