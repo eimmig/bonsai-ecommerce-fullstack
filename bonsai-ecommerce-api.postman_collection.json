@@ -1,0 +1,313 @@
+{
+  "info": {
+    "name": "Bonsai Ecommerce API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"usuario@email.com\",\n  \"password\": \"senha123\"\n}"
+        }
+      }
+    },
+    {
+      "name": "User - Create",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/user", "host": ["{{baseUrl}}"], "path": ["api", "user"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": null,\n  \"name\": \"João da Silva\",\n  \"password\": \"senha123\",\n  \"email\": \"joao@email.com\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if(jsonData.id){ pm.collectionVariables.set('userId', jsonData.id); }"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "User - Get All",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/user", "host": ["{{baseUrl}}"], "path": ["api", "user"] }
+      }
+    },
+    {
+      "name": "User - Get By ID",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/user/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "user", "{{userId}}"] }
+      }
+    },
+    {
+      "name": "User - Update",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/user/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "user", "{{userId}}"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"{{userId}}\",\n  \"name\": \"João Atualizado\",\n  \"password\": \"novasenha123\",\n  \"email\": \"joao@email.com\"\n}"
+        }
+      }
+    },
+    {
+      "name": "User - Delete",
+      "request": {
+        "method": "DELETE",
+        "url": { "raw": "{{baseUrl}}/api/user/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "user", "{{userId}}"] }
+      }
+    },
+    {
+      "name": "Category - Create",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/categories", "host": ["{{baseUrl}}"], "path": ["api", "categories"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": null,\n  \"nome\": \"Vasos\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if(jsonData.id){ pm.collectionVariables.set('categoryId', jsonData.id); }"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Category - Get All",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/categories", "host": ["{{baseUrl}}"], "path": ["api", "categories"] }
+      }
+    },
+    {
+      "name": "Category - Get By ID",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/categories/{{categoryId}}", "host": ["{{baseUrl}}"], "path": ["api", "categories", "{{categoryId}}"] }
+      }
+    },
+    {
+      "name": "Category - Update",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/categories/{{categoryId}}", "host": ["{{baseUrl}}"], "path": ["api", "categories", "{{categoryId}}"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"{{categoryId}}\",\n  \"nome\": \"Vasos Decorativos\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Category - Delete",
+      "request": {
+        "method": "DELETE",
+        "url": { "raw": "{{baseUrl}}/api/categories/{{categoryId}}", "host": ["{{baseUrl}}"], "path": ["api", "categories", "{{categoryId}}"] }
+      }
+    },
+    {
+      "name": "Product - Create",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/products", "host": ["{{baseUrl}}"], "path": ["api", "products"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": null,\n  \"name\": \"Bonsai Ficus\",\n  \"description\": \"Bonsai de Ficus em vaso cerâmico\",\n  \"price\": 199.90,\n  \"imageUrl\": \"https://exemplo.com/imagem.jpg\",\n  \"categoryId\": \"{{categoryId}}\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if(jsonData.id){ pm.collectionVariables.set('productId', jsonData.id); }"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product - Get All",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/products", "host": ["{{baseUrl}}"], "path": ["api", "products"] }
+      }
+    },
+    {
+      "name": "Product - Get By ID",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/products/{{productId}}", "host": ["{{baseUrl}}"], "path": ["api", "products", "{{productId}}"] }
+      }
+    },
+    {
+      "name": "Product - Update",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/products/{{productId}}", "host": ["{{baseUrl}}"], "path": ["api", "products", "{{productId}}"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"{{productId}}\",\n  \"name\": \"Bonsai Ficus Atualizado\",\n  \"description\": \"Bonsai de Ficus com vaso novo\",\n  \"price\": 249.90,\n  \"imageUrl\": \"https://exemplo.com/imagem2.jpg\",\n  \"categoryId\": \"{{categoryId}}\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Product - Delete",
+      "request": {
+        "method": "DELETE",
+        "url": { "raw": "{{baseUrl}}/api/products/{{productId}}", "host": ["{{baseUrl}}"], "path": ["api", "products", "{{productId}}"] }
+      }
+    },
+    {
+      "name": "Order - Create",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/order", "host": ["{{baseUrl}}"], "path": ["api", "order"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": null,\n  \"orderDate\": \"2024-01-01T10:00:00\",\n  \"userId\": \"{{userId}}\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if(jsonData.id){ pm.collectionVariables.set('orderId', jsonData.id); }"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Order - Get All",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/order", "host": ["{{baseUrl}}"], "path": ["api", "order"] }
+      }
+    },
+    {
+      "name": "Order - Get By ID",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/order/{{orderId}}", "host": ["{{baseUrl}}"], "path": ["api", "order", "{{orderId}}"] }
+      }
+    },
+    {
+      "name": "Order - Update",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/order/{{orderId}}", "host": ["{{baseUrl}}"], "path": ["api", "order", "{{orderId}}"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"{{orderId}}\",\n  \"orderDate\": \"2024-01-02T15:00:00\",\n  \"userId\": \"{{userId}}\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Order - Delete",
+      "request": {
+        "method": "DELETE",
+        "url": { "raw": "{{baseUrl}}/api/order/{{orderId}}", "host": ["{{baseUrl}}"], "path": ["api", "order", "{{orderId}}"] }
+      }
+    },
+    {
+      "name": "Address - Create",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/address", "host": ["{{baseUrl}}"], "path": ["api", "address"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": null,\n  \"userId\": 1,\n  \"street\": \"Rua das Flores\",\n  \"complement\": \"Apto 101\",\n  \"zipCode\": \"12345-678\",\n  \"neighborhood\": \"Centro\",\n  \"city\": \"Curitiba\",\n  \"state\": \"PR\",\n  \"number\": \"100\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if(jsonData.id){ pm.collectionVariables.set('addressId', jsonData.id); }"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Address - Get All",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/address", "host": ["{{baseUrl}}"], "path": ["api", "address"] }
+      }
+    },
+    {
+      "name": "Address - Get By ID",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/address/{{addressId}}", "host": ["{{baseUrl}}"], "path": ["api", "address", "{{addressId}}"] }
+      }
+    },
+    {
+      "name": "Address - Update",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/address/{{addressId}}", "host": ["{{baseUrl}}"], "path": ["api", "address", "{{addressId}}"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"{{addressId}}\",\n  \"userId\": 1,\n  \"street\": \"Rua das Palmeiras\",\n  \"complement\": \"Casa\",\n  \"zipCode\": \"12345-678\",\n  \"neighborhood\": \"Jardim\",\n  \"city\": \"Curitiba\",\n  \"state\": \"PR\",\n  \"number\": \"200\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Address - Delete",
+      "request": {
+        "method": "DELETE",
+        "url": { "raw": "{{baseUrl}}/api/address/{{addressId}}", "host": ["{{baseUrl}}"], "path": ["api", "address", "{{addressId}}"] }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "userId", "value": "UUID-DO-USUARIO" },
+    { "key": "categoryId", "value": "UUID-DA-CATEGORIA" },
+    { "key": "productId", "value": "UUID-DO-PRODUTO" },
+    { "key": "orderId", "value": "UUID-DO-PEDIDO" },
+    { "key": "addressId", "value": "UUID-DO-ENDERECO" }
+  ]
+}

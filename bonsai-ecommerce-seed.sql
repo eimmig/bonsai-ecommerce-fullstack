@@ -1,0 +1,48 @@
+-- Bonsai Ecommerce - Seed de dados iniciais
+-- Ajuste os nomes das tabelas e campos conforme seu banco
+
+
+
+-- Usuários
+INSERT INTO users (id, name, password, email) VALUES
+  ('b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'Admin Bonsai', 'admin123', 'admin@bonsai.com'),
+  ('c2b8f3d3-2e3f-5d4b-9f2b-3c4d5e6f7a81', 'Cliente Bonsai', 'cliente123', 'cliente@bonsai.com'),
+  ('d3c9a4e4-3f4a-6e5c-0a3c-4d5e6f7a8b92', 'Maria Oliveira', 'maria123', 'maria@bonsai.com'),
+  ('e4d0b5f5-4a5b-7f6d-1b4d-5e6f7a8b9c03', 'João Souza', 'joao123', 'joao@bonsai.com');
+
+
+
+-- Categorias
+INSERT INTO categories (id, name, created_by, updated_by) VALUES
+  ('f5e1c2b3-5d6e-4f7a-8b9c-0a1b2c3d4e5f', 'Ferramentas', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70'),
+  ('a6b2d3c4-6e7f-5a8b-9c0d-1e2f3a4b5c6d', 'Vasos', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70'),
+  ('b7c3e4d5-7f8a-6b9c-0d1e-2f3a4b5c6d7e', 'Bonsais', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70'),
+  ('c8d4f5e6-8a9b-7c0d-1e2f-3a4b5c6d7e8f', 'Substratos', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70'),
+  ('d9e5a6b7-9b0c-8d1e-2f3a-4b5c6d7e8f9a', 'Adubos', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
+
+
+
+-- Produtos
+INSERT INTO products (id, name, description, price, image_url, category_id, created_by, updated_by) VALUES
+  ('e1f2a3b4-1c2d-3e4f-5a6b-7c8d9e0f1a2b', 'Bonsai Ficus', 'Bonsai de Ficus com 5 anos, vaso cerâmico', 199.90, 'https://picsum.photos/200/300', 'b7c3e4d5-7f8a-6b9c-0d1e-2f3a4b5c6d7e', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70'),
+  ('f2a3b4c5-2d3e-4f5a-6b7c-8d9e0f1a2b3c', 'Tesoura de Poda', 'Tesoura profissional para bonsai', 39.90, 'https://picsum.photos/200/300', 'f5e1c2b3-5d6e-4f7a-8b9c-0a1b2c3d4e5f', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70'),
+  ('a3b4c5d6-3e4f-5a6b-7c8d-9e0f1a2b3c4d', 'Bonsai Junípero', 'Bonsai de Junípero, 8 anos, vaso esmaltado', 349.00, 'https://picsum.photos/200/300', 'b7c3e4d5-7f8a-6b9c-0d1e-2f3a4b5c6d7e', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70'),
+  ('b4c5d6e7-4f5a-6b7c-8d9e-0f1a2b3c4d5e', 'Vaso Japonês', 'Vaso importado para bonsai, cerâmica azul', 59.90, 'https://picsum.photos/200/300', 'a6b2d3c4-6e7f-5a8b-9c0d-1e2f3a4b5c6d', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70'),
+  ('c5d6e7f8-5a6b-7c8d-9e0f-1a2b3c4d5e6f', 'Substrato Akadama', 'Substrato japonês para bonsai, 2L', 29.90, 'https://picsum.photos/200/300', 'c8d4f5e6-8a9b-7c0d-1e2f-3a4b5c6d7e8f', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70'),
+  ('d6e7f8a9-6b7c-8d9e-0f1a-2b3c4d5e6f7a', 'Adubo Orgânico', 'Adubo especial para bonsai, 500g', 19.90, 'https://picsum.photos/200/300', 'd9e5a6b7-9b0c-8d1e-2f3a-4b5c6d7e8f9a', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
+
+
+
+-- Endereços
+INSERT INTO addresses (id, user_id, street, complement, zip_code, neighborhood, city, state, number, created_by, updated_by) VALUES
+  ('e7f8a9b0-7c8d-9e0f-1a2b-3c4d5e6f7a8b', 'c2b8f3d3-2e3f-5d4b-9f2b-3c4d5e6f7a81', 'Rua das Palmeiras', 'Apto 101', '80000-000', 'Centro', 'Curitiba', 'PR', '100', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70'),
+  ('f8a9b0c1-8d9e-0f1a-2b3c-4d5e6f7a8b9c', 'd3c9a4e4-3f4a-6e5c-0a3c-4d5e6f7a8b92', 'Av. Brasil', 'Casa', '81000-000', 'Jardim Social', 'Curitiba', 'PR', '200', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70'),
+  ('a9b0c1d2-9e0f-1a2b-3c4d-5e6f7a8b9c0d', 'e4d0b5f5-4a5b-7f6d-1b4d-5e6f7a8b9c03', 'Rua das Laranjeiras', '', '82000-000', 'Batel', 'Curitiba', 'PR', '50', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
+
+
+
+-- Pedidos
+INSERT INTO orders (id, order_date, user_id, created_by, updated_by) VALUES
+  ('b0c1d2e3-0f1a-2b3c-4d5e-6f7a8b9c0d1e', '2024-09-22T10:00:00', 'c2b8f3d3-2e3f-5d4b-9f2b-3c4d5e6f7a81', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70'),
+  ('c1d2e3f4-1a2b-3c4d-5e6f-7a8b9c0d1e2f', '2024-09-23T15:30:00', 'd3c9a4e4-3f4a-6e5c-0a3c-4d5e6f7a8b92', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70'),
+  ('d2e3f4a5-2b3c-4d5e-6f7a-8b9c0d1e2f3a', '2024-09-24T09:45:00', 'e4d0b5f5-4a5b-7f6d-1b4d-5e6f7a8b9c03', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
