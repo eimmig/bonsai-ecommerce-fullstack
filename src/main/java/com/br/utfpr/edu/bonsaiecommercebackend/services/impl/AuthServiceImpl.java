@@ -1,7 +1,7 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.services.impl;
 
-import com.br.utfpr.edu.bonsaiecommercebackend.dtos.user.AuthRequestDTO;
-import com.br.utfpr.edu.bonsaiecommercebackend.dtos.user.AuthResponseDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.auth.AuthRequestDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.auth.AuthResponseDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.UserEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.exceptions.AuthenticationException;
 import com.br.utfpr.edu.bonsaiecommercebackend.repositories.UserRepository;
@@ -25,14 +25,14 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponseDTO authenticate(AuthRequestDTO request) {
-        UserEntity user = userRepository.findByEmail(request.getEmail()).orElse(null);
+        UserEntity user = userRepository.findByEmail(request.email()).orElse(null);
         if (user == null) {
-            logger.warn("Tentativa de login com email inexistente: {}", request.getEmail());
+            logger.warn("Tentativa de login com email inexistente: {}", request.email());
             throw new AuthenticationException("Usuário ou senha inválidos");
         }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        if (!encoder.matches(request.getPassword(), user.getPassword())) {
-            logger.warn("Senha inválida para o email: {}", request.getEmail());
+        if (!encoder.matches(request.password(), user.getPassword())) {
+            logger.warn("Senha inválida para o email: {}", request.email());
             throw new AuthenticationException("Usuário ou senha inválidos");
         }
         String token = jwtUtil.generateToken(user.getId());

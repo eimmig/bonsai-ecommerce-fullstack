@@ -1,8 +1,8 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.controllers;
 
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.error.ErrorOutputDTO;
-import com.br.utfpr.edu.bonsaiecommercebackend.dtos.user.AuthRequestDTO;
-import com.br.utfpr.edu.bonsaiecommercebackend.dtos.user.AuthResponseDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.auth.AuthRequestDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.auth.AuthResponseDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.exceptions.AuthenticationException;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.AuthService;
 import jakarta.validation.Valid;
