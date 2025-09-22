@@ -3,9 +3,13 @@ package com.br.utfpr.edu.bonsaiecommercebackend.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,11 +18,18 @@ import java.util.function.Function;
 
 @Component
 public class JwtUtil {
-    private final String secretKey;
-    private static final long EXPIRATION_TIME = 1000L * 60 * 60 * 10; // 10 horas
 
-    public JwtUtil(@Value("${jwt.secret}") String secretKey) {
-        this.secretKey = secretKey;
+    @Value("${jwt.secret}")
+    private String secretKeyString;
+
+    private SecretKey secretKey;
+
+    private static final long EXPIRATION_TIME = 1000L * 60 * 60;
+
+    @PostConstruct
+    public void init() {
+        // Converte a String em SecretKey válida para HMAC-SHA
+        secretKey = Keys.hmacShaKeyFor(secretKeyString.getBytes(StandardCharsets.UTF_8));
     }
 
     public String extractUsername(String token) {
@@ -41,8 +52,9 @@ public class JwtUtil {
 
     private Claims extractAllClaims(String token) {
         try {
-            return Jwts.parser()
+            return Jwts.parserBuilder()
                     .setSigningKey(secretKey)
+                    .build()
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
@@ -63,16 +75,16 @@ public class JwtUtil {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject.toString())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public boolean validateToken(String token, UUID userId) {
         try {
             final UUID extractedUserId = extractUserId(token);
-            return (extractedUserId.equals(userId) && !isTokenExpired(token));
+            return extractedUserId.equals(userId) && !isTokenExpired(token);
         } catch (Exception e) {
             return false;
         }

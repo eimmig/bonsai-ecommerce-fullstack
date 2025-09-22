@@ -16,7 +16,7 @@ public record AddressInputDTO(
         UUID id,
 
         @NotNull(message = "ID do usuário é obrigatório")
-        Long userId,
+        UUID userId,
 
         @NotBlank(message = "Logradouro é obrigatório")
         @Size(max = 200, message = "Logradouro deve ter no máximo 200 caracteres")

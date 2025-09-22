@@ -9,6 +9,6 @@ public record CategoryInputDTO(
 
         @NotBlank(message = "Nome é obrigatório")
         @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
-        String nome
+        String name
 ) {
 }

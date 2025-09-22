@@ -16,4 +16,9 @@ public class UserMapper extends GenericMapper<UserModel, UserEntity, UserInputDT
     protected UserMapper(ModelMapper modelMapper) {
         super(modelMapper);
     }
+
+    @Override
+    public UserOutputDTO toDTO(UserModel model) {
+        return model != null ? UserOutputDTO.fromModel(model) : null;
+    }
 }

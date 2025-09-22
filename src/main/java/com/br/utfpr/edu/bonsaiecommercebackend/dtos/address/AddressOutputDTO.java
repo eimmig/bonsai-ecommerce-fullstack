@@ -1,5 +1,7 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.dtos.address;
 
+import com.br.utfpr.edu.bonsaiecommercebackend.models.AddressModel;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -9,7 +11,7 @@ import java.util.UUID;
  */
 public record AddressOutputDTO(
         UUID id,
-        Long userId,
+        UUID userId,
         String street,
         String complement,
         String zipCode,
@@ -20,4 +22,19 @@ public record AddressOutputDTO(
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
+    public static AddressOutputDTO fromModel(AddressModel model) {
+        return new AddressOutputDTO(
+                model.getId(),
+                model.getUser().getId(),
+                model.getStreet(),
+                model.getComplement(),
+                model.getZipCode(),
+                model.getNeighborhood(),
+                model.getCity(),
+                model.getState(),
+                model.getNumber(),
+                model.getCreatedAt(),
+                model.getUpdatedAt()
+        );
+    }
 }

@@ -16,4 +16,9 @@ public class CategoryMapper extends GenericMapper<CategoryModel, CategoryEntity,
     protected CategoryMapper(ModelMapper modelMapper) {
         super(modelMapper);
     }
+
+    @Override
+    public CategoryOutputDTO toDTO(CategoryModel model) {
+        return model != null ? CategoryOutputDTO.fromModel(model) : null;
+    }
 }

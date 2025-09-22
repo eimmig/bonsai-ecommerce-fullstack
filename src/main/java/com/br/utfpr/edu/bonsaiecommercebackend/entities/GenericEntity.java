@@ -23,11 +23,11 @@ public abstract class GenericEntity implements Serializable {
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
     private UserEntity createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "updated_by", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "updated_by", referencedColumnName = "id")
     private UserEntity updatedBy;
 
     @PrePersist
