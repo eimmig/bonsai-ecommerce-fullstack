@@ -44,7 +44,7 @@ public abstract class GenericServiceImpl<M extends GenericModel, E extends Gener
 
     @Override
     @NonNull
-    public Optional<M> getById(@NonNull UUID id) {
+    public Optional<M> getById(UUID id) {
         return repository.findById(id)
                 .map(mapper::toModel);
     }
@@ -57,7 +57,7 @@ public abstract class GenericServiceImpl<M extends GenericModel, E extends Gener
 
     @Override
     @Transactional
-    public void delete(@NonNull UUID id) throws RuntimeException {
+    public void delete(UUID id) throws RuntimeException {
         if (repository.existsById(id)) {
             repository.deleteById(id);
             return;
@@ -67,8 +67,7 @@ public abstract class GenericServiceImpl<M extends GenericModel, E extends Gener
 
     @Override
     @Transactional
-    @NonNull
-    public M update(@NonNull UUID id, @NonNull M model) throws RuntimeException {
+    public M update(UUID id, M model) throws RuntimeException {
         if (repository.existsById(id)) {
             model.setId(id);
             E entity = mapper.toEntity(model);

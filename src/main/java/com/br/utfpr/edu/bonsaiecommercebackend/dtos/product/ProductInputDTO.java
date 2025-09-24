@@ -2,6 +2,7 @@ package com.br.utfpr.edu.bonsaiecommercebackend.dtos.product;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -24,6 +25,8 @@ public record ProductInputDTO(
         BigDecimal price,
 
         @NotBlank(message = "URL da imagem é obrigatória")
+        @Pattern(regexp = "^(https?|ftp)://[^\\s/$.?#].[^\\s]*$", 
+                 message = "URL da imagem deve ter formato válido")
         String imageUrl,
 
         @NotNull(message = "ID da categoria é obrigatório")

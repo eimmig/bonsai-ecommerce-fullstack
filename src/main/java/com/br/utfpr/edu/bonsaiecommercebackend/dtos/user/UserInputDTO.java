@@ -2,12 +2,13 @@ package com.br.utfpr.edu.bonsaiecommercebackend.dtos.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.util.UUID;
 
 /**
  * DTO de entrada para cadastro e atualização de usuários.
- * Contém validações para nome, senha e email.
+ * Contém validações para nome, senha, email e CPF.
  */
 public record UserInputDTO(
         UUID id,
@@ -23,6 +24,10 @@ public record UserInputDTO(
         @NotBlank(message = "Email é obrigatório")
         @Email(message = "Email deve ter formato válido")
         @Size(max = 150, message = "Email deve ter no máximo 150 caracteres")
-        String email
+        String email,
+
+        @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", 
+                 message = "CPF deve ter formato válido (000.000.000-00)")
+        String cpf
 ) {
 }
