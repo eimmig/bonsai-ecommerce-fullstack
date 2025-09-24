@@ -1,13 +1,12 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.dtos.address;
 
-import com.br.utfpr.edu.bonsaiecommercebackend.models.AddressModel;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
  * DTO de saída para exibição de endereços.
  * Inclui informações de auditoria (createdAt, updatedAt).
+ * Mapeamento realizado via MapStruct para melhor performance.
  */
 public record AddressOutputDTO(
         UUID id,
@@ -22,19 +21,4 @@ public record AddressOutputDTO(
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
-    public static AddressOutputDTO fromModel(AddressModel model) {
-        return new AddressOutputDTO(
-                model.getId(),
-                model.getUser().getId(),
-                model.getStreet(),
-                model.getComplement(),
-                model.getZipCode(),
-                model.getNeighborhood(),
-                model.getCity(),
-                model.getState(),
-                model.getNumber(),
-                model.getCreatedAt(),
-                model.getUpdatedAt()
-        );
-    }
 }

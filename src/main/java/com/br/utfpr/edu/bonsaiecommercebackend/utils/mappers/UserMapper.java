@@ -4,21 +4,33 @@ import com.br.utfpr.edu.bonsaiecommercebackend.dtos.user.UserInputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.user.UserOutputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.UserEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.UserModel;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
-/**
- * Mapper responsável por converter entre UserModel, UserEntity, UserInputDTO e UserOutputDTO.
- * Utiliza ModelMapper para facilitar o mapeamento automático.
- */
-@Component
-public class UserMapper extends GenericMapper<UserModel, UserEntity, UserInputDTO, UserOutputDTO> {
-    protected UserMapper(ModelMapper modelMapper) {
-        super(modelMapper);
-    }
+import java.util.List;
 
-    @Override
-    public UserOutputDTO toDTO(UserModel model) {
-        return model != null ? UserOutputDTO.fromModel(model) : null;
-    }
+@Mapper(
+    componentModel = "spring",
+    nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+    unmappedTargetPolicy = ReportingPolicy.WARN
+)
+public interface UserMapper extends DomainMapper<UserModel, UserEntity, UserInputDTO, UserOutputDTO> {
+
+    UserEntity toEntity(UserModel model);
+    
+    UserModel toModel(UserEntity entity);
+    
+    List<UserModel> toModelList(List<UserEntity> entities);
+
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "updatedBy", ignore = true)
+    UserModel toModel(UserInputDTO inputDTO);
+    
+    UserOutputDTO toOutputDTO(UserModel model);
+    
+    List<UserOutputDTO> toOutputDTOList(List<UserModel> models);
 }

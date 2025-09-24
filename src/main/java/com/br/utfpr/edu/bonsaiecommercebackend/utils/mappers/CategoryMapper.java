@@ -4,21 +4,34 @@ import com.br.utfpr.edu.bonsaiecommercebackend.dtos.category.CategoryInputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.category.CategoryOutputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.CategoryEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.CategoryModel;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
-/**
- * Mapper responsável por converter entre CategoryModel, CategoryEntity, CategoryInputDTO e CategoryOutputDTO.
- * Utiliza ModelMapper para facilitar o mapeamento automático.
- */
-@Component
-public class CategoryMapper extends GenericMapper<CategoryModel, CategoryEntity, CategoryInputDTO, CategoryOutputDTO> {
-    protected CategoryMapper(ModelMapper modelMapper) {
-        super(modelMapper);
-    }
+import java.util.List;
 
-    @Override
-    public CategoryOutputDTO toDTO(CategoryModel model) {
-        return model != null ? CategoryOutputDTO.fromModel(model) : null;
-    }
+
+@Mapper(
+    componentModel = "spring",
+    nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+    unmappedTargetPolicy = ReportingPolicy.WARN
+)
+public interface CategoryMapper extends DomainMapper<CategoryModel, CategoryEntity, CategoryInputDTO, CategoryOutputDTO> {
+
+    CategoryEntity toEntity(CategoryModel model);
+    
+    CategoryModel toModel(CategoryEntity entity);
+    
+    List<CategoryModel> toModelList(List<CategoryEntity> entities);
+
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "updatedBy", ignore = true)
+    CategoryModel toModel(CategoryInputDTO inputDTO);
+    
+    CategoryOutputDTO toOutputDTO(CategoryModel model);
+    
+    List<CategoryOutputDTO> toOutputDTOList(List<CategoryModel> models);
 }

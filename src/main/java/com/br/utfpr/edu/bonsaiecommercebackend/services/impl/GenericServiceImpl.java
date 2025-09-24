@@ -4,7 +4,7 @@ import com.br.utfpr.edu.bonsaiecommercebackend.entities.GenericEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.exceptions.ResourceNotFoundException;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.GenericModel;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.GenericService;
-import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.GenericMapper;
+import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.DomainMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.lang.NonNull;
@@ -19,9 +19,9 @@ public abstract class GenericServiceImpl<M extends GenericModel, E extends Gener
         implements GenericService<M> {
 
     protected final JpaRepository<E, UUID> repository;
-    protected final GenericMapper<M, E, ?, ?> mapper;
+    protected final DomainMapper<M, E, ?, ?> mapper;
 
-    protected GenericServiceImpl(JpaRepository<E, UUID> repository, GenericMapper<M, E, ?, ?> mapper) {
+    protected GenericServiceImpl(JpaRepository<E, UUID> repository, DomainMapper<M, E, ?, ?> mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }

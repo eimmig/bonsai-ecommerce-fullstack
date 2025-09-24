@@ -4,21 +4,37 @@ import com.br.utfpr.edu.bonsaiecommercebackend.dtos.order.OrderInputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.order.OrderOutputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.OrderEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.OrderModel;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
-/**
- * Mapper responsável por converter entre OrderModel, OrderEntity, OrderInputDTO e OrderOutputDTO.
- * Utiliza ModelMapper para facilitar o mapeamento automático.
- */
-@Component
-public class OrderMapper extends GenericMapper<OrderModel, OrderEntity, OrderInputDTO, OrderOutputDTO> {
-    protected OrderMapper(ModelMapper modelMapper) {
-        super(modelMapper);
-    }
+import java.util.List;
 
-    @Override
-    public OrderOutputDTO toDTO(OrderModel model) {
-        return model != null ? OrderOutputDTO.fromModel(model) : null;
-    }
+
+@Mapper(
+    componentModel = "spring",
+    nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+    unmappedTargetPolicy = ReportingPolicy.WARN,
+    uses = {UserMapper.class, ProductMapper.class, AddressMapper.class}
+)
+public interface OrderMapper extends DomainMapper<OrderModel, OrderEntity, OrderInputDTO, OrderOutputDTO> {
+
+    OrderEntity toEntity(OrderModel model);
+    
+    OrderModel toModel(OrderEntity entity);
+    
+    List<OrderModel> toModelList(List<OrderEntity> entities);
+
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "updatedBy", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    OrderModel toModel(OrderInputDTO inputDTO);
+    
+    @Mapping(target = "userId", source = "user.id")
+    OrderOutputDTO toOutputDTO(OrderModel model);
+    
+    List<OrderOutputDTO> toOutputDTOList(List<OrderModel> models);
 }

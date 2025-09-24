@@ -1,12 +1,16 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.dtos.product;
 
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.category.CategoryOutputDTO;
-import com.br.utfpr.edu.bonsaiecommercebackend.models.ProductModel;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * DTO de saída para produtos.
+ * Contém dados do produto e categoria aninhada.
+ * Mapeamento realizado via MapStruct para melhor performance.
+ */
 public record ProductOutputDTO(
         UUID id,
         String name,
@@ -17,16 +21,4 @@ public record ProductOutputDTO(
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
-    public static ProductOutputDTO fromModel(ProductModel model) {
-        return new ProductOutputDTO(
-                model.getId(),
-                model.getName(),
-                model.getDescription(),
-                model.getPrice(),
-                model.getImageUrl(),
-                CategoryOutputDTO.fromModel(model.getCategory()),
-                model.getCreatedAt(),
-                model.getUpdatedAt()
-        );
-    }
 }

@@ -4,36 +4,35 @@ import com.br.utfpr.edu.bonsaiecommercebackend.dtos.product.ProductInputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.product.ProductOutputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.ProductEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.ProductModel;
-import com.br.utfpr.edu.bonsaiecommercebackend.services.CategoryService;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
-/**
- * Mapper responsável por converter entre ProductModel, ProductEntity, ProductInputDTO e ProductOutputDTO.
- * Utiliza ModelMapper para facilitar o mapeamento automático.
- */
-@Component
-public class ProductMapper extends GenericMapper<ProductModel, ProductEntity, ProductInputDTO, ProductOutputDTO> {
+import java.util.List;
 
-    private final CategoryService categoryService;
+@Mapper(
+    componentModel = "spring",
+    nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+    unmappedTargetPolicy = ReportingPolicy.WARN,
+    uses = {CategoryMapper.class}
+)
+public interface ProductMapper extends DomainMapper<ProductModel, ProductEntity, ProductInputDTO, ProductOutputDTO> {
 
-    public ProductMapper(ModelMapper modelMapper, CategoryService categoryService) {
-        super(modelMapper);
-        this.categoryService = categoryService;
-    }
+    ProductEntity toEntity(ProductModel model);
 
-    @Override
-    public ProductOutputDTO toDTO(ProductModel model) {
-        return model != null ? ProductOutputDTO.fromModel(model) : null;
-    }
+    ProductModel toModel(ProductEntity entity);
 
-    @Override
-    public ProductModel toModel(ProductInputDTO dto) {
-        var productModel = super.toModel(dto);
+    List<ProductModel> toModelList(List<ProductEntity> entities);
 
-        var categoryModel = categoryService.findByIdOrThrow(dto.categoryId());
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "updatedBy", ignore = true)
+    @Mapping(target = "category", ignore = true)
+    ProductModel toModel(ProductInputDTO inputDTO);
 
-        productModel.setCategory(categoryModel);
-        return productModel;
-    }
+    ProductOutputDTO toOutputDTO(ProductModel model);
+
+    List<ProductOutputDTO> toOutputDTOList(List<ProductModel> models);
 }

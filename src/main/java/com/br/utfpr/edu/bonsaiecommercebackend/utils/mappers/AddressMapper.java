@@ -4,36 +4,37 @@ import com.br.utfpr.edu.bonsaiecommercebackend.dtos.address.AddressInputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.address.AddressOutputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.AddressEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.AddressModel;
-import com.br.utfpr.edu.bonsaiecommercebackend.services.UserService;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
-/**
- * Mapper responsável por converter entre AddressModel, AddressEntity, AddressInputDTO e AddressOutputDTO.
- * Utiliza ModelMapper para facilitar o mapeamento automático.
- */
-@Component
-public class AddressMapper extends GenericMapper<AddressModel, AddressEntity, AddressInputDTO, AddressOutputDTO> {
-    private final UserService userService;
+import java.util.List;
 
-    protected AddressMapper(ModelMapper modelMapper, UserService userService) {
-        super(modelMapper);
-        this.userService = userService;
-    }
 
-    @Override
-    public AddressOutputDTO toDTO(AddressModel model) {
-        return model != null ? AddressOutputDTO.fromModel(model) : null;
-    }
+@Mapper(
+    componentModel = "spring",
+    nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+    unmappedTargetPolicy = ReportingPolicy.WARN,
+    uses = {UserMapper.class}
+)
+public interface AddressMapper extends DomainMapper<AddressModel, AddressEntity, AddressInputDTO, AddressOutputDTO> {
 
-    @Override
-    public AddressModel toModel(AddressInputDTO dto) {
-        var addressModel = super.toModel(dto);
+    AddressEntity toEntity(AddressModel model);
+    
+    AddressModel toModel(AddressEntity entity);
+    
+    List<AddressModel> toModelList(List<AddressEntity> entities);
 
-        var userModel = userService.findByIdOrThrow(dto.userId());
-
-        addressModel.setUser(userModel);
-
-        return addressModel;
-    }
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "updatedBy", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    AddressModel toModel(AddressInputDTO inputDTO);
+    
+    @Mapping(target = "userId", source = "user.id")
+    AddressOutputDTO toOutputDTO(AddressModel model);
+    
+    List<AddressOutputDTO> toOutputDTOList(List<AddressModel> models);
 }

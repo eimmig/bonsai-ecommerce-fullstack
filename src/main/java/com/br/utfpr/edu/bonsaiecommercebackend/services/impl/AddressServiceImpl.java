@@ -5,13 +5,13 @@ import com.br.utfpr.edu.bonsaiecommercebackend.models.AddressModel;
 import com.br.utfpr.edu.bonsaiecommercebackend.repositories.AddressRepository;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.AddressService;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.AddressMapper;
+import lombok.NonNull;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.br.utfpr.edu.bonsaiecommercebackend.services.UserService;
-import com.br.utfpr.edu.bonsaiecommercebackend.models.UserModel;
-import com.br.utfpr.edu.bonsaiecommercebackend.exceptions.ResourceNotFoundException;
-import lombok.NonNull;
+
+import java.util.UUID;
+
 
 @Service
 public class AddressServiceImpl extends GenericServiceImpl<AddressModel, AddressEntity>
@@ -24,13 +24,8 @@ public class AddressServiceImpl extends GenericServiceImpl<AddressModel, Address
     }
 
     @Override
-    @Transactional
-    public @NonNull AddressModel save(@NonNull AddressModel model) {
-        if (model.getUser() == null || model.getUser().getId() == null) {
-            throw new ResourceNotFoundException("User is required for the address.");
-        }
-        UserModel user = userService.findByIdOrThrow(model.getUser().getId());
-        model.setUser(user);
-        return super.save(model);
+    public @NonNull AddressModel save(@NonNull AddressModel addressModel, @NonNull UUID userId) {
+        addressModel.setUser(userService.findByIdOrThrow(userId));
+        return super.save(addressModel);
     }
 }
