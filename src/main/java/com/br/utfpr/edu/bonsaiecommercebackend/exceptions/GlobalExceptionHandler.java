@@ -2,7 +2,6 @@ package com.br.utfpr.edu.bonsaiecommercebackend.exceptions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -58,14 +57,6 @@ public class GlobalExceptionHandler {
                 .body(new ErrorOutputDTO(ex.getMessage(), 
                        Collections.singletonList(String.format("Campo %s com valor %s não é válido", 
                                                 ex.getFieldName(), ex.getFieldValue()))));
-    }
-
-    @ExceptionHandler(BusinessRuleException.class)
-    public ResponseEntity<ErrorOutputDTO> handleBusinessRuleException(BusinessRuleException ex) {
-        logger.warn("Regra de negócio violada: {}", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-                .body(new ErrorOutputDTO(ex.getMessage(), 
-                       Collections.singletonList(ex.getBusinessRule())));
     }
 
     @ExceptionHandler(ResourceAlreadyExistsException.class)

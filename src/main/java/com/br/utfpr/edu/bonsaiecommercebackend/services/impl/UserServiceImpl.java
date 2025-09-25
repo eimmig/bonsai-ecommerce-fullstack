@@ -102,10 +102,4 @@ public class UserServiceImpl extends GenericServiceImpl<UserModel, UserEntity>
                 .map(userMapper::toModel)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for the provided ID."));
     }
-
-    public UserModel findByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .map(userMapper::toModel)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found for email: " + email));
-    }
 }
