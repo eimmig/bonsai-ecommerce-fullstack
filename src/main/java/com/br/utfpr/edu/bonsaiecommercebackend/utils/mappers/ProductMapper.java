@@ -29,9 +29,10 @@ public interface ProductMapper extends DomainMapper<ProductModel, ProductEntity,
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "updatedBy", ignore = true)
-    @Mapping(target = "category", ignore = true)
+    @Mapping(target = "category.id", source = "categoryId")
     ProductModel toModel(ProductInputDTO inputDTO);
 
+    @Mapping(target = "categoryId", source = "category.id")
     ProductOutputDTO toOutputDTO(ProductModel model);
 
     List<ProductOutputDTO> toOutputDTOList(List<ProductModel> models);

@@ -30,7 +30,7 @@ public interface AddressMapper extends DomainMapper<AddressModel, AddressEntity,
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "updatedBy", ignore = true)
-    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "user.id", source = "userId")
     AddressModel toModel(AddressInputDTO inputDTO);
     
     @Mapping(target = "userId", source = "user.id")
