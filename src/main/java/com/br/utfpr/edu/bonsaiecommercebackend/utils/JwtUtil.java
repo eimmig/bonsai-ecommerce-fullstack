@@ -32,12 +32,12 @@ public class JwtUtil {
         secretKey = Keys.hmacShaKeyFor(secretKeyString.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String extractUsername(String token) {
+    public String extractUseridFromToken(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
     public UUID extractUserId(String token) {
-        String userIdStr = extractUsername(token);
+        String userIdStr = extractUseridFromToken(token);
         return userIdStr != null ? UUID.fromString(userIdStr) : null;
     }
 
