@@ -27,7 +27,20 @@ INSERT INTO addresses (id, user_id, street, complement, zip_code, neighborhood, 
 INSERT INTO addresses (id, user_id, street, complement, zip_code, neighborhood, city, state, number, created_by, updated_by) VALUES ('f8a9b0c1-8d9e-0f1a-2b3c-4d5e6f7a8b9c', 'd3c9a4e4-3f4a-6e5c-0a3c-4d5e6f7a8b92', 'Av. Brasil', 'Casa', '81000-000', 'Jardim Social', 'Curitiba', 'PR', '200', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
 INSERT INTO addresses (id, user_id, street, complement, zip_code, neighborhood, city, state, number, created_by, updated_by) VALUES ('a9b0c1d2-9e0f-1a2b-3c4d-5e6f7a8b9c0d', 'e4d0b5f5-4a5b-7f6d-1b4d-5e6f7a8b9c03', 'Rua das Laranjeiras', '', '82000-000', 'Batel', 'Curitiba', 'PR', '50', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
 
--- Pedidos
-INSERT INTO orders (id, order_date, user_id, created_by, updated_by) VALUES ('b0c1d2e3-0f1a-2b3c-4d5e-6f7a8b9c0d1e', '2024-09-22T10:00:00', 'c2b8f3d3-2e3f-5d4b-9f2b-3c4d5e6f7a81', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
-INSERT INTO orders (id, order_date, user_id, created_by, updated_by) VALUES ('c1d2e3f4-1a2b-3c4d-5e6f-7a8b9c0d1e2f', '2024-09-23T15:30:00', 'd3c9a4e4-3f4a-6e5c-0a3c-4d5e6f7a8b92', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
-INSERT INTO orders (id, order_date, user_id, created_by, updated_by) VALUES ('d2e3f4a5-2b3c-4d5e-6f7a-8b9c0d1e2f3a', '2024-09-24T09:45:00', 'e4d0b5f5-4a5b-7f6d-1b4d-5e6f7a8b9c03', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
+-- Pedidos com total_price calculado
+INSERT INTO orders (id, order_date, user_id, total_price, created_by, updated_by) VALUES ('b0c1d2e3-0f1a-2b3c-4d5e-6f7a8b9c0d1e', '2024-09-22T10:00:00', 'c2b8f3d3-2e3f-5d4b-9f2b-3c4d5e6f7a81', 239.80, 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
+INSERT INTO orders (id, order_date, user_id, total_price, created_by, updated_by) VALUES ('c1d2e3f4-1a2b-3c4d-5e6f-7a8b9c0d1e2f', '2024-09-23T15:30:00', 'd3c9a4e4-3f4a-6e5c-0a3c-4d5e6f7a8b92', 408.90, 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
+INSERT INTO orders (id, order_date, user_id, total_price, created_by, updated_by) VALUES ('d2e3f4a5-2b3c-4d5e-6f7a-8b9c0d1e2f3a', '2024-09-24T09:45:00', 'e4d0b5f5-4a5b-7f6d-1b4d-5e6f7a8b9c03', 49.80, 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
+
+-- Itens dos pedidos
+-- Pedido 1: Cliente Bonsai compra 1 Bonsai Ficus (199.90) + 1 Tesoura de Poda (39.90) = 239.80
+INSERT INTO order_items (id, order_id, product_id, quantity, price, created_by, updated_by) VALUES ('11a1b1c1-1d1e-1f1a-1b1c-1d1e1f1a1b1c', 'b0c1d2e3-0f1a-2b3c-4d5e-6f7a8b9c0d1e', 'e1f2a3b4-1c2d-3e4f-5a6b-7c8d9e0f1a2b', 1, 199.90, 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
+INSERT INTO order_items (id, order_id, product_id, quantity, price, created_by, updated_by) VALUES ('22b2c2d2-2e2f-2a2b-2c2d-2e2f2a2b2c2d', 'b0c1d2e3-0f1a-2b3c-4d5e-6f7a8b9c0d1e', 'f2a3b4c5-2d3e-4f5a-6b7c-8d9e0f1a2b3c', 1, 39.90, 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
+
+-- Pedido 2: Maria Oliveira compra 1 Bonsai Junípero (349.00) + 1 Vaso Japonês (59.90) = 408.90
+INSERT INTO order_items (id, order_id, product_id, quantity, price, created_by, updated_by) VALUES ('33c3d3e3-3f3a-3b3c-3d3e-3f3a3b3c3d3e', 'c1d2e3f4-1a2b-3c4d-5e6f-7a8b9c0d1e2f', 'a3b4c5d6-3e4f-5a6b-7c8d-9e0f1a2b3c4d', 1, 349.00, 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
+INSERT INTO order_items (id, order_id, product_id, quantity, price, created_by, updated_by) VALUES ('44d4e4f4-4a4b-4c4d-4e4f-4a4b4c4d4e4f', 'c1d2e3f4-1a2b-3c4d-5e6f-7a8b9c0d1e2f', 'b4c5d6e7-4f5a-6b7c-8d9e-0f1a2b3c4d5e', 1, 59.90, 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
+
+-- Pedido 3: João Souza compra 1 Substrato Akadama (29.90) + 1 Adubo Orgânico (19.90) = 49.80
+INSERT INTO order_items (id, order_id, product_id, quantity, price, created_by, updated_by) VALUES ('55e5f5a5-5b5c-5d5e-5f5a-5b5c5d5e5f5a', 'd2e3f4a5-2b3c-4d5e-6f7a-8b9c0d1e2f3a', 'c5d6e7f8-5a6b-7c8d-9e0f-1a2b3c4d5e6f', 1, 29.90, 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');
+INSERT INTO order_items (id, order_id, product_id, quantity, price, created_by, updated_by) VALUES ('66f6a6b6-6c6d-6e6f-6a6b-6c6d6e6f6a6b', 'd2e3f4a5-2b3c-4d5e-6f7a-8b9c0d1e2f3a', 'd6e7f8a9-6b7c-8d9e-0f1a-2b3c4d5e6f7a', 1, 19.90, 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70', 'b1a7e2c2-1f2e-4c3a-8e1a-2b3c4d5e6f70');

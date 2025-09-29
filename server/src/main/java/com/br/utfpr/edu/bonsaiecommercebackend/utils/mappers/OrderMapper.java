@@ -4,12 +4,11 @@ import com.br.utfpr.edu.bonsaiecommercebackend.dtos.order.OrderInputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.order.OrderOutputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.OrderEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.OrderModel;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.mapstruct.ReportingPolicy;
+import com.br.utfpr.edu.bonsaiecommercebackend.models.UserModel;
+import org.mapstruct.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Mapper(
         componentModel = "spring",
@@ -31,8 +30,8 @@ public interface OrderMapper extends DomainMapper<OrderModel, OrderEntity, Order
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "updatedBy", ignore = true)
-    @Mapping(target = "user", ignore = true)
-    @Mapping(target = "orderItems", ignore = true)
+    @Mapping(target = "user", source = "userId", qualifiedByName = "mapUserIdToUserModel")
+    @Mapping(target = "orderItems", source = "orderItems")
     @Mapping(target = "totalPrice", ignore = true)
     OrderModel toModel(OrderInputDTO inputDTO);
 
@@ -42,4 +41,17 @@ public interface OrderMapper extends DomainMapper<OrderModel, OrderEntity, Order
     OrderOutputDTO toOutputDTO(OrderModel model);
 
     List<OrderOutputDTO> toOutputDTOList(List<OrderModel> models);
+
+    /**
+     * Mapeia um UUID para um UserModel com apenas o ID preenchido
+     */
+    @Named("mapUserIdToUserModel")
+    default UserModel mapUserIdToUserModel(UUID userId) {
+        if (userId == null) {
+            return null;
+        }
+        UserModel userModel = new UserModel();
+        userModel.setId(userId);
+        return userModel;
+    }
 }
