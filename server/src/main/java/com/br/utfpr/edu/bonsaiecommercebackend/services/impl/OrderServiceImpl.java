@@ -48,6 +48,7 @@ public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity
 
         UserEntity user = userRepository.findById(orderModel.getUser().getId()).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
+        OrderEntity orderEntity = orderMapper.toEntity(orderModel);
         orderEntity.setUser(user);
 
         processOrderItems(orderEntity, orderModel);
