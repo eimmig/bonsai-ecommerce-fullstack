@@ -1,10 +1,9 @@
-package com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderItems;
+package com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderitems;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 public record OrderItemsInputDTO(

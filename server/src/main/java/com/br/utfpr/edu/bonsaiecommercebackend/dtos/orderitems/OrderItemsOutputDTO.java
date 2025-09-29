@@ -1,4 +1,4 @@
-package com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderItems;
+package com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderitems;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

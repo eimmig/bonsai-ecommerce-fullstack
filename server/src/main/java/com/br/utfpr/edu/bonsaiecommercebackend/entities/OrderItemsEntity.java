@@ -38,16 +38,6 @@ public class OrderItemsEntity extends GenericEntity {
     @Max(value = 999, message = "Quantidade não pode exceder 999")
     private Integer quantity;
 
-    /**
-     * Calcula o subtotal do item (preço × quantidade)
-     * @return subtotal do item
-     */
-    public BigDecimal getSubtotal() {
-        if (price == null || quantity == null) {
-            return BigDecimal.ZERO;
-        }
-        return price.multiply(BigDecimal.valueOf(quantity));
-    }
 
     @Override
     public boolean equals(Object o) {

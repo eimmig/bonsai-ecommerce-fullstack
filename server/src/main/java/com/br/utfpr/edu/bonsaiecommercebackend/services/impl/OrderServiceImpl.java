@@ -130,14 +130,6 @@ public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity
     }
 
     /**
-     * Remove item do pedido - lógica de negócio movida da entidade
-     */
-    private void removeItemFromOrder(OrderEntity order, OrderItemsEntity item) {
-        order.getOrderItems().remove(item);
-        item.setOrder(null);
-    }
-
-    /**
      * Calcula o preço total do pedido - lógica de negócio movida da entidade
      */
     private void calculateTotalPrice(OrderEntity order) {

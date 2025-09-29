@@ -1,7 +1,7 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers;
 
-import com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderItems.OrderItemsInputDTO;
-import com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderItems.OrderItemsOutputDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderitems.OrderItemsInputDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderitems.OrderItemsOutputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.OrderItemsEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.OrderItemsModel;
 import org.mapstruct.*;

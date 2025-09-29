@@ -1,6 +1,6 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.dtos.order;
 
-import com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderItems.OrderItemsInputDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderitems.OrderItemsInputDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

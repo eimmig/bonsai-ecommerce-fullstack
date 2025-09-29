@@ -1,6 +1,6 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.dtos.order;
 
-import com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderItems.OrderItemsOutputDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderitems.OrderItemsOutputDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
