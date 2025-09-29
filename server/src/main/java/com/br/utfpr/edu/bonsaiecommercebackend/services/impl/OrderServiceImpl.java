@@ -12,6 +12,7 @@ import com.br.utfpr.edu.bonsaiecommercebackend.repositories.ProductRepository;
 import com.br.utfpr.edu.bonsaiecommercebackend.repositories.UserRepository;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.OrderService;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.OrderMapper;
+import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,10 +38,8 @@ public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity
 
     @Override
     @Transactional
-    public OrderModel createOrder(OrderModel orderModel) {
-        if (orderModel == null) {
-            throw new IllegalArgumentException("OrderModel não pode ser null");
-        }
+    @NonNull
+    public OrderModel save(@NonNull OrderModel orderModel) {
 
         if (orderModel.getUser() == null || orderModel.getUser().getId() == null) {
             throw new IllegalArgumentException("Usuário é obrigatório para criar um pedido");
@@ -61,7 +60,7 @@ public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity
 
     @Override
     @Transactional
-    public OrderModel updateOrder(UUID id, OrderModel orderModel) {
+    public OrderModel update(UUID id, OrderModel orderModel) {
         if (orderModel == null) {
             throw new IllegalArgumentException("OrderModel não pode ser null");
         }
