@@ -45,7 +45,7 @@ public class UserServiceImpl extends GenericServiceImpl<UserModel, UserEntity>
             
             return super.save(model);
             
-        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             if (e.getMessage() != null && e.getMessage().contains("email")) {
                 throw new ResourceAlreadyExistsException("User", "email", model.getEmail());
             }
@@ -75,7 +75,7 @@ public class UserServiceImpl extends GenericServiceImpl<UserModel, UserEntity>
             
             return super.update(id, model);
             
-        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             if (e.getMessage() != null && e.getMessage().contains("email")) {
                 throw new ResourceAlreadyExistsException("User", "email", model.getEmail());
             }
@@ -90,7 +90,7 @@ public class UserServiceImpl extends GenericServiceImpl<UserModel, UserEntity>
             findByIdOrThrow(id);
             super.delete(id);
             
-        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("User", 
                 "Usuário não pode ser excluído pois possui registros associados (endereços, pedidos, etc.)", e);
         }

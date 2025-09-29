@@ -6,6 +6,8 @@ import com.br.utfpr.edu.bonsaiecommercebackend.models.GenericModel;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.GenericService;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.DomainMapper;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,13 @@ public abstract class GenericServiceImpl<M extends GenericModel, E extends Gener
     public List<M> getAll() {
         List<E> entities = repository.findAll();
         return mapper.toModelList(entities);
+    }
+
+    @Override
+    @NonNull
+    public Page<M> getAll(Pageable pageable) {
+        Page<E> entities = repository.findAll(pageable);
+        return entities.map(mapper::toModel);
     }
 
     @Override

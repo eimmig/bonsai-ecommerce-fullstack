@@ -5,11 +5,13 @@ import com.br.utfpr.edu.bonsaiecommercebackend.models.GenericModel;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.GenericService;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.DomainMapper;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 public abstract class GenericController<M extends GenericModel, E extends GenericEntity, I, O> {
@@ -38,11 +40,9 @@ public abstract class GenericController<M extends GenericModel, E extends Generi
     }
 
     @GetMapping
-    public ResponseEntity<List<O>> findAll() {
-        List<M> models = service.getAll();
-        List<O> outputDTOs = models.stream()
-                .map(mapper::toOutputDTO)
-                .toList();
+    public ResponseEntity<Page<O>> findAll(@PageableDefault(size = 20, sort = "id") Pageable pageable) {
+        Page<M> models = service.getAll(pageable);
+        Page<O> outputDTOs = models.map(mapper::toOutputDTO);
         return ResponseEntity.ok(outputDTOs);
     }
 
