@@ -26,20 +26,17 @@ public class OrderController extends GenericController<OrderModel, OrderEntity, 
 
     @PostMapping
     public ResponseEntity<OrderOutputDTO> create(@Valid @RequestBody OrderInputDTO inputDTO) {
-        // Conversão DTO -> Model acontece no controller
+
         OrderModel model = mapper.toModel(inputDTO);
         OrderModel savedModel = orderService.createOrder(model);
-        // Conversão Model -> DTO acontece no controller
         OrderOutputDTO outputDTO = mapper.toOutputDTO(savedModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(outputDTO);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<OrderOutputDTO> update(@PathVariable UUID id, @Valid @RequestBody OrderInputDTO inputDTO) {
-        // Conversão DTO -> Model acontece no controller
         OrderModel model = mapper.toModel(inputDTO);
         OrderModel updatedModel = orderService.updateOrder(id, model);
-        // Conversão Model -> DTO acontece no controller
         OrderOutputDTO outputDTO = mapper.toOutputDTO(updatedModel);
         return ResponseEntity.ok(outputDTO);
     }

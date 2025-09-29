@@ -20,8 +20,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
-public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity>
-    implements OrderService {
+public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity> implements OrderService {
 
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
@@ -39,7 +38,6 @@ public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity
     @Override
     @Transactional
     public OrderModel createOrder(OrderModel orderModel) {
-        // Validação defensiva
         if (orderModel == null) {
             throw new IllegalArgumentException("OrderModel não pode ser null");
         }
@@ -48,21 +46,14 @@ public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity
             throw new IllegalArgumentException("Usuário é obrigatório para criar um pedido");
         }
 
-        // Validar se o usuário existe
-        UserEntity user = userRepository.findById(orderModel.getUser().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        UserEntity user = userRepository.findById(orderModel.getUser().getId()).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
-        // Converter Model para Entity
-        OrderEntity orderEntity = orderMapper.toEntity(orderModel);
         orderEntity.setUser(user);
 
-        // Processar itens do pedido e aplicar lógica de negócio
         processOrderItems(orderEntity, orderModel);
 
-        // Calcular preço total (lógica de negócio movida da entidade)
         calculateTotalPrice(orderEntity);
 
-        // Salvar e retornar
         OrderEntity savedEntity = orderRepository.save(orderEntity);
         return orderMapper.toModel(savedEntity);
     }
@@ -70,7 +61,6 @@ public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity
     @Override
     @Transactional
     public OrderModel updateOrder(UUID id, OrderModel orderModel) {
-        // Validação defensiva
         if (orderModel == null) {
             throw new IllegalArgumentException("OrderModel não pode ser null");
         }
@@ -79,25 +69,18 @@ public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity
             throw new IllegalArgumentException("Usuário é obrigatório para atualizar um pedido");
         }
 
-        OrderEntity existingOrder = orderRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
+        OrderEntity existingOrder = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
 
-        // Validar se o usuário existe
-        UserEntity user = userRepository.findById(orderModel.getUser().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        UserEntity user = userRepository.findById(orderModel.getUser().getId()).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
-        // Atualizar dados básicos
         existingOrder.setUser(user);
         existingOrder.setOrderDate(orderModel.getOrderDate());
 
-        // Limpar itens existentes e processar novos
         existingOrder.getOrderItems().clear();
         processOrderItems(existingOrder, orderModel);
 
-        // Calcular preço total (lógica de negócio movida da entidade)
         calculateTotalPrice(existingOrder);
 
-        // Salvar e retornar
         OrderEntity savedEntity = orderRepository.save(existingOrder);
         return orderMapper.toModel(savedEntity);
     }
@@ -111,7 +94,6 @@ public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity
             return;
         }
 
-        // Limpar a lista existente para evitar conflitos
         orderEntity.getOrderItems().clear();
 
         for (OrderItemsModel itemModel : orderModel.getOrderItems()) {
@@ -119,26 +101,22 @@ public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity
                 throw new IllegalArgumentException("Produto é obrigatório para cada item do pedido");
             }
 
-            ProductEntity product = productRepository.findById(itemModel.getProduct().getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado: " + itemModel.getProduct().getId()));
+            ProductEntity product = productRepository.findById(itemModel.getProduct().getId()).orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado: " + itemModel.getProduct().getId()));
 
-            // Validar quantidade
             if (itemModel.getQuantity() == null || itemModel.getQuantity() < 1) {
                 throw new IllegalArgumentException("Quantidade deve ser maior que zero");
             }
 
             OrderItemsEntity itemEntity = new OrderItemsEntity();
             itemEntity.setProduct(product);
-            itemEntity.setPrice(product.getPrice()); // Definir o preço ANTES de adicionar à lista
+            itemEntity.setPrice(product.getPrice());
             itemEntity.setQuantity(itemModel.getQuantity());
             itemEntity.setOrder(orderEntity);
 
-            // Verificar se o preço foi definido corretamente
             if (itemEntity.getPrice() == null) {
                 throw new IllegalStateException("Preço do produto não pode ser null: " + product.getId());
             }
 
-            // Adicionar item à lista (lógica de negócio movida da entidade)
             addItemToOrder(orderEntity, itemEntity);
         }
     }
@@ -168,10 +146,7 @@ public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity
             return;
         }
 
-        BigDecimal totalPrice = order.getOrderItems().stream()
-                .filter(item -> item.getPrice() != null && item.getQuantity() != null) // Filtrar itens com valores válidos
-                .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalPrice = order.getOrderItems().stream().filter(item -> item.getPrice() != null && item.getQuantity() != null).map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))).reduce(BigDecimal.ZERO, BigDecimal::add);
 
         order.setTotalPrice(totalPrice);
     }
