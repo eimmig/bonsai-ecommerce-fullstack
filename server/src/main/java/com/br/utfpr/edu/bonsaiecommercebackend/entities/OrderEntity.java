@@ -21,7 +21,6 @@ public class OrderEntity extends GenericEntity {
     @Column(name = "order_date", nullable = false)
     private LocalDateTime orderDate;
 
-    // construtores, getters e setters
 
     public OrderEntity() {
         this.orderDate = LocalDateTime.now();

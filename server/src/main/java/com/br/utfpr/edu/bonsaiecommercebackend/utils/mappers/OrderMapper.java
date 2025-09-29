@@ -19,7 +19,6 @@ import java.util.List;
 )
 public interface OrderMapper extends DomainMapper<OrderModel, OrderEntity, OrderInputDTO, OrderOutputDTO> {
 
-    // Remove os mapeamentos incorretos de orderItems se a propriedade não existir na entidade
     OrderEntity toEntity(OrderModel model);
 
     OrderModel toModel(OrderEntity entity);
