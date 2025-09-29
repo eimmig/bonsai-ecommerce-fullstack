@@ -13,14 +13,23 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class OrderEntity extends GenericEntity {
 
+    @NotNull(message = "Usuário é obrigatório")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
+
     @Column(name = "order_date", nullable = false)
-    @NotNull(message = "Data do pedido é obrigatória")
-    @PastOrPresent(message = "Data do pedido não pode ser futura")
     private LocalDateTime orderDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    @NotNull(message = "Usuário é obrigatório")
-    private UserEntity user;
+    // construtores, getters e setters
+
+    public OrderEntity() {
+        this.orderDate = LocalDateTime.now();
+    }
+
+    public OrderEntity(UserEntity user) {
+        this();
+        this.user = user;
+    }
 
 }

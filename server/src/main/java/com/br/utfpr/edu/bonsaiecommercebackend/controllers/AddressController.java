@@ -23,11 +23,5 @@ public class AddressController extends GenericController<AddressModel, AddressEn
         this.addressService = service;
     }
 
-    @Override
-    public ResponseEntity<AddressOutputDTO> create(@NonNull AddressInputDTO inputDTO) {
-        var model = mapper.toModel(inputDTO);
-        var savedModel = addressService.save(model, inputDTO.userId());
-        var outputDTO = mapper.toOutputDTO(savedModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(outputDTO);
-    }
+
 }

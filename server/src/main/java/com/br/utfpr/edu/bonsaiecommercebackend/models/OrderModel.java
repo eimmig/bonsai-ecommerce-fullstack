@@ -10,4 +10,5 @@ import java.time.LocalDateTime;
 public class OrderModel extends GenericModel{
     private LocalDateTime orderDate;
     private UserModel user;
+    private OrderItemsModel orderItems;
 }

@@ -11,18 +11,17 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-
 @Mapper(
-    componentModel = "spring",
-    nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-    unmappedTargetPolicy = ReportingPolicy.WARN
+        componentModel = "spring",
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public interface CategoryMapper extends DomainMapper<CategoryModel, CategoryEntity, CategoryInputDTO, CategoryOutputDTO> {
 
     CategoryEntity toEntity(CategoryModel model);
-    
+
     CategoryModel toModel(CategoryEntity entity);
-    
+
     List<CategoryModel> toModelList(List<CategoryEntity> entities);
 
     @Mapping(target = "createdAt", ignore = true)
@@ -30,8 +29,8 @@ public interface CategoryMapper extends DomainMapper<CategoryModel, CategoryEnti
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "updatedBy", ignore = true)
     CategoryModel toModel(CategoryInputDTO inputDTO);
-    
+
     CategoryOutputDTO toOutputDTO(CategoryModel model);
-    
+
     List<CategoryOutputDTO> toOutputDTOList(List<CategoryModel> models);
 }

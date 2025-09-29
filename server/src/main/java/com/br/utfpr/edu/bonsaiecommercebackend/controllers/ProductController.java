@@ -27,9 +27,9 @@ public class ProductController extends GenericController<ProductModel, ProductEn
 
     @Override
     @PostMapping
-    public ResponseEntity<ProductOutputDTO> create(@Valid @RequestBody ProductInputDTO inputDTO) {
+    public ResponseEntity<ProductOutputDTO> create(@Valid @RequestBody ProductInputDTO inputDTO) throws Exception{
         var model = mapper.toModel(inputDTO);
-        var savedModel = productService.save(model, inputDTO.categoryId());
+        var savedModel = productService.save(model);
         var outputDTO = mapper.toOutputDTO(savedModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(outputDTO);
     }

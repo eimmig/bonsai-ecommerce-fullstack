@@ -11,19 +11,19 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-
 @Mapper(
-    componentModel = "spring",
-    nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-    unmappedTargetPolicy = ReportingPolicy.WARN,
-    uses = {UserMapper.class, ProductMapper.class, AddressMapper.class}
+        componentModel = "spring",
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        unmappedTargetPolicy = ReportingPolicy.WARN,
+        uses = {UserMapper.class, ProductMapper.class, AddressMapper.class, OrderItemsMapper.class}
 )
 public interface OrderMapper extends DomainMapper<OrderModel, OrderEntity, OrderInputDTO, OrderOutputDTO> {
 
+    // Remove os mapeamentos incorretos de orderItems se a propriedade não existir na entidade
     OrderEntity toEntity(OrderModel model);
-    
+
     OrderModel toModel(OrderEntity entity);
-    
+
     List<OrderModel> toModelList(List<OrderEntity> entities);
 
     @Mapping(target = "createdAt", ignore = true)
@@ -32,9 +32,9 @@ public interface OrderMapper extends DomainMapper<OrderModel, OrderEntity, Order
     @Mapping(target = "updatedBy", ignore = true)
     @Mapping(target = "user", ignore = true)
     OrderModel toModel(OrderInputDTO inputDTO);
-    
+
     @Mapping(target = "userId", source = "user.id")
     OrderOutputDTO toOutputDTO(OrderModel model);
-    
+
     List<OrderOutputDTO> toOutputDTOList(List<OrderModel> models);
 }

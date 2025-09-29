@@ -32,7 +32,8 @@ public interface ProductMapper extends DomainMapper<ProductModel, ProductEntity,
     @Mapping(target = "category.id", source = "categoryId")
     ProductModel toModel(ProductInputDTO inputDTO);
 
-    @Mapping(target = "categoryId", source = "category.id")
+
+    @Mapping(target = "category", source = "category")
     ProductOutputDTO toOutputDTO(ProductModel model);
 
     List<ProductOutputDTO> toOutputDTOList(List<ProductModel> models);
