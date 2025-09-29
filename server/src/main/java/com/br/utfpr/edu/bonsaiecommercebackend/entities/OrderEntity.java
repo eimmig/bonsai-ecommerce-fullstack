@@ -28,7 +28,7 @@ public class OrderEntity extends GenericEntity {
     private BigDecimal totalPrice;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItemsEntity> items = new ArrayList<>();
+    private List<OrderItemsEntity> orderItems = new ArrayList<>();
 
     public OrderEntity() {
         this.orderDate = LocalDateTime.now();
@@ -42,13 +42,13 @@ public class OrderEntity extends GenericEntity {
 
     // Métodos helper para gerenciar a relação bidirecional
     public void addItem(OrderItemsEntity item) {
-        items.add(item);
+        orderItems.add(item);
         item.setOrder(this);
         calculateTotalPrice();
     }
 
     public void removeItem(OrderItemsEntity item) {
-        items.remove(item);
+        orderItems.remove(item);
         item.setOrder(null);
         calculateTotalPrice();
     }
@@ -58,7 +58,7 @@ public class OrderEntity extends GenericEntity {
      * (preço do produto * quantidade)
      */
     public void calculateTotalPrice() {
-        this.totalPrice = items.stream()
+        this.totalPrice = orderItems.stream()
                 .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }

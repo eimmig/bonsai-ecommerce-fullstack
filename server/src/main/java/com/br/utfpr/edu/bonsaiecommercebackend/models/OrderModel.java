@@ -14,5 +14,5 @@ public class OrderModel extends GenericModel{
     private LocalDateTime orderDate;
     private UserModel user;
     private BigDecimal totalPrice;
-    private List<OrderItemsModel> items = new ArrayList<>();
+    private List<OrderItemsModel> orderItems = new ArrayList<>();
 }

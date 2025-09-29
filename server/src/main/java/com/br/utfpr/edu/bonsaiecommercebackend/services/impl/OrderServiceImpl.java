@@ -2,7 +2,7 @@ package com.br.utfpr.edu.bonsaiecommercebackend.services.impl;
 
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.order.OrderInputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.order.OrderOutputDTO;
-import com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderItems.OrderItemInputDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderItems.OrderItemsInputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.OrderEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.OrderItemsEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.ProductEntity;
@@ -70,7 +70,7 @@ public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity
         order.setOrderDate(dto.orderDate());
 
         // Limpa os itens existentes e adiciona os novos
-        order.getItems().clear();
+        order.getOrderItems().clear();
         addItemsToOrder(order, dto);
 
         // Garante que o preço total seja calculado antes de salvar
@@ -82,7 +82,7 @@ public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity
     }
 
     private void addItemsToOrder(OrderEntity order, OrderInputDTO dto) {
-        for (OrderItemInputDTO itemDTO : dto.orderItems()) {
+        for (OrderItemsInputDTO itemDTO : dto.orderItems()) {
             ProductEntity product = productRepository.findById(itemDTO.productId())
                     .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado: " + itemDTO.productId()));
 

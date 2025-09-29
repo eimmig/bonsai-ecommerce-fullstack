@@ -18,6 +18,6 @@ public record OrderOutputDTO(
         BigDecimal totalPrice,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
-        List<OrderItemsOutputDTO> items
+        List<OrderItemsOutputDTO> orderItems
 ) {
 }

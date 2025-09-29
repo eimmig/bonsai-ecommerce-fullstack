@@ -19,10 +19,10 @@ import java.util.List;
 )
 public interface OrderMapper extends DomainMapper<OrderModel, OrderEntity, OrderInputDTO, OrderOutputDTO> {
 
-    @Mapping(target = "items", source = "items")
+    @Mapping(target = "orderItems", source = "orderItems")
     OrderEntity toEntity(OrderModel model);
 
-    @Mapping(target = "items", source = "items")
+    @Mapping(target = "orderItems", source = "orderItems")
     OrderModel toModel(OrderEntity entity);
 
     List<OrderModel> toModelList(List<OrderEntity> entities);
@@ -32,11 +32,13 @@ public interface OrderMapper extends DomainMapper<OrderModel, OrderEntity, Order
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "updatedBy", ignore = true)
     @Mapping(target = "user", ignore = true)
-    @Mapping(target = "items", ignore = true)
+    @Mapping(target = "orderItems", ignore = true)
+    @Mapping(target = "totalPrice", ignore = true)
     OrderModel toModel(OrderInputDTO inputDTO);
 
     @Mapping(target = "userId", source = "user.id")
-    @Mapping(target = "items", source = "items")
+    @Mapping(target = "orderItems", source = "orderItems")
+    @Mapping(target = "totalPrice", source = "totalPrice")
     OrderOutputDTO toOutputDTO(OrderModel model);
 
     List<OrderOutputDTO> toOutputDTOList(List<OrderModel> models);

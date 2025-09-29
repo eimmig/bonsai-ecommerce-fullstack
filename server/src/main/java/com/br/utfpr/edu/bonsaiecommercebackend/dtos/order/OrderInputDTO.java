@@ -1,6 +1,6 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.dtos.order;
 
-import com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderItems.OrderItemInputDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.orderItems.OrderItemsInputDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +20,6 @@ public record OrderInputDTO(
 
         @NotEmpty(message = "O pedido deve ter pelo menos um item")
         @Valid
-        List<OrderItemInputDTO> orderItems
+        List<OrderItemsInputDTO> orderItems
 ) {
 }
