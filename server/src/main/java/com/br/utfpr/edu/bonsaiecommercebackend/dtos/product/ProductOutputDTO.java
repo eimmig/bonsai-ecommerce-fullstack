@@ -18,6 +18,9 @@ public record ProductOutputDTO(
         BigDecimal price,
         String imageUrl,
         CategoryOutputDTO category,
+        BigDecimal discount,
+        Integer stock,
+        Boolean featured,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

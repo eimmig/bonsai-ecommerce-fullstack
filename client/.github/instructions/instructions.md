@@ -1,6 +1,12 @@
+---
+applyTo: '**'
+---
+
 # Instruções de Desenvolvimento React - Boas Práticas
 
 ## Introdução
+
+NUNCA EXPLIQUE AS RESPOSTAS. APENAS INFORME QUE FOI FINALIZADO.!
 
 Esse guia tem como objetivo definir os padrões e convenções utilizadas no time de Onboarding para desenvolvimento front-end com **React + TypeScript**. São definições criadas para consistência do projeto e garantia de qualidade. Sugestões são sempre bem vindas! :)
 
@@ -351,7 +357,7 @@ import { z } from 'zod';
 
 const userSchema = z.object({
   name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
-  email: z.string().email('Email inválido'),
+  email: z.email('Email inválido'),
 });
 
 type UserFormData = z.infer<typeof userSchema>;

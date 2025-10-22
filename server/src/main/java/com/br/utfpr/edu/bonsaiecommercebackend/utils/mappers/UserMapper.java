@@ -14,7 +14,8 @@ import java.util.List;
 @Mapper(
     componentModel = "spring",
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-    unmappedTargetPolicy = ReportingPolicy.WARN
+    unmappedTargetPolicy = ReportingPolicy.WARN,
+    uses = {AddressMapper.class}
 )
 public interface UserMapper extends DomainMapper<UserModel, UserEntity, UserInputDTO, UserOutputDTO> {
 

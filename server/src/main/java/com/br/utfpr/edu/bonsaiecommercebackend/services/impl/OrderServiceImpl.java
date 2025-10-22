@@ -1,9 +1,11 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.services.impl;
 
+import com.br.utfpr.edu.bonsaiecommercebackend.entities.AddressEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.OrderEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.OrderItemsEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.ProductEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.UserEntity;
+import com.br.utfpr.edu.bonsaiecommercebackend.enums.OrderStatus;
 import com.br.utfpr.edu.bonsaiecommercebackend.exceptions.ResourceNotFoundException;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.OrderItemsModel;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.OrderModel;
@@ -11,6 +13,7 @@ import com.br.utfpr.edu.bonsaiecommercebackend.repositories.OrderRepository;
 import com.br.utfpr.edu.bonsaiecommercebackend.repositories.ProductRepository;
 import com.br.utfpr.edu.bonsaiecommercebackend.repositories.UserRepository;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.OrderService;
+import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.AddressMapper;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.OrderMapper;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
@@ -135,11 +138,54 @@ public class OrderServiceImpl extends GenericServiceImpl<OrderModel, OrderEntity
     private void calculateTotalPrice(OrderEntity order) {
         if (order.getOrderItems() == null || order.getOrderItems().isEmpty()) {
             order.setTotalPrice(BigDecimal.ZERO);
+            order.setSubtotal(BigDecimal.ZERO);
             return;
         }
 
-        BigDecimal totalPrice = order.getOrderItems().stream().filter(item -> item.getPrice() != null && item.getQuantity() != null).map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal subtotal = order.getOrderItems().stream()
+            .filter(item -> item.getPrice() != null && item.getQuantity() != null)
+            .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        order.setTotalPrice(totalPrice);
+        order.setSubtotal(subtotal);
+        
+        // Se shippingCost não foi definido, usar valor padrão
+        if (order.getShippingCost() == null) {
+            order.setShippingCost(BigDecimal.ZERO);
+        }
+        
+        order.calculateTotalPrice(); // subtotal + shippingCost
+    }
+
+    @Override
+    @Transactional
+    public OrderModel cancelOrder(UUID orderId, UUID userId) {
+        OrderEntity order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
+
+        // Verificar se o pedido pertence ao usuário
+        if (!order.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("Usuário não tem permissão para cancelar este pedido");
+        }
+
+        // Verificar se o pedido pode ser cancelado
+        if (order.getStatus() == OrderStatus.DELIVERED || order.getStatus() == OrderStatus.CANCELLED) {
+            throw new IllegalArgumentException("Pedido não pode ser cancelado (status: " + order.getStatus() + ")");
+        }
+
+        order.setStatus(OrderStatus.CANCELLED);
+        OrderEntity savedEntity = orderRepository.save(order);
+        return orderMapper.toModel(savedEntity);
+    }
+
+    @Override
+    @Transactional
+    public OrderModel updateStatus(UUID orderId, OrderStatus status) {
+        OrderEntity order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
+
+        order.setStatus(status);
+        OrderEntity savedEntity = orderRepository.save(order);
+        return orderMapper.toModel(savedEntity);
     }
 }

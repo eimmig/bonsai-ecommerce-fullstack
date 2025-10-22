@@ -15,11 +15,11 @@ import java.util.List;
 @Mapper(
     componentModel = "spring",
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-    unmappedTargetPolicy = ReportingPolicy.WARN,
-    uses = {UserMapper.class}
+    unmappedTargetPolicy = ReportingPolicy.WARN
 )
 public interface AddressMapper extends DomainMapper<AddressModel, AddressEntity, AddressInputDTO, AddressOutputDTO> {
 
+    @Mapping(target = "user", ignore = true)
     AddressEntity toEntity(AddressModel model);
     
     AddressModel toModel(AddressEntity entity);
@@ -30,10 +30,8 @@ public interface AddressMapper extends DomainMapper<AddressModel, AddressEntity,
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "updatedBy", ignore = true)
-    @Mapping(target = "user.id", source = "userId")
     AddressModel toModel(AddressInputDTO inputDTO);
     
-    @Mapping(target = "userId", source = "user.id")
     AddressOutputDTO toOutputDTO(AddressModel model);
     
     List<AddressOutputDTO> toOutputDTOList(List<AddressModel> models);

@@ -33,11 +33,13 @@ public interface OrderMapper extends DomainMapper<OrderModel, OrderEntity, Order
     @Mapping(target = "user", source = "userId", qualifiedByName = "mapUserIdToUserModel")
     @Mapping(target = "orderItems", source = "orderItems")
     @Mapping(target = "totalPrice", ignore = true)
+    @Mapping(target = "subtotal", ignore = true)
+    @Mapping(target = "shippingCost", ignore = true)
+    @Mapping(target = "status", ignore = true)
     OrderModel toModel(OrderInputDTO inputDTO);
 
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "orderItems", source = "orderItems")
-    @Mapping(target = "totalPrice", source = "totalPrice")
     OrderOutputDTO toOutputDTO(OrderModel model);
 
     List<OrderOutputDTO> toOutputDTOList(List<OrderModel> models);
