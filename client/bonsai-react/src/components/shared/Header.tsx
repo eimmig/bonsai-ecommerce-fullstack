@@ -42,6 +42,8 @@ const HeaderComponent = () => {
 
   const handleNavClick = useCallback(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsProductsOpen(false);
+    setIsUserMenuOpen(false);
   }, []);
 
   const handleContactClick = useCallback((e: React.MouseEvent) => {
