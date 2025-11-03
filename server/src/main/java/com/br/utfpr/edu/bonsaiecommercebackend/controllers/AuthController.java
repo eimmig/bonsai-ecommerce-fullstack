@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * Orquestra o fluxo de login e delega a lógica para AuthService.
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final AuthService authService;

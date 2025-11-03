@@ -1,11 +1,11 @@
 export const ENDPOINTS = {
   AUTH: {
     LOGIN: '/auth/login',
-    REGISTER: '/auth/register',
     LOGOUT: '/auth/logout',
   },
   USER: {
     PROFILE: 'user/profile',
+    CREATE: 'user'
   },
   PRODUCTS: {
     LIST: 'products',

@@ -9,7 +9,7 @@ export const authApi = {
   },
 
   register: async (data: RegisterRequest): Promise<AuthResponse> => {
-    const response = await apiClient.post<AuthResponse>(ENDPOINTS.AUTH.REGISTER, data);
+    const response = await apiClient.post<AuthResponse>(ENDPOINTS.USER.CREATE, data);
     return response.data;
   },
 
