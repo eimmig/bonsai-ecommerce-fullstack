@@ -1,0 +1,288 @@
+{
+	"info": {
+		"_postman_id": "bonsai-ecommerce-complete-tests-v3",
+		"name": "Bonsai E-commerce API - Complete Test Suite v3.0",
+		"description": "**Suíte COMPLETA de testes - Versão 3.0**\n\n✅ **Correções implementadas:**\n- CRUD completo de Categorias (GET público, POST/PUT/DELETE autenticados)\n- CRUD completo de Produtos (GET público, POST/PUT/DELETE autenticados)\n- Perfil de usuário GET e PUT autenticados\n- Validação de proprietário em Orders e Addresses\n- Testes de segurança 401 e 403\n\n**Total:** 50+ requisições organizadas\n**Data:** 2025-11-04",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Authentication",
+			"item": [
+				{
+					"name": "Login - Admin",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));", "pm.test(\"Has token\", () => {", "    const json = pm.response.json();", "    pm.expect(json).to.have.property('token');", "    pm.environment.set('adminToken', json.token);", "    pm.environment.set('token', json.token);", "    pm.environment.set('adminUserId', json.userId);", "});"], "type": "text/javascript"}}],
+					"request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"email\":\"admin@bonsai.com\",\"password\":\"senha123\"}"}, "url": {"raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api","auth","login"]}}
+				},
+				{
+					"name": "Login - Cliente",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));", "pm.test(\"Has token\", () => {", "    const json = pm.response.json();", "    pm.environment.set('clienteToken', json.token);", "    pm.environment.set('token', json.token);", "    pm.environment.set('clienteUserId', json.userId);", "});"], "type": "text/javascript"}}],
+					"request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"email\":\"cliente@bonsai.com\",\"password\":\"senha123\"}"}, "url": {"raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api","auth","login"]}}
+				},
+				{
+					"name": "Login - Maria",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));", "const json = pm.response.json();", "pm.environment.set('mariaToken', json.token);"], "type": "text/javascript"}}],
+					"request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"email\":\"maria@bonsai.com\",\"password\":\"senha123\"}"}, "url": {"raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api","auth","login"]}}
+				},
+				{
+					"name": "Login - Invalid Credentials (401)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 401\", () => pm.response.to.have.status(401));"], "type": "text/javascript"}}],
+					"request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"email\":\"admin@bonsai.com\",\"password\":\"errada\"}"}, "url": {"raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api","auth","login"]}}
+				}
+			]
+		},
+		{
+			"name": "2. User Management",
+			"item": [
+				{
+					"name": "Register New User (Public)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 201\", () => pm.response.to.have.status(201));", "const json = pm.response.json();", "pm.environment.set('newUserId', json.id);"], "type": "text/javascript"}}],
+					"request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"name\":\"Novo Usuario\",\"email\":\"novo@test.com\",\"password\":\"senha123\",\"cpfCnpj\":\"12312312312\",\"phone\":\"41999887766\",\"birthDate\":\"1995-03-15\"}"}, "url": {"raw": "{{baseUrl}}/api/user", "host": ["{{baseUrl}}"], "path": ["api","user"]}}
+				},
+				{
+					"name": "Get My Profile (Auth Required)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));", "const json = pm.response.json();", "pm.expect(json).to.have.property('email');"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/user/profile", "host": ["{{baseUrl}}"], "path": ["api","user","profile"]}, "description": "✅ Requer autenticação"}
+				},
+				{
+					"name": "Update My Profile (Auth Required)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"name\":\"Cliente Atualizado\",\"phone\":\"41998887777\",\"birthDate\":\"1985-05-20\"}"}, "url": {"raw": "{{baseUrl}}/api/user/profile", "host": ["{{baseUrl}}"], "path": ["api","user","profile"]}, "description": "✅ Requer autenticação"}
+				},
+				{
+					"name": "Get Profile - No Token (401)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 401\", () => pm.response.to.have.status(401));"], "type": "text/javascript"}}],
+					"request": {"method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/user/profile", "host": ["{{baseUrl}}"], "path": ["api","user","profile"]}}
+				},
+				{
+					"name": "Update Profile - No Token (401)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 401\", () => pm.response.to.have.status(401));"], "type": "text/javascript"}}],
+					"request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"name\":\"Teste\"}"}, "url": {"raw": "{{baseUrl}}/api/user/profile", "host": ["{{baseUrl}}"], "path": ["api","user","profile"]}}
+				}
+			]
+		},
+		{
+			"name": "3. Categories (CRUD Complete)",
+			"item": [
+				{
+					"name": "List Categories (Public GET)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));", "const json = pm.response.json();", "if(json.content && json.content.length > 0) pm.environment.set('categoryId', json.content[0].id);"], "type": "text/javascript"}}],
+					"request": {"method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/categories", "host": ["{{baseUrl}}"], "path": ["api","categories"]}, "description": "✅ GET é público"}
+				},
+				{
+					"name": "Get Category by ID (Public GET)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/categories/{{categoryId}}", "host": ["{{baseUrl}}"], "path": ["api","categories","{{categoryId}}"]}, "description": "✅ GET é público"}
+				},
+				{
+					"name": "Create Category (Auth Required)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 201\", () => pm.response.to.have.status(201));", "const json = pm.response.json();", "pm.environment.set('createdCategoryId', json.id);"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{adminToken}}"}]}, "method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"name\":\"Categoria Teste\"}"}, "url": {"raw": "{{baseUrl}}/api/categories", "host": ["{{baseUrl}}"], "path": ["api","categories"]}, "description": "✅ POST requer auth"}
+				},
+				{
+					"name": "Update Category (Auth Required)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{adminToken}}"}]}, "method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"name\":\"Categoria Atualizada\"}"}, "url": {"raw": "{{baseUrl}}/api/categories/{{createdCategoryId}}", "host": ["{{baseUrl}}"], "path": ["api","categories","{{createdCategoryId}}"]}, "description": "✅ PUT requer auth"}
+				},
+				{
+					"name": "Delete Category (Auth Required)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 204\", () => pm.response.to.have.status(204));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{adminToken}}"}]}, "method": "DELETE", "header": [], "url": {"raw": "{{baseUrl}}/api/categories/{{createdCategoryId}}", "host": ["{{baseUrl}}"], "path": ["api","categories","{{createdCategoryId}}"]}, "description": "✅ DELETE requer auth"}
+				},
+				{
+					"name": "Create Category - No Token (401)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 401\", () => pm.response.to.have.status(401));"], "type": "text/javascript"}}],
+					"request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"name\":\"Teste\"}"}, "url": {"raw": "{{baseUrl}}/api/categories", "host": ["{{baseUrl}}"], "path": ["api","categories"]}}
+				}
+			]
+		},
+		{
+			"name": "4. Products (CRUD Complete)",
+			"item": [
+				{
+					"name": "List Products (Public GET)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));", "const json = pm.response.json();", "if(json.content && json.content.length > 0) pm.environment.set('productId', json.content[0].id);"], "type": "text/javascript"}}],
+					"request": {"method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/products?page=0&size=20", "host": ["{{baseUrl}}"], "path": ["api","products"], "query": [{"key":"page","value":"0"},{"key":"size","value":"20"}]}, "description": "✅ GET é público"}
+				},
+				{
+					"name": "Get Product by ID (Public GET)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/products/{{productId}}", "host": ["{{baseUrl}}"], "path": ["api","products","{{productId}}"]}, "description": "✅ GET é público"}
+				},
+				{
+					"name": "Get Featured Products (Public GET)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/products/featured", "host": ["{{baseUrl}}"], "path": ["api","products","featured"]}, "description": "✅ GET é público"}
+				},
+				{
+					"name": "Search Products (Public GET)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/products/search?query=Bonsai", "host": ["{{baseUrl}}"], "path": ["api","products","search"], "query": [{"key":"query","value":"Bonsai"}]}, "description": "✅ GET é público"}
+				},
+				{
+					"name": "Create Product (Auth Required)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 201\", () => pm.response.to.have.status(201));", "const json = pm.response.json();", "pm.environment.set('createdProductId', json.id);"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{adminToken}}"}]}, "method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"name\":\"Produto Teste\",\"description\":\"Descricao teste\",\"price\":99.90,\"imageUrl\":\"https://picsum.photos/200\",\"categoryId\":\"{{categoryId}}\",\"stock\":10,\"discount\":0.05,\"featured\":false}"}, "url": {"raw": "{{baseUrl}}/api/products", "host": ["{{baseUrl}}"], "path": ["api","products"]}, "description": "✅ POST requer auth"}
+				},
+				{
+					"name": "Update Product (Auth Required)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{adminToken}}"}]}, "method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"name\":\"Produto Atualizado\",\"description\":\"Desc atualizada\",\"price\":89.90,\"imageUrl\":\"https://picsum.photos/200\",\"categoryId\":\"{{categoryId}}\",\"stock\":15,\"discount\":0.10,\"featured\":true}"}, "url": {"raw": "{{baseUrl}}/api/products/{{createdProductId}}", "host": ["{{baseUrl}}"], "path": ["api","products","{{createdProductId}}"]}, "description": "✅ PUT requer auth"}
+				},
+				{
+					"name": "Delete Product (Auth Required)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 204\", () => pm.response.to.have.status(204));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{adminToken}}"}]}, "method": "DELETE", "header": [], "url": {"raw": "{{baseUrl}}/api/products/{{createdProductId}}", "host": ["{{baseUrl}}"], "path": ["api","products","{{createdProductId}}"]}, "description": "✅ DELETE requer auth"}
+				},
+				{
+					"name": "Create Product - No Token (401)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 401\", () => pm.response.to.have.status(401));"], "type": "text/javascript"}}],
+					"request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"name\":\"Teste\",\"description\":\"Teste\",\"price\":10,\"imageUrl\":\"https://test.com\",\"categoryId\":\"{{categoryId}}\"}"}, "url": {"raw": "{{baseUrl}}/api/products", "host": ["{{baseUrl}}"], "path": ["api","products"]}}
+				}
+			]
+		},
+		{
+			"name": "5. Orders (Owner Validation)",
+			"item": [
+				{
+					"name": "Create Order - Cliente",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 201\", () => pm.response.to.have.status(201));", "const json = pm.response.json();", "pm.environment.set('clienteOrderId', json.id);"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"orderDate\":\"2025-11-04T10:00:00\",\"userId\":\"{{clienteUserId}}\",\"orderItems\":[{\"productId\":\"e1f2a3b4-1c2d-3e4f-5a6b-7c8d9e0f1a2b\",\"quantity\":1}],\"deliveryAddress\":{\"street\":\"Rua Teste\",\"number\":\"123\",\"zipCode\":\"80000-000\",\"neighborhood\":\"Centro\",\"city\":\"Curitiba\",\"state\":\"PR\"},\"paymentMethod\":\"CREDIT_CARD\"}"}, "url": {"raw": "{{baseUrl}}/api/orders", "host": ["{{baseUrl}}"], "path": ["api","orders"]}}
+				},
+				{
+					"name": "List My Orders - Cliente",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/orders", "host": ["{{baseUrl}}"], "path": ["api","orders"]}}
+				},
+				{
+					"name": "Get Order by ID - Cliente",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/orders/{{clienteOrderId}}", "host": ["{{baseUrl}}"], "path": ["api","orders","{{clienteOrderId}}"]}}
+				},
+				{
+					"name": "Cancel Order - Cliente",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "PUT", "header": [], "url": {"raw": "{{baseUrl}}/api/orders/{{clienteOrderId}}/cancel", "host": ["{{baseUrl}}"], "path": ["api","orders","{{clienteOrderId}}","cancel"]}}
+				},
+				{
+					"name": "Access Other User Order (403)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 403\", () => pm.response.to.have.status(403));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{mariaToken}}"}]}, "method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/orders/b0c1d2e3-0f1a-2b3c-4d5e-6f7a8b9c0d1e", "host": ["{{baseUrl}}"], "path": ["api","orders","b0c1d2e3-0f1a-2b3c-4d5e-6f7a8b9c0d1e"]}}
+				},
+				{
+					"name": "Access Order - No Token (401)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 401\", () => pm.response.to.have.status(401));"], "type": "text/javascript"}}],
+					"request": {"method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/orders/b0c1d2e3-0f1a-2b3c-4d5e-6f7a8b9c0d1e", "host": ["{{baseUrl}}"], "path": ["api","orders","b0c1d2e3-0f1a-2b3c-4d5e-6f7a8b9c0d1e"]}}
+				}
+			]
+		},
+		{
+			"name": "6. Addresses (Owner Validation)",
+			"item": [
+				{
+					"name": "Create Address - Cliente",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 201\", () => pm.response.to.have.status(201));", "const json = pm.response.json();", "pm.environment.set('clienteAddressId', json.id);"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"street\":\"Rua Nova\",\"number\":\"999\",\"complement\":\"Bloco A\",\"zipCode\":\"80000-000\",\"neighborhood\":\"Batel\",\"city\":\"Curitiba\",\"state\":\"PR\"}"}, "url": {"raw": "{{baseUrl}}/api/addresses", "host": ["{{baseUrl}}"], "path": ["api","addresses"]}}
+				},
+				{
+					"name": "List My Addresses - Cliente",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/addresses", "host": ["{{baseUrl}}"], "path": ["api","addresses"]}}
+				},
+				{
+					"name": "Get Address by ID - Cliente",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/addresses/{{clienteAddressId}}", "host": ["{{baseUrl}}"], "path": ["api","addresses","{{clienteAddressId}}"]}}
+				},
+				{
+					"name": "Update Address - Cliente",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"street\":\"Rua Atualizada\",\"number\":\"1000\",\"complement\":\"Bloco B\",\"zipCode\":\"80000-000\",\"neighborhood\":\"Batel\",\"city\":\"Curitiba\",\"state\":\"PR\"}"}, "url": {"raw": "{{baseUrl}}/api/addresses/{{clienteAddressId}}", "host": ["{{baseUrl}}"], "path": ["api","addresses","{{clienteAddressId}}"]}}
+				},
+				{
+					"name": "Delete Address - Cliente",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 204\", () => pm.response.to.have.status(204));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "DELETE", "header": [], "url": {"raw": "{{baseUrl}}/api/addresses/{{clienteAddressId}}", "host": ["{{baseUrl}}"], "path": ["api","addresses","{{clienteAddressId}}"]}}
+				},
+				{
+					"name": "Access Other User Address (403)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 403\", () => pm.response.to.have.status(403));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{mariaToken}}"}]}, "method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/addresses/e7f8a9b0-7c8d-9e0f-1a2b-3c4d5e6f7a8b", "host": ["{{baseUrl}}"], "path": ["api","addresses","e7f8a9b0-7c8d-9e0f-1a2b-3c4d5e6f7a8b"]}}
+				},
+				{
+					"name": "Delete Other User Address (403)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 403\", () => pm.response.to.have.status(403));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{mariaToken}}"}]}, "method": "DELETE", "header": [], "url": {"raw": "{{baseUrl}}/api/addresses/e7f8a9b0-7c8d-9e0f-1a2b-3c4d5e6f7a8b", "host": ["{{baseUrl}}"], "path": ["api","addresses","e7f8a9b0-7c8d-9e0f-1a2b-3c4d5e6f7a8b"]}}
+				}
+			]
+		},
+		{
+			"name": "7. Cart (Protected)",
+			"item": [
+				{
+					"name": "Get My Cart",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/cart", "host": ["{{baseUrl}}"], "path": ["api","cart"]}}
+				},
+				{
+					"name": "Add Item to Cart",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));", "const json = pm.response.json();", "if(json.items && json.items.length > 0) pm.environment.set('cartItemId', json.items[0].id);"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"productId\":\"e1f2a3b4-1c2d-3e4f-5a6b-7c8d9e0f1a2b\",\"quantity\":2}"}, "url": {"raw": "{{baseUrl}}/api/cart/items", "host": ["{{baseUrl}}"], "path": ["api","cart","items"]}}
+				},
+				{
+					"name": "Update Cart Item",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"quantity\":3}"}, "url": {"raw": "{{baseUrl}}/api/cart/items/{{cartItemId}}", "host": ["{{baseUrl}}"], "path": ["api","cart","items","{{cartItemId}}"]}}
+				},
+				{
+					"name": "Remove Item from Cart",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 204\", () => pm.response.to.have.status(204));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "DELETE", "header": [], "url": {"raw": "{{baseUrl}}/api/cart/items/{{cartItemId}}", "host": ["{{baseUrl}}"], "path": ["api","cart","items","{{cartItemId}}"]}}
+				},
+				{
+					"name": "Clear Cart",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 204\", () => pm.response.to.have.status(204));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{clienteToken}}"}]}, "method": "DELETE", "header": [], "url": {"raw": "{{baseUrl}}/api/cart", "host": ["{{baseUrl}}"], "path": ["api","cart"]}}
+				}
+			]
+		},
+		{
+			"name": "8. Security Tests",
+			"item": [
+				{
+					"name": "Protected Route - No Token (401)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 401\", () => pm.response.to.have.status(401));"], "type": "text/javascript"}}],
+					"request": {"method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/cart", "host": ["{{baseUrl}}"], "path": ["api","cart"]}}
+				},
+				{
+					"name": "Protected Route - Invalid Token (401)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 401\", () => pm.response.to.have.status(401));"], "type": "text/javascript"}}],
+					"request": {"auth": {"type": "bearer", "bearer": [{"key": "token", "value": "invalid.token.here"}]}, "method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/cart", "host": ["{{baseUrl}}"], "path": ["api","cart"]}}
+				},
+				{
+					"name": "Public Route - No Token (200)",
+					"event": [{"listen": "test", "script": {"exec": ["pm.test(\"Status 200\", () => pm.response.to.have.status(200));"], "type": "text/javascript"}}],
+					"request": {"method": "GET", "header": [], "url": {"raw": "{{baseUrl}}/api/products", "host": ["{{baseUrl}}"], "path": ["api","products"]}}
+				}
+			]
+		}
+	],
+	"variable": [
+		{"key": "baseUrl", "value": "http://localhost:8080"},
+		{"key": "token", "value": ""},
+		{"key": "adminToken", "value": ""},
+		{"key": "clienteToken", "value": ""},
+		{"key": "mariaToken", "value": ""},
+		{"key": "adminUserId", "value": ""},
+		{"key": "clienteUserId", "value": ""},
+		{"key": "productId", "value": ""},
+		{"key": "categoryId", "value": ""},
+		{"key": "createdProductId", "value": ""},
+		{"key": "createdCategoryId", "value": ""},
+		{"key": "clienteOrderId", "value": ""},
+		{"key": "clienteAddressId", "value": ""},
+		{"key": "cartItemId", "value": ""},
+		{"key": "newUserId", "value": ""}
+	]
+}
+

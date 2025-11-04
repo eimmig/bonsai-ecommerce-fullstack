@@ -1,28 +1,45 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.services;
 
-import com.br.utfpr.edu.bonsaiecommercebackend.enums.OrderStatus;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.OrderModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;
 
 /**
- * Serviço de pedidos
+ * Service para operações de pedidos
+ * Todos os métodos buscam userId via AuthenticationUtil.getCurrentUserId()
  */
-public interface OrderService extends GenericService<OrderModel> {
-    
+public interface OrderService {
+
     /**
-     * Cancela um pedido
-     * @param orderId ID do pedido
-     * @param userId ID do usuário (para validação de propriedade)
-     * @return pedido cancelado
+     * Cria pedido para o usuário autenticado
+     * @param orderModel Dados do pedido
+     * @return Pedido criado
      */
-    OrderModel cancelOrder(UUID orderId, UUID userId);
-    
+    OrderModel createOrder(OrderModel orderModel);
+
     /**
-     * Atualiza o status de um pedido (apenas admin)
+     * Busca pedido validando propriedade
      * @param orderId ID do pedido
-     * @param status novo status
-     * @return pedido atualizado
+     * @return Pedido encontrado
+     * @throws com.br.utfpr.edu.bonsaiecommercebackend.exceptions.UnauthorizedAccessException se não for do usuário
      */
-    OrderModel updateStatus(UUID orderId, OrderStatus status);
+    OrderModel getOrder(UUID orderId);
+
+    /**
+     * Lista pedidos do usuário autenticado
+     * @param pageable Paginação
+     * @return Page de pedidos
+     */
+    Page<OrderModel> getAllOrders(Pageable pageable);
+
+    /**
+     * Cancela pedido do usuário autenticado
+     * @param orderId ID do pedido
+     * @return Pedido cancelado
+     * @throws com.br.utfpr.edu.bonsaiecommercebackend.exceptions.UnauthorizedAccessException se não for do usuário
+     */
+    OrderModel cancelOrder(UUID orderId);
 }
+

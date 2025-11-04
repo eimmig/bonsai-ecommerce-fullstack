@@ -46,8 +46,11 @@ public class SecurityConfig {
                 .cors(cors -> cors.configure(http)) 
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
+                        // Público - Autenticação e Registro
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/user").permitAll()
+                        // Público - Produtos e Categorias (GET apenas)
                         .requestMatchers(HttpMethod.GET, "/api/products/**", "/api/categories/**").permitAll()
+                        // Tudo mais requer autenticação
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);

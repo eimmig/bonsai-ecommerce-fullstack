@@ -43,6 +43,13 @@ public class GlobalExceptionHandler {
                 .body(new ErrorOutputDTO(ex.getMessage(), null));
     }
 
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    public ResponseEntity<ErrorOutputDTO> handleUnauthorizedAccessException(UnauthorizedAccessException ex) {
+        logger.warn("Acesso não autorizado: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ErrorOutputDTO(ex.getMessage(), null));
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorOutputDTO> handleResourceNotFoundException(ResourceNotFoundException ex) {
         logger.warn("Recurso não encontrado: {}", ex.getMessage());
