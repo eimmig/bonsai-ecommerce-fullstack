@@ -1,7 +1,9 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.controllers;
 
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.user.UpdateUserProfileDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.user.UserInputDTO;
 import com.br.utfpr.edu.bonsaiecommercebackend.dtos.user.UserOutputDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.entities.UserEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.UserModel;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.UserService;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.AuthenticationUtil;
@@ -19,11 +21,16 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/api/user")
-@RequiredArgsConstructor
-public class UserController {
+public class UserController extends GenericController<UserModel, UserEntity, UserInputDTO, UserOutputDTO> {
 
     private final UserService userService;
     private final UserMapper userMapper;
+
+    public UserController(UserService service, UserMapper mapper) {
+        super(service, mapper);
+        this.userService = service;
+        this.userMapper = mapper;
+    }
 
     /**
      * Atualiza o perfil do usuário autenticado
