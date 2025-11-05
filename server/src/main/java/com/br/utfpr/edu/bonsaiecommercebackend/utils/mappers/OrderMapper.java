@@ -30,7 +30,6 @@ public interface OrderMapper extends DomainMapper<OrderModel, OrderEntity, Order
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "updatedBy", ignore = true)
-    @Mapping(target = "user", source = "userId", qualifiedByName = "mapUserIdToUserModel")
     @Mapping(target = "orderItems", source = "orderItems")
     @Mapping(target = "totalPrice", ignore = true)
     @Mapping(target = "subtotal", ignore = true)

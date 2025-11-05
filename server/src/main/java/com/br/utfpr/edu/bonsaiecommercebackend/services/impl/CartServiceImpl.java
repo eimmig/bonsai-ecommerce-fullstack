@@ -34,8 +34,9 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartModel getCart(UUID userId) {
-        Optional<CartEntity> cartOpt = cartRepository.findByUserId(userId);
-        
+        // Usar query otimizada com JOIN FETCH para evitar N+1
+        Optional<CartEntity> cartOpt = cartRepository.findByUserIdWithItemsAndProducts(userId);
+
         if (cartOpt.isPresent()) {
             return cartMapper.toModel(cartOpt.get());
         }
@@ -152,6 +153,11 @@ public class CartServiceImpl implements CartService {
             throw new RuntimeException("Item não pertence a este carrinho");
         }
 
+        // Remover da coleção do carrinho ANTES de deletar (evita ObjectDeletedException)
+        cart.getItems().remove(item);
+        item.setCart(null);
+
+        // Deletar o item
         cartItemRepository.delete(item);
 
         // Recalcular total do carrinho

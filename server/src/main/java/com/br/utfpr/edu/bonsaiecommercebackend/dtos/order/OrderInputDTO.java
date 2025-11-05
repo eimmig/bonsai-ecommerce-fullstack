@@ -20,9 +20,6 @@ public record OrderInputDTO(
         @NotNull(message = "Data do pedido é obrigatória")
         LocalDateTime orderDate,
 
-        @NotNull(message = "ID do usuário é obrigatório")
-        UUID userId,
-
         @NotEmpty(message = "O pedido deve ter pelo menos um item")
         @Valid
         List<OrderItemsInputDTO> orderItems,

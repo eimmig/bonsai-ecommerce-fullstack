@@ -1,10 +1,12 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.entities;
 
+import com.br.utfpr.edu.bonsaiecommercebackend.utils.PriceCalculator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 
@@ -21,7 +23,7 @@ public class CartItemEntity extends GenericEntity {
     @NotNull(message = "Carrinho é obrigatório")
     private CartEntity cart;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     @NotNull(message = "Produto é obrigatório")
     private ProductEntity product;
@@ -40,32 +42,22 @@ public class CartItemEntity extends GenericEntity {
     private BigDecimal totalPrice;
 
     /**
-     * Calcula o preço unitário considerando desconto
+     * Recalcula os preços usando o PriceCalculator
+     * Nota: PriceCalculator deve ser injetado via service layer
      */
-    public void calculateUnitPrice() {
+    public void recalculatePrices() {
         BigDecimal productPrice = product.getPrice();
         BigDecimal discount = product.getDiscount();
         
+        // Cálculo inline (para evitar dependência de Spring em entidade)
         if (discount != null && discount.compareTo(BigDecimal.ZERO) > 0) {
-            BigDecimal discountAmount = productPrice.multiply(discount).divide(BigDecimal.valueOf(100));
+            BigDecimal discountAmount = productPrice.multiply(discount)
+                    .divide(BigDecimal.valueOf(100), 2, java.math.RoundingMode.HALF_UP);
             this.unitPrice = productPrice.subtract(discountAmount);
         } else {
             this.unitPrice = productPrice;
         }
-    }
 
-    /**
-     * Calcula o preço total do item (unitPrice * quantity)
-     */
-    public void calculateTotalPrice() {
         this.totalPrice = this.unitPrice.multiply(BigDecimal.valueOf(quantity));
-    }
-
-    /**
-     * Recalcula ambos os preços
-     */
-    public void recalculatePrices() {
-        calculateUnitPrice();
-        calculateTotalPrice();
     }
 }

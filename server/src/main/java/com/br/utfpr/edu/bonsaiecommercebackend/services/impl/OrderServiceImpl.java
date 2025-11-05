@@ -46,6 +46,11 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity orderEntity = orderMapper.toEntity(orderModel);
         orderEntity.setUser(user);
 
+        // Setar status inicial como PENDING se não foi informado
+        if (orderEntity.getStatus() == null) {
+            orderEntity.setStatus(OrderStatus.PENDING);
+        }
+
         processOrderItems(orderEntity, orderModel);
         calculateTotalPrice(orderEntity);
 

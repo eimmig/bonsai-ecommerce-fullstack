@@ -123,6 +123,23 @@ public class GlobalExceptionHandler {
                        Collections.singletonList(ex.getMessage())));
     }
 
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    public ResponseEntity<ErrorOutputDTO> handleNoResourceFoundException(
+            org.springframework.web.servlet.resource.NoResourceFoundException ex) {
+        logger.warn("Recurso não encontrado: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorOutputDTO("Endpoint não encontrado",
+                       Collections.singletonList("O recurso solicitado não existe: " + ex.getResourcePath())));
+    }
+
+    @ExceptionHandler(StackOverflowError.class)
+    public ResponseEntity<ErrorOutputDTO> handleStackOverflowError(StackOverflowError ex) {
+        logger.error("StackOverflowError detectado - possível referência circular", ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorOutputDTO("Erro de processamento",
+                       Collections.singletonList("Erro interno: referência circular ou recursão infinita detectada")));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorOutputDTO> handleGenericException(Exception ex) {
         logger.error("Erro interno não tratado", ex);
