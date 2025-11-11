@@ -19,6 +19,8 @@ import com.br.utfpr.edu.bonsaiecommercebackend.services.CartService;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.CartMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -27,6 +29,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
+
+    private static final Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
 
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
@@ -58,8 +62,10 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartModel addItem(UUID userId, AddToCartInputDTO dto) {
+        logger.info("Adicionando item ao carrinho. User: {}, Produto: {}, Quantidade: {}", userId, dto.productId(), dto.quantity());
         CartEntity cart = cartRepository.findByUserId(userId)
                 .orElseGet(() -> {
+                    logger.info("Criando novo carrinho para usuário: {}", userId);
                     UserEntity user = userRepository.findById(userId)
                             .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
                     CartEntity newCart = new CartEntity();
@@ -72,6 +78,7 @@ public class CartServiceImpl implements CartService {
 
         // Validar estoque
         if (product.getStock() != null && product.getStock() < dto.quantity()) {
+            logger.warn("Estoque insuficiente. Produto: {}, Estoque: {}, Solicitado: {}", dto.productId(), product.getStock(), dto.quantity());
             throw new InsufficientStockException(product.getStock());
         }
 

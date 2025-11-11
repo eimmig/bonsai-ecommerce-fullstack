@@ -14,6 +14,8 @@ import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.AddressMapper;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.UserMapper;
 
 import lombok.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,8 @@ import java.util.stream.Collectors;
 public class UserServiceImpl extends GenericServiceImpl<UserModel, UserEntity>
         implements UserService {
     
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final AddressMapper addressMapper;
@@ -148,6 +152,8 @@ public class UserServiceImpl extends GenericServiceImpl<UserModel, UserEntity>
         }
 
         // Salvar usando método update padrão
-        return super.update(userId, existingUser);
+        UserModel updatedUser = super.update(userId, existingUser);
+        logger.info("Perfil do usuário atualizado com sucesso. ID: {}", userId);
+        return updatedUser;
     }
 }

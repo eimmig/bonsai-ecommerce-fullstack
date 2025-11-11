@@ -58,6 +58,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/user").permitAll()
                         // Público - Produtos e Categorias (GET apenas)
                         .requestMatchers(HttpMethod.GET, "/api/products/**", "/api/categories/**").permitAll()
+                        // Público - Swagger/OpenAPI
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         // Tudo mais requer autenticação
                         .anyRequest().authenticated()
                 )
@@ -95,7 +97,7 @@ public class SecurityConfig {
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
             } catch (Exception e) {
-                LOGGER.log(Level.WARNING, "Falha ao processar token JWT", e);
+                logger.warn("Falha ao processar token JWT", e);
             }
         }
     }

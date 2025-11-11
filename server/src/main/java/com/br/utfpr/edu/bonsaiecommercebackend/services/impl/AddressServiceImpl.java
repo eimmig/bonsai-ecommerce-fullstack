@@ -1,5 +1,7 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.services.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.AddressEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.UserEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.exceptions.ResourceNotFoundException;
@@ -21,6 +23,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class AddressServiceImpl implements AddressService {
+
+    private static final Logger logger = LoggerFactory.getLogger(AddressServiceImpl.class);
 
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;

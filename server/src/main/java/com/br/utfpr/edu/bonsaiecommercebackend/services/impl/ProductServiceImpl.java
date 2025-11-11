@@ -6,6 +6,8 @@ import com.br.utfpr.edu.bonsaiecommercebackend.repositories.ProductRepository;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.ProductService;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.ProductMapper;
 import jakarta.persistence.criteria.Predicate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,6 +21,8 @@ import java.util.List;
 @Service
 public class ProductServiceImpl extends GenericServiceImpl<ProductModel, ProductEntity>
         implements ProductService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
@@ -44,6 +48,7 @@ public class ProductServiceImpl extends GenericServiceImpl<ProductModel, Product
     @Override
     public Page<ProductModel> search(String query, BigDecimal minPrice, BigDecimal maxPrice,
                                      String category, Boolean featured, Pageable pageable) {
+        logger.debug("Buscando produtos com filtros - query: {}, categoria: {}, featured: {}", query, category, featured);
         Specification<ProductEntity> spec = (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 

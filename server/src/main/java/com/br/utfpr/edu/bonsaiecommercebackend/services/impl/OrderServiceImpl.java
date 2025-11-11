@@ -16,6 +16,8 @@ import com.br.utfpr.edu.bonsaiecommercebackend.services.OrderService;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.AuthenticationUtil;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.OrderMapper;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
@@ -88,22 +92,26 @@ public class OrderServiceImpl implements OrderService {
     public OrderModel cancelOrder(UUID orderId) {
         // Buscar userId do usuário autenticado
         UUID userId = AuthenticationUtil.getCurrentUserId();
+        logger.info("Cancelando pedido: {} para usuário: {}", orderId, userId);
 
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
 
         // Validar propriedade
         if (!order.getUser().getId().equals(userId)) {
+            logger.warn("Tentativa não autorizada de cancelar pedido. User: {}, Order: {}", userId, orderId);
             throw new UnauthorizedAccessException("Usuário não tem permissão para cancelar este pedido");
         }
 
         // Validar se o pedido pode ser cancelado
         if (order.getStatus() == OrderStatus.DELIVERED || order.getStatus() == OrderStatus.CANCELLED) {
+            logger.warn("Tentativa de cancelar pedido com status inválido: {}", order.getStatus());
             throw new IllegalArgumentException("Pedido não pode ser cancelado (status: " + order.getStatus() + ")");
         }
 
         order.setStatus(OrderStatus.CANCELLED);
         OrderEntity savedEntity = orderRepository.save(order);
+        logger.info("Pedido cancelado com sucesso. ID: {}", orderId);
         return orderMapper.toModel(savedEntity);
     }
 
