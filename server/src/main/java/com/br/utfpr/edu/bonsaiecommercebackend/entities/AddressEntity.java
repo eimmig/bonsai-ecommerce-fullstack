@@ -5,21 +5,24 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Entidade JPA que representa um endereço.
+ * Pode ser usado como endereço de usuário ou endereço de entrega de pedidos.
+ */
 @Entity
 @Table(name = "addresses")
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "user")
 public class AddressEntity extends GenericEntity {
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    @NotNull(message = "Usuário é obrigatório")
-    private UserEntity user;
 
     @Column(name = "street", nullable = false)
     @NotBlank(message = "Rua é obrigatória")
     @Size(max = 255, message = "Rua não pode ter mais de 255 caracteres")
     private String street;
+
+    @Column(name = "number")
+    @Size(max = 20, message = "Número não pode ter mais de 20 caracteres")
+    private String number;
 
     @Column(name = "complement")
     @Size(max = 255, message = "Complemento não pode ter mais de 255 caracteres")
@@ -46,7 +49,7 @@ public class AddressEntity extends GenericEntity {
     @Pattern(regexp = "[A-Z]{2}", message = "Estado deve conter apenas letras maiúsculas")
     private String state;
 
-    @Column(name = "number")
-    @Size(max = 20, message = "Número não pode ter mais de 20 caracteres")
-    private String number;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 }

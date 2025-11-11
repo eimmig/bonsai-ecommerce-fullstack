@@ -10,14 +10,13 @@ import java.util.UUID;
  */
 public record AddressOutputDTO(
         UUID id,
-        UUID userId,
         String street,
+        String number,
         String complement,
         String zipCode,
         String neighborhood,
         String city,
         String state,
-        String number,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

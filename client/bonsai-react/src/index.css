@@ -1,0 +1,151 @@
+/* Variáveis globais de cores - Bonsai Brasil */
+:root {
+  /* Cores principais */
+  --color-primary: #006d3b;
+  --color-white: #fff;
+  --color-title: #4D933E;
+  --color-text: #081B02;
+  --color-button: #4D933E;
+  --color-button-hover: #44593A;
+  
+  /* Bordas e sombras */
+  --color-border-light: #eee;
+  --color-border: #ddd;
+  --color-shadow: rgba(0, 0, 0, 0.1);
+  --color-shadow-light: rgba(0, 0, 0, 0.05);
+  
+  /* Backgrounds */
+  --color-background-light: #f8f9fa;
+  --backgroud-color-gray: rgba(255, 255, 255, 0.8);
+  --color-card-bg: #f8f8f8;
+  --color-card-bg-alt: #f9f9f9;
+  
+  /* Estados */
+  --color-focus: #44593A;
+  --color-error: #dc3545;
+  --color-success: #4CAF50;
+  --color-discount: #e74c3c;
+  
+  /* Footer */
+  --color-footer: #44593A;
+  
+  /* Tons de cinza */
+  --color-light-gray: #f5f5f5;
+  --color-dark-gray: #666666;
+  --color-text-dark: #444444;
+  --color-text-medium: #666;
+  --color-placeholder: #aaa;
+  
+  /* Botões alternativos */
+  --color-btn-green: #557245;
+  --color-btn-green-hover: #6a8c5a;
+  --color-btn-blue: #4081bc;
+  --color-btn-blue-hover: #2c5f8c;
+  
+  /* Bordas especiais */
+  --color-border-green: #006d3b;
+  --color-border-white-translucent: rgba(255, 255, 255, 0.1);
+
+  /* Tipografia */
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--color-text);
+  background-color: var(--color-white);
+
+  /* Renderização de fontes */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: var(--color-text);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+#main {
+  flex: 1 0 auto;
+  margin-top: 80px;
+}
+
+#main:has(.auth-container) {
+  margin-top: 0;
+}
+
+@media (max-width: 991.98px) {
+  #main {
+    margin-top: 110px;
+  }
+  
+  #main:has(.auth-container) {
+    margin-top: 0;
+  }
+}
+
+/* Utility Classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}

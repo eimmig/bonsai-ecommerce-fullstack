@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * Orquestra o fluxo de login e delega a lógica para AuthService.
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final AuthService authService;
@@ -27,17 +27,11 @@ public class AuthController {
     /**
      * Realiza o login do usuário.
      * @param request DTO contendo email e senha.
-     * @return Token JWT em caso de sucesso ou erro padronizado em caso de falha.
+     * @return Token JWT em caso de sucesso ou erro padronizado via GlobalExceptionHandler em caso de falha.
      */
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody @Valid AuthRequestDTO request) {
-        try {
-            AuthResponseDTO response = authService.authenticate(request);
-            return ResponseEntity.ok(response);
-        } catch (AuthenticationException ex) {
-            logger.warn("Authentication failed: {}", ex.getMessage());
-            return ResponseEntity.status(401)
-                    .body(null);
-        }
+        AuthResponseDTO response = authService.authenticate(request);
+        return ResponseEntity.ok(response);
     }
 }

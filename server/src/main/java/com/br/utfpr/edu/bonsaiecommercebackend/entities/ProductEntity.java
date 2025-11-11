@@ -38,4 +38,19 @@ public class ProductEntity extends GenericEntity {
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
     @NotNull(message = "Categoria é obrigatória")
     private CategoryEntity category;
+
+    @Column(name = "discount")
+    @DecimalMin(value = "0.0", message = "Desconto não pode ser negativo")
+    @DecimalMax(value = "100.0", message = "Desconto não pode ser maior que 100%")
+    @Digits(integer = 3, fraction = 2, message = "Desconto deve ter no máximo 3 dígitos inteiros e 2 decimais")
+    private BigDecimal discount = BigDecimal.ZERO;
+
+    @Column(name = "stock", nullable = false)
+    @NotNull(message = "Estoque é obrigatório")
+    @Min(value = 0, message = "Estoque não pode ser negativo")
+    private Integer stock = 0;
+
+    @Column(name = "featured", nullable = false)
+    @NotNull(message = "Featured é obrigatório")
+    private Boolean featured = false;
 }

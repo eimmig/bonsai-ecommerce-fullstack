@@ -43,6 +43,13 @@ public class GlobalExceptionHandler {
                 .body(new ErrorOutputDTO(ex.getMessage(), null));
     }
 
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    public ResponseEntity<ErrorOutputDTO> handleUnauthorizedAccessException(UnauthorizedAccessException ex) {
+        logger.warn("Acesso não autorizado: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ErrorOutputDTO(ex.getMessage(), null));
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorOutputDTO> handleResourceNotFoundException(ResourceNotFoundException ex) {
         logger.warn("Recurso não encontrado: {}", ex.getMessage());
@@ -66,6 +73,14 @@ public class GlobalExceptionHandler {
                 .body(new ErrorOutputDTO(ex.getMessage(), 
                        Collections.singletonList(String.format("%s com %s '%s' já existe", 
                                                 ex.getResourceName(), ex.getFieldName(), ex.getFieldValue()))));
+    }
+
+    @ExceptionHandler(InsufficientStockException.class)
+    public ResponseEntity<ErrorOutputDTO> handleInsufficientStockException(InsufficientStockException ex) {
+        logger.warn("Estoque insuficiente: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorOutputDTO("Estoque insuficiente",
+                       Collections.singletonList(ex.getMessage())));
     }
 
     @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
@@ -114,6 +129,23 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ErrorOutputDTO("Registro não encontrado", 
                        Collections.singletonList(ex.getMessage())));
+    }
+
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    public ResponseEntity<ErrorOutputDTO> handleNoResourceFoundException(
+            org.springframework.web.servlet.resource.NoResourceFoundException ex) {
+        logger.warn("Recurso não encontrado: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorOutputDTO("Endpoint não encontrado",
+                       Collections.singletonList("O recurso solicitado não existe: " + ex.getResourcePath())));
+    }
+
+    @ExceptionHandler(StackOverflowError.class)
+    public ResponseEntity<ErrorOutputDTO> handleStackOverflowError(StackOverflowError ex) {
+        logger.error("StackOverflowError detectado - possível referência circular", ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorOutputDTO("Erro de processamento",
+                       Collections.singletonList("Erro interno: referência circular ou recursão infinita detectada")));
     }
 
     @ExceptionHandler(Exception.class)

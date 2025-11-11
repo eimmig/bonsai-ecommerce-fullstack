@@ -13,4 +13,7 @@ public class ProductModel extends GenericModel {
     private String imageUrl;
     private BigDecimal price;
     private CategoryModel category;
+    private BigDecimal discount;
+    private Integer stock;
+    private Boolean featured;
 }

@@ -1,14 +1,21 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.dtos.user;
 
+import com.br.utfpr.edu.bonsaiecommercebackend.dtos.address.AddressInputDTO;
+import com.br.utfpr.edu.bonsaiecommercebackend.validators.ValidCpfCnpj;
+import com.br.utfpr.edu.bonsaiecommercebackend.validators.ValidPhone;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
+
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 /**
  * DTO de entrada para cadastro e atualização de usuários.
- * Contém validações para nome, senha, email e CPF.
+ * Contém validações para nome, senha, email e campos opcionais.
  */
 public record UserInputDTO(
         UUID id,
@@ -26,8 +33,16 @@ public record UserInputDTO(
         @Size(max = 150, message = "Email deve ter no máximo 150 caracteres")
         String email,
 
-        @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}", 
-                 message = "CPF deve ter formato válido (000.000.000-00)")
-        String cpf
+        @ValidCpfCnpj
+        String cpfCnpj,
+
+        @ValidPhone
+        String phone,
+
+        @Past(message = "Data de nascimento deve estar no passado")
+        LocalDate birthDate,
+
+        @Valid
+        List<AddressInputDTO> addresses
 ) {
 }

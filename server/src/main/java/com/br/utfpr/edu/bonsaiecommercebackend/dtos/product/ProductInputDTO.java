@@ -30,6 +30,12 @@ public record ProductInputDTO(
         String imageUrl,
 
         @NotNull(message = "ID da categoria é obrigatório")
-        UUID categoryId
+        UUID categoryId,
+
+        BigDecimal discount,
+
+        Integer stock,
+
+        Boolean featured
 ) {
 }

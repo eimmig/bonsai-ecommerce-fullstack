@@ -6,6 +6,8 @@ import com.br.utfpr.edu.bonsaiecommercebackend.models.GenericModel;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.GenericService;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.mappers.DomainMapper;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,8 +19,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@SuppressWarnings({"SpringJavaInjectionPointsAutowiringInspection"})
 public abstract class GenericServiceImpl<M extends GenericModel, E extends GenericEntity>
         implements GenericService<M> {
+
+    private static final Logger logger = LoggerFactory.getLogger(GenericServiceImpl.class);
 
     protected final JpaRepository<E, UUID> repository;
     protected final DomainMapper<M, E, ?, ?> mapper;
@@ -67,22 +72,29 @@ public abstract class GenericServiceImpl<M extends GenericModel, E extends Gener
     @Override
     @Transactional
     public void delete(UUID id) throws RuntimeException {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-            return;
+        if (!repository.existsById(id)) {
+            String entityName = this.getClass().getSimpleName().replace("ServiceImpl", "");
+            logger.warn("Tentativa de deletar {} inexistente. ID: {}", entityName, id);
+            throw new ResourceNotFoundException(entityName + " not found with id: " + id);
         }
-        throw new RuntimeException("Item não encontrado");
+        String entityName = this.getClass().getSimpleName().replace("ServiceImpl", "");
+        logger.info("Deletando {}: {}", entityName, id);
+        repository.deleteById(id);
     }
 
     @Override
     @Transactional
     public M update(UUID id, M model) throws RuntimeException {
-        if (repository.existsById(id)) {
-            model.setId(id);
-            E entity = mapper.toEntity(model);
-            entity = repository.save(entity);
-            return mapper.toModel(entity);
+        if (!repository.existsById(id)) {
+            String entityName = this.getClass().getSimpleName().replace("ServiceImpl", "");
+            logger.warn("Tentativa de atualizar {} inexistente. ID: {}", entityName, id);
+            throw new ResourceNotFoundException(entityName + " not found with id: " + id);
         }
-        throw new RuntimeException("Item não encontrado");
+        String entityName = this.getClass().getSimpleName().replace("ServiceImpl", "");
+        logger.info("Atualizando {}: {}", entityName, id);
+        model.setId(id);
+        E entity = mapper.toEntity(model);
+        entity = repository.save(entity);
+        return mapper.toModel(entity);
     }
 }
