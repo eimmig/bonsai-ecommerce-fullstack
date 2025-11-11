@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
             throw new AuthenticationException("Usuário ou senha inválidos");
         }
         String token = jwtUtil.generateToken(user.getId());
-        return new AuthResponseDTO(token);
+        return new AuthResponseDTO(token, user.getId(), user.getEmail(), user.getName());
     }
 }
 

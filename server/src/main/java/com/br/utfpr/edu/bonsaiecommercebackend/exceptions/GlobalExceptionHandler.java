@@ -75,6 +75,14 @@ public class GlobalExceptionHandler {
                                                 ex.getResourceName(), ex.getFieldName(), ex.getFieldValue()))));
     }
 
+    @ExceptionHandler(InsufficientStockException.class)
+    public ResponseEntity<ErrorOutputDTO> handleInsufficientStockException(InsufficientStockException ex) {
+        logger.warn("Estoque insuficiente: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorOutputDTO("Estoque insuficiente",
+                       Collections.singletonList(ex.getMessage())));
+    }
+
     @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
     public ResponseEntity<ErrorOutputDTO> handleDataIntegrityViolationException(
             org.springframework.dao.DataIntegrityViolationException ex) {

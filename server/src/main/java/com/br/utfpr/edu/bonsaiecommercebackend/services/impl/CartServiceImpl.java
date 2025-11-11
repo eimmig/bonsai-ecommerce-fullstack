@@ -6,6 +6,9 @@ import com.br.utfpr.edu.bonsaiecommercebackend.entities.CartEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.CartItemEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.ProductEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.entities.UserEntity;
+import com.br.utfpr.edu.bonsaiecommercebackend.exceptions.InsufficientStockException;
+import com.br.utfpr.edu.bonsaiecommercebackend.exceptions.ResourceNotFoundException;
+import com.br.utfpr.edu.bonsaiecommercebackend.exceptions.UnauthorizedAccessException;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.CartItemModel;
 import com.br.utfpr.edu.bonsaiecommercebackend.models.CartModel;
 import com.br.utfpr.edu.bonsaiecommercebackend.repositories.CartItemRepository;
@@ -43,8 +46,8 @@ public class CartServiceImpl implements CartService {
         
         // Criar novo carrinho se não existir
         UserEntity user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-        
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+
         CartEntity newCart = new CartEntity();
         newCart.setUser(user);
         CartEntity savedCart = cartRepository.save(newCart);
@@ -58,18 +61,18 @@ public class CartServiceImpl implements CartService {
         CartEntity cart = cartRepository.findByUserId(userId)
                 .orElseGet(() -> {
                     UserEntity user = userRepository.findById(userId)
-                            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                            .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
                     CartEntity newCart = new CartEntity();
                     newCart.setUser(user);
                     return cartRepository.save(newCart);
                 });
 
         ProductEntity product = productRepository.findById(dto.productId())
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
 
         // Validar estoque
         if (product.getStock() != null && product.getStock() < dto.quantity()) {
-            throw new RuntimeException("Estoque insuficiente. Disponível: " + product.getStock());
+            throw new InsufficientStockException(product.getStock());
         }
 
         // Verificar se o item já existe no carrinho
@@ -84,7 +87,7 @@ public class CartServiceImpl implements CartService {
             
             // Validar estoque novamente com a nova quantidade
             if (product.getStock() != null && product.getStock() < newQuantity) {
-                throw new RuntimeException("Estoque insuficiente. Disponível: " + product.getStock());
+                throw new InsufficientStockException(product.getStock());
             }
             
             item.setQuantity(newQuantity);
@@ -111,20 +114,20 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public CartModel updateItem(UUID userId, UUID itemId, UpdateCartItemInputDTO dto) {
         CartEntity cart = cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Carrinho não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Carrinho não encontrado"));
 
         CartItemEntity item = cartItemRepository.findById(itemId)
-                .orElseThrow(() -> new RuntimeException("Item não encontrado no carrinho"));
+                .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado no carrinho"));
 
         // Verificar se o item pertence ao carrinho do usuário
         if (!item.getCart().getId().equals(cart.getId())) {
-            throw new RuntimeException("Item não pertence a este carrinho");
+            throw new UnauthorizedAccessException("Item não pertence a este carrinho");
         }
 
         // Validar estoque
         ProductEntity product = item.getProduct();
         if (product.getStock() != null && product.getStock() < dto.quantity()) {
-            throw new RuntimeException("Estoque insuficiente. Disponível: " + product.getStock());
+            throw new InsufficientStockException(product.getStock());
         }
 
         // Atualizar quantidade e recalcular preços
@@ -143,14 +146,14 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public void removeItem(UUID userId, UUID itemId) {
         CartEntity cart = cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Carrinho não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Carrinho não encontrado"));
 
         CartItemEntity item = cartItemRepository.findById(itemId)
-                .orElseThrow(() -> new RuntimeException("Item não encontrado no carrinho"));
+                .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado no carrinho"));
 
         // Verificar se o item pertence ao carrinho do usuário
         if (!item.getCart().getId().equals(cart.getId())) {
-            throw new RuntimeException("Item não pertence a este carrinho");
+            throw new UnauthorizedAccessException("Item não pertence a este carrinho");
         }
 
         // Remover da coleção do carrinho ANTES de deletar (evita ObjectDeletedException)
@@ -169,7 +172,7 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public void clearCart(UUID userId) {
         CartEntity cart = cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Carrinho não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Carrinho não encontrado"));
 
         cart.clear();
         cartRepository.save(cart);

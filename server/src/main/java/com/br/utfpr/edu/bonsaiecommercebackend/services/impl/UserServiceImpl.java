@@ -31,7 +31,6 @@ public class UserServiceImpl extends GenericServiceImpl<UserModel, UserEntity>
     private final AddressMapper addressMapper;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
     public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, AddressMapper addressMapper) {
         super(userRepository, userMapper);
         this.userRepository = userRepository;

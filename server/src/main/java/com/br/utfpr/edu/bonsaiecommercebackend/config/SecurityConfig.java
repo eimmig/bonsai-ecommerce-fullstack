@@ -45,6 +45,14 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configure(http)) 
                 .csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");
+                            response.setCharacterEncoding("UTF-8");
+                            response.getWriter().write("{\"message\":\"Autenticação necessária\",\"details\":null}");
+                        })
+                )
                 .authorizeHttpRequests(authorize -> authorize
                         // Público - Autenticação e Registro
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/user").permitAll()
