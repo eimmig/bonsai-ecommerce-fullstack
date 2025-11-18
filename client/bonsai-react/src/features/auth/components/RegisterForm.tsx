@@ -4,7 +4,6 @@ import { TextField, Button, Box, Typography } from '@mui/material';
 
 import { useAuth } from '@/hooks/use-auth';
 import { registerSchema, type RegisterFormData } from '../schemas/auth.schemas';
-import { maskCPFCNPJ, maskPhone } from '@/utils/input-masks';
 
 interface RegisterFormProps {
   onToggleForm?: () => void;
@@ -17,13 +16,6 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
     resolver: zodResolver(registerSchema),
     mode: 'onBlur',
     reValidateMode: 'onChange',
-    defaultValues: {
-      name: '',
-      cpfCnpj: '',
-      phone: '',
-      email: '',
-      password: '',
-    },
   });
 
   const onSubmit = (data: RegisterFormData) => {
@@ -35,6 +27,7 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
       <Controller
         name="name"
         control={control}
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}
@@ -56,6 +49,7 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
       <Controller
         name="cpfCnpj"
         control={control}
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}
@@ -65,10 +59,6 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
             error={!!errors.cpfCnpj}
             helperText={errors.cpfCnpj?.message}
             placeholder="Digite seu CPF ou CNPJ"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              const masked = maskCPFCNPJ(e.target.value);
-              field.onChange(masked);
-            }}
             slotProps={{
               htmlInput: {
                 'aria-required': 'true'
@@ -81,6 +71,7 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
       <Controller
         name="phone"
         control={control}
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}
@@ -89,11 +80,7 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
             fullWidth
             error={!!errors.phone}
             helperText={errors.phone?.message}
-            placeholder="(00) 00000-0000"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              const masked = maskPhone(e.target.value);
-              field.onChange(masked);
-            }}
+            placeholder="Digite seu telefone"
           />
         )}
       />
@@ -101,6 +88,7 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
       <Controller
         name="email"
         control={control}
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}
@@ -123,6 +111,7 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
       <Controller
         name="password"
         control={control}
+        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}

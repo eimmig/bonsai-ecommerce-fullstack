@@ -16,9 +16,6 @@ export const useCart = () => {
   const cartQuery = useQuery({
     queryKey: ['cart'],
     queryFn: async () => {
-      if (!isAuthenticated) {
-        return null;
-      }
       const data = await cartApi.get();
       setCart(data.items);
       return data;

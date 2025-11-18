@@ -21,15 +21,14 @@ describe('cart-store', () => {
   it('should set cart correctly', () => {
     const mockItems = [
       {
-        id: '1',
+        id: 1,
         product: {
-          id: '1',
+          id: 1,
           name: 'Test Product',
           description: 'Description',
           price: 100,
-          discount: 0,
           imageUrl: 'image.jpg',
-          category: { id: '1', name: 'Test', createdAt: null, updatedAt: null },
+          category: 'Test',
           stock: 10,
           featured: false,
           createdAt: '2024-01-01T00:00:00Z',
@@ -52,15 +51,14 @@ describe('cart-store', () => {
   it('should clear cart correctly', () => {
     const mockItems = [
       {
-        id: '1',
+        id: 1,
         product: {
-          id: '1',
+          id: 1,
           name: 'Test Product',
           description: 'Description',
           price: 100,
-          discount: 0,
           imageUrl: 'image.jpg',
-          category: { id: '1', name: 'Test', createdAt: null, updatedAt: null },
+          category: 'Test',
           stock: 10,
           featured: false,
           createdAt: '2024-01-01T00:00:00Z',

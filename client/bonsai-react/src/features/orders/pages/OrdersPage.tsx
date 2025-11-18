@@ -1,11 +1,42 @@
 import { Link } from 'react-router-dom';
-import { Package } from 'lucide-react';
+import { Package, Clock, CheckCircle, XCircle } from 'lucide-react';
 
 import { useOrders } from '@/hooks/use-orders';
-import type { Order } from '@/types/order.types';
 import { ROUTES } from '@/constants/routes';
-import { Button, Spinner } from '@/components/ui';
-import { OrderCard } from '../components/OrderCard';
+import { Button, Card, CardContent, Spinner, Badge } from '@/components/ui';
+import { formatCurrencyBRL } from '@/utils/currency';
+import type { OrderStatus } from '@/types/order.types';
+
+const orderStatusConfig: Record<
+  OrderStatus,
+  { label: string; variant: 'default' | 'success' | 'error' | 'warning'; icon: React.ReactNode }
+> = {
+  PENDING: {
+    label: 'Pendente',
+    variant: 'warning',
+    icon: <Clock className="h-4 w-4" />,
+  },
+  PROCESSING: {
+    label: 'Processando',
+    variant: 'default',
+    icon: <Package className="h-4 w-4" />,
+  },
+  SHIPPED: {
+    label: 'Enviado',
+    variant: 'default',
+    icon: <Package className="h-4 w-4" />,
+  },
+  DELIVERED: {
+    label: 'Entregue',
+    variant: 'success',
+    icon: <CheckCircle className="h-4 w-4" />,
+  },
+  CANCELLED: {
+    label: 'Cancelado',
+    variant: 'error',
+    icon: <XCircle className="h-4 w-4" />,
+  },
+};
 
 export const OrdersPage = () => {
   const { data: ordersResponse, isLoading } = useOrders();
@@ -42,9 +73,63 @@ export const OrdersPage = () => {
       <h1 className="mb-8 text-3xl font-bold text-gray-900">Meus Pedidos</h1>
 
       <div className="space-y-4">
-        {orders.map((order: Order) => (
-          <OrderCard key={order.id} order={order} />
-        ))}
+        {orders.map((order) => {
+          const statusConfig = orderStatusConfig[order.status];
+          
+          return (
+            <Card key={order.id}>
+              <CardContent className="p-6">
+                <div className="mb-4 flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600">Pedido #{order.id}</p>
+                    <p className="text-sm text-gray-600">
+                      {new Date(order.createdAt).toLocaleDateString('pt-BR')}
+                    </p>
+                  </div>
+                  <Badge variant={statusConfig.variant}>
+                    <span className="flex items-center">
+                      {statusConfig.icon}
+                      <span className="ml-1">{statusConfig.label}</span>
+                    </span>
+                  </Badge>
+                </div>
+
+                <div className="mb-4 space-y-2">
+                  {order.orderItems.map((item) => (
+                    <div key={item.id} className="flex items-center gap-4">
+                      <img
+                        src={item.product.imageUrl}
+                        alt={item.product.name}
+                        className="h-16 w-16 rounded-md object-cover"
+                      />
+                      <div className="flex-1">
+                        <p className="font-medium text-gray-900">{item.product.name}</p>
+                        <p className="text-sm text-gray-600">Quantidade: {item.quantity}</p>
+                      </div>
+                      <p className="font-semibold text-gray-900">
+                        {formatCurrencyBRL(item.totalPrice)}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex items-center justify-between border-t pt-4">
+                  <div>
+                    <p className="text-sm text-gray-600">Total do Pedido</p>
+                    <p className="text-xl font-bold text-primary">
+                      {formatCurrencyBRL(order.totalPrice)}
+                    </p>
+                  </div>
+                  <Link to={ROUTES.ORDER_DETAIL(order.id)}>
+                    <Button variant="outline" size="md">
+                      Ver Detalhes
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );

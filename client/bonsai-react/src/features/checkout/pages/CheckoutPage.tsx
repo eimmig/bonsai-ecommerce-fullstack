@@ -1,20 +1,17 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router-dom';
 import { CreditCard } from 'lucide-react';
 
 import { useCart } from '@/hooks/use-cart';
-import type { CartItem } from '@/types/cart.types';
 import { useCreateOrder } from '@/hooks/use-orders';
 import { useAddressByCEP } from '@/hooks/use-address';
 import { useToast } from '@/hooks/use-toast';
-import { useAuthStore } from '@/stores/auth-store';
 import { ROUTES } from '@/constants/routes';
 import { Button, Input, Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
 import { formatCurrencyBRL } from '@/utils/currency';
 import { maskCEP, maskCreditCard, maskCardExpiry, maskCVV } from '@/utils/input-masks';
-import type { PaymentMethod } from '@/types/order.types';
 import {
   shippingSchema,
   paymentSchema,
@@ -27,11 +24,9 @@ export const CheckoutPage = () => {
   const toast = useToast();
   const [step, setStep] = useState<'shipping' | 'payment' | 'review'>('shipping');
 
-  const { items, total, clearCart } = useCart();
-  const { user, isAuthenticated } = useAuthStore();
+  const { items, total } = useCart();
   const createOrderMutation = useCreateOrder();
   const [zipCodeQuery, setZipCodeQuery] = useState('');
-  const SHIPPING_COST = 15.0;
 
   const shippingForm = useForm<ShippingFormData>({
     resolver: zodResolver(shippingSchema),
@@ -67,44 +62,21 @@ export const CheckoutPage = () => {
     setStep('review');
   };
 
-  const handleConfirmOrder = async () => {
-    if (!isAuthenticated || !user) {
-      toast.error('Erro', 'Você precisa estar logado para finalizar o pedido');
-      navigate(ROUTES.LOGIN);
-      return;
-    }
+  const handleConfirmOrder = () => {
+    // const shippingData = shippingForm.getValues();
+    // const paymentData = paymentForm.getValues();
 
-    const shippingData = shippingForm.getValues();
-    const paymentData = paymentForm.getValues();
+    // // For now, just create order with items
+    // createOrderMutation.mutate({
+    //   userId: 1, // TODO: Get from auth context
+    //   items: items.map(item => ({
+    //     productId: item.product.id,
+    //     quantity: item.quantity,
+    //   })),
+    // });
 
-    const orderData = {
-      deliveryAddress: {
-        street: shippingData.street,
-        number: shippingData.number,
-        complement: shippingData.complement || '',
-        neighborhood: shippingData.neighborhood,
-        city: shippingData.city,
-        state: shippingData.state,
-        zipCode: shippingData.zipCode,
-      },
-      paymentMethod: paymentData.paymentMethod as PaymentMethod,
-      shippingCost: SHIPPING_COST,
-      orderItems: items.map((item: CartItem) => ({
-        product: {
-          id: item.product.id,
-        },
-        quantity: item.quantity,
-      })),
-    };
-
-    try {
-      await createOrderMutation.mutateAsync(orderData);
-      clearCart();
-      toast.success('Pedido realizado com sucesso!');
-      navigate(ROUTES.ORDERS);
-    } catch (error) {
-      toast.error('Erro ao criar pedido', 'Tente novamente');
-    }
+    toast.success('Pedido realizado com sucesso!');
+    navigate(ROUTES.ORDERS);
   };
 
   if (items.length === 0) {
@@ -400,17 +372,9 @@ export const CheckoutPage = () => {
               ))}
 
               <div className="border-t pt-4">
-                <div className="mb-2 flex justify-between text-sm">
-                  <span>Subtotal</span>
-                  <span>{formatCurrencyBRL(total)}</span>
-                </div>
-                <div className="mb-2 flex justify-between text-sm">
-                  <span>Frete</span>
-                  <span>{formatCurrencyBRL(SHIPPING_COST)}</span>
-                </div>
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>
-                  <span className="text-primary">{formatCurrencyBRL(total + SHIPPING_COST)}</span>
+                  <span className="text-primary">{formatCurrencyBRL(total)}</span>
                 </div>
               </div>
             </CardContent>

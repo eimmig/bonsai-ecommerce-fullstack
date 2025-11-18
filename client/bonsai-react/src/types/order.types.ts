@@ -37,23 +37,13 @@ export interface OrderItem {
 }
 
 export interface CreateOrderRequest {
-  deliveryAddress: {
-    street: string;
-    number: string;
-    complement?: string;
-    neighborhood: string;
-    city: string;
-    state: string;
-    zipCode: string;
-  };
-  paymentMethod: PaymentMethod;
-  shippingCost: number;
-  orderItems: {
-    product: {
-      id: string;
-    };
+  userid: string;
+  items: {
+    productid: string;
     quantity: number;
   }[];
+  deliveryAddress?: Address;    // 🔄 RESTAURADO - Backend precisa aceitar
+  paymentMethod?: PaymentMethod; // 🔄 RESTAURADO - Backend precisa aceitar
 }
 
 export interface OrdersResponse {
