@@ -1,8 +1,9 @@
 import { toast } from '@/hooks/use-toast';
+import { getFromStorage } from '@/utils/storage';
 import axios, { AxiosError } from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
 
 // Helper para extrair mensagem de erro da API
 const getErrorMessage = (error: AxiosError): string => {
@@ -34,7 +35,7 @@ class ApiClient {
   private setupInterceptors(): void {
     this.instance.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
-        const token = localStorage.getItem('token');
+        const token = getFromStorage<string>('token');
         if (token && config.headers) {
           config.headers.Authorization = `Bearer ${token}`;
         }
@@ -55,12 +56,15 @@ class ApiClient {
 
           // Logout automático em caso de token expirado (401)
           if (status === 401) {
-            toast.error('Sessão expirada', 'Faça login novamente.');
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
+            const isLoginPage = globalThis.location.pathname.includes('/login');
+            const isLoginOrRegisterRequest = error.config?.url?.includes('/auth/login') || error.config?.url?.includes('/auth/register');
             
-            // Evitar loop infinito se já estiver na página de login
-            if (!globalThis.location.pathname.includes('/login')) {
+            // Não mostrar toast de sessão expirada na página de login OU se for a requisição de login/register
+            // O hook useAuth vai tratar o erro de credenciais inválidas
+            if (!isLoginPage && !isLoginOrRegisterRequest) {
+              toast.error('Sessão expirada', 'Faça login novamente.');
+              localStorage.removeItem('token');
+              localStorage.removeItem('user');
               globalThis.location.href = '/login';
             }
           }

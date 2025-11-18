@@ -37,6 +37,11 @@ const OrdersPage = lazy(() =>
     default: module.OrdersPage,
   }))
 );
+const OrderDetailPage = lazy(() =>
+  import('@/features/orders/pages/OrderDetailPage').then((module) => ({
+    default: module.OrderDetailPage,
+  }))
+);
 const ProfilePage = lazy(() =>
   import('@/features/profile').then((module) => ({
     default: module.ProfilePage,
@@ -81,6 +86,14 @@ export const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <OrdersPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/orders/:id"
+        element={
+          <ProtectedRoute>
+            <OrderDetailPage />
           </ProtectedRoute>
         }
       />

@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
 import type { User } from '@/types/user.types';
 import { getFromStorage, setToStorage, removeFromStorage } from '@/utils/storage';
@@ -13,32 +12,29 @@ interface AuthState {
   updateUser: (user: User) => void;
 }
 
-export const useAuthStore = create<AuthState>()(
-  persist(
-    (set) => ({
-      user: getFromStorage<User>('user'),
-      token: getFromStorage<string>('token'),
-      isAuthenticated: !!getFromStorage<string>('token'),
+export const useAuthStore = create<AuthState>((set) => ({
+  user: getFromStorage<User>('user'),
+  token: getFromStorage<string>('token'),
+  isAuthenticated: !!getFromStorage<string>('token'),
 
-      setAuth: (user, token) => {
-        setToStorage('user', user);
-        setToStorage('token', token);
-        set({ user, token, isAuthenticated: true });
-      },
+  setAuth: (user: User, token: string) => {
+    setToStorage('user', user);
+    setToStorage('token', token);
+    set({ user, token, isAuthenticated: true });
+  },
 
-      clearAuth: () => {
-        removeFromStorage('user');
-        removeFromStorage('token');
-        set({ user: null, token: null, isAuthenticated: false });
-      },
+  clearAuth: () => {
+    removeFromStorage('user');
+    removeFromStorage('token');
+    // Limpar carrinho ao fazer logout
+    localStorage.removeItem('cart-storage');
+    // Limpar storage antigo do persist
+    localStorage.removeItem('auth-storage');
+    set({ user: null, token: null, isAuthenticated: false });
+  },
 
-      updateUser: (user) => {
-        setToStorage('user', user);
-        set({ user });
-      },
-    }),
-    {
-      name: 'auth-storage',
-    }
-  )
-);
+  updateUser: (user: User) => {
+    setToStorage('user', user);
+    set({ user });
+  },
+}));

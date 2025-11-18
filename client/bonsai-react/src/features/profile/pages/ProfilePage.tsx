@@ -1,7 +1,7 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { User, MapPin, Lock } from 'lucide-react';
-import { useEffect } from 'react';
 
 import { useAuthStore } from '@/stores/auth-store';
 import { useUpdateProfile } from '@/hooks/use-user';

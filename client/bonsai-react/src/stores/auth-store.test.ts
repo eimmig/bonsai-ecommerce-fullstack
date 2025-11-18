@@ -20,7 +20,7 @@ describe('auth-store', () => {
 
   it('should set auth correctly', () => {
     const mockUser = {
-      id: 1,
+      id: '1',
       name: 'Test User',
       email: 'test@test.com',
       cpfCnpj: '12345678901',
@@ -49,7 +49,7 @@ describe('auth-store', () => {
 
   it('should clear auth correctly', () => {
     const mockUser = {
-      id: 1,
+      id: '1',
       name: 'Test User',
       email: 'test@test.com',
       cpfCnpj: '12345678900',
@@ -78,7 +78,7 @@ describe('auth-store', () => {
 
   it('should update user correctly', () => {
     const mockUser = {
-      id: 1,
+      id: '1',
       name: 'Test User',
       email: 'test@test.com',
       cpfCnpj: '12345678900',

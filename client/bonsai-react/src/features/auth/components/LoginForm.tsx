@@ -16,6 +16,10 @@ export const LoginForm = ({ onToggleForm }: LoginFormProps) => {
     resolver: zodResolver(loginSchema),
     mode: 'onBlur',
     reValidateMode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   });
 
   const onSubmit = (data: LoginFormData) => {
@@ -27,7 +31,6 @@ export const LoginForm = ({ onToggleForm }: LoginFormProps) => {
       <Controller
         name="email"
         control={control}
-        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}
@@ -50,7 +53,6 @@ export const LoginForm = ({ onToggleForm }: LoginFormProps) => {
       <Controller
         name="password"
         control={control}
-        defaultValue=""
         render={({ field }) => (
           <TextField
             {...field}

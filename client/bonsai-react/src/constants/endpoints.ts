@@ -21,10 +21,10 @@ export const ENDPOINTS = {
     CLEAR: 'cart',
   },
   ORDERS: {
-    LIST: 'order',
-    BY_ID: (id: string) => `order/${id}`,
-    CREATE: 'order',
-    CANCEL: (id: string) => `order/${id}/cancel`,
+    LIST: 'orders',
+    BY_ID: (id: string) => `orders/${id}`,
+    CREATE: 'orders',
+    CANCEL: (id: string) => `orders/${id}/cancel`,
   },
   ADDRESSES: 'address',
 } as const;

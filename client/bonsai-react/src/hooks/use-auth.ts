@@ -17,14 +17,24 @@ export const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginRequest) => authApi.login(credentials),
     onSuccess: (data: AuthResponse) => {
+      if (!data.user || !data.token) {
+        toast.error('Erro no login', 'Dados de autenticação inválidos');
+        return;
+      }
+      
       setAuth(data.user, data.token);
       queryClient.invalidateQueries({ queryKey: ['user'] });
       toast.success('Login realizado com sucesso!', `Bem-vindo, ${data.user.name}!`);
       navigate(ROUTES.HOME);
     },
     onError: (error: AxiosError) => {
-      const message = (error as any).userMessage || 'Erro ao fazer login';
-      toast.error('Erro no login', message);
+      // Tratamento específico para erro 401 (credenciais inválidas)
+      if (error.response?.status === 401) {
+        toast.error('Erro no login', 'Usuário ou senha inválidos');
+      } else {
+        const message = (error as any).userMessage || error.message || 'Erro ao fazer login';
+        toast.error('Erro no login', message);
+      }
     },
   });
 
