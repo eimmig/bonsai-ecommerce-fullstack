@@ -1,0 +1,447 @@
+{
+  "common": {
+    "loading": "Carregando...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "confirm": "Confirmar",
+    "back": "Voltar",
+    "next": "Próximo",
+    "finish": "Finalizar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "clear": "Limpar",
+    "add": "Adicionar",
+    "remove": "Remover",
+    "update": "Atualizar",
+    "close": "Fechar",
+    "view": "Ver",
+    "more": "Mais",
+    "less": "Menos",
+    "yes": "Sim",
+    "no": "Não",
+    "optional": "Opcional",
+    "required": "Obrigatório"
+  },
+  "nav": {
+    "home": "Início",
+    "products": "Produtos",
+    "cart": "Carrinho",
+    "orders": "Meus Pedidos",
+    "profile": "Perfil",
+    "login": "Entrar",
+    "logout": "Sair",
+    "register": "Cadastrar"
+  },
+  "auth": {
+    "login": {
+      "title": "Entrar",
+      "email": "E-mail",
+      "emailPlaceholder": "Digite seu e-mail",
+      "password": "Senha",
+      "passwordPlaceholder": "Digite sua senha",
+      "submit": "Entrar",
+      "signIn": "Entrar",
+      "signingIn": "Entrando...",
+      "forgotPassword": "Esqueci minha senha",
+      "noAccount": "Novo Aqui ?",
+      "noAccountLink": "Criar uma conta",
+      "createAccount": "Cadastre-se",
+      "backToHome": "Voltar",
+      "description": "Entre com seus dados e aproveite nossas ofertas!"
+    },
+    "register": {
+      "title": "Cadastre-se",
+      "name": "Nome completo",
+      "namePlaceholder": "Digite seu nome completo",
+      "email": "E-mail",
+      "emailPlaceholder": "Digite seu e-mail",
+      "password": "Senha",
+      "passwordPlaceholder": "Digite sua senha",
+      "confirmPassword": "Confirmar senha",
+      "cpfCnpj": "CPF/CNPJ",
+      "cpfCnpjPlaceholder": "Digite seu CPF ou CNPJ",
+      "phone": "Telefone",
+      "phonePlaceholder": "Digite seu telefone",
+      "birthDate": "Data de nascimento",
+      "submit": "Cadastrar",
+      "signUp": "Cadastrar",
+      "registering": "Cadastrando...",
+      "hasAccount": "Já é um de nós?",
+      "hasAccountLink": "Fazer login",
+      "goToLogin": "Entrar",
+      "description": "Cadastre-se já e tenha acesso a produtos incríveis!"
+    },
+    "validation": {
+      "emailRequired": "E-mail é obrigatório",
+      "emailInvalid": "E-mail inválido",
+      "passwordRequired": "Senha é obrigatória",
+      "passwordMin": "Senha deve ter no mínimo 6 caracteres",
+      "passwordMatch": "As senhas não coincidem",
+      "nameRequired": "Nome é obrigatório",
+      "nameMin": "Nome deve ter no mínimo 2 caracteres",
+      "nameMax": "Nome muito longo",
+      "cpfCnpjRequired": "CPF/CNPJ é obrigatório",
+      "cpfCnpjInvalid": "CPF deve ter 11 dígitos ou CNPJ deve ter 14 dígitos",
+      "phoneRequired": "Telefone é obrigatório",
+      "phoneInvalid": "Telefone deve ter 10 ou 11 dígitos",
+      "birthDateRequired": "Data de nascimento é obrigatória",
+      "birthDateInvalid": "Data inválida (formato: AAAA-MM-DD)"
+    },
+    "messages": {
+      "loginSuccess": "Login realizado com sucesso!",
+      "loginError": "Usuário ou senha inválidos",
+      "registerSuccess": "Cadastro realizado com sucesso!",
+      "registerError": "Erro ao cadastrar usuário",
+      "logoutSuccess": "Até logo!",
+      "sessionExpired": "Sessão expirada. Faça login novamente."
+    }
+  },
+  "products": {
+    "title": "Todos os Bonsais",
+    "allBonsais": {
+      "part1": "Todos os",
+      "part2": "Bonsais"
+    },
+    "featured": "Produtos em Destaque",
+    "aboutProduct": "Sobre o Produto",
+    "inStock": "Em estoque",
+    "search": "Buscar produtos...",
+    "searchPlaceholder": "Buscar produtos...",
+    "category": "Categoria",
+    "allCategories": "Todas as categorias",
+    "resultsCount": "{{count}} produto encontrado",
+    "resultsCount_plural": "{{count}} produtos encontrados",
+    "addToCart": "Adicionar ao Carrinho",
+    "outOfStock": "Fora de estoque",
+    "discount": "{{percent}}% OFF",
+    "viewDetails": "Ver Detalhes",
+    "description": "Descrição",
+    "price": "Preço",
+    "stock": "Estoque disponível",
+    "noProducts": "Nenhum produto encontrado",
+    "loadingProducts": "Carregando produtos...",
+    "errorLoading": "Erro ao carregar produtos"
+  },
+  "cart": {
+    "title": "Carrinho de Compras",
+    "emptyTitle": "Carrinho Vazio",
+    "empty": "Seu carrinho está vazio",
+    "emptyDescription": "Adicione produtos ao carrinho para continuar",
+    "product": "Produto",
+    "price": "Preço",
+    "shippingCalculated": "Frete calculado no checkout",
+    "orderSummary": "Resumo do Pedido",
+    "viewProducts": "Ver Produtos",
+    "continueShopping": "Continuar Comprando",
+    "item": "{{count}} item",
+    "item_plural": "{{count}} itens",
+    "subtotal": "Subtotal",
+    "shipping": "Frete",
+    "total": "Total",
+    "checkout": "Finalizar Compra",
+    "remove": "Remover",
+    "quantity": "Quantidade",
+    "clearCart": "Limpar Carrinho",
+    "confirmClear": "Tem certeza que deseja limpar o carrinho?",
+    "itemAdded": "Produto adicionado ao carrinho",
+    "itemRemoved": "Produto removido do carrinho",
+    "cartCleared": "Carrinho limpo",
+    "free": "Grátis"
+  },
+  "checkout": {
+    "title": "Finalizar Compra",
+    "emptyCart": "Carrinho vazio",
+    "viewProducts": "Ver Produtos",
+    "continueToPayment": "Continuar para Pagamento",
+    "confirmOrder": "Confirmar Pedido",
+    "deliveryAddress": "Endereço de Entrega",
+    "paymentMethod": "Método de Pagamento",
+    "orderSummary": "Resumo do Pedido",
+    "selectAddressError": "Por favor, selecione um endereço de entrega",
+    "selectShippingError": "Selecione uma opção de frete",
+    "loginRequired": "Você precisa estar logado para finalizar a compra",
+    "orderSuccess": "Pedido realizado com sucesso!",
+    "orderError": "Erro ao criar pedido",
+    "steps": {
+      "shipping": "Entrega",
+      "payment": "Pagamento",
+      "review": "Revisão"
+    },
+    "shipping": {
+      "title": "Endereço de Entrega",
+      "newAddress": "Novo Endereço",
+      "noAddresses": "Nenhum endereço cadastrado",
+      "addAddress": "Adicionar Endereço",
+      "calculateShipping": "Calcular Frete",
+      "shippingOptions": "Opções de Frete",
+      "selectShipping": "Selecione uma opção de frete",
+      "deliveryTime": "Prazo: {{days}} dias úteis",
+      "calculating": "Calculando frete...",
+      "error": "Erro ao calcular frete. Tente novamente.",
+      "noOptions": "Nenhuma opção de frete disponível para este endereço",
+      "selectAddress": "Selecione um endereço para calcular",
+      "errorCalculating": "Erro ao calcular frete"
+    },
+    "payment": {
+      "title": "Método de Pagamento",
+      "creditCard": "Cartão de Crédito",
+      "debitCard": "Cartão de Débito",
+      "pix": "PIX",
+      "boleto": "Boleto",
+      "cardNumber": "Número do Cartão",
+      "cardHolder": "Nome do Titular",
+      "cardHolderPlaceholder": "NOME IMPRESSO NO CARTÃO",
+      "expiry": "Validade",
+      "expiryDate": "Validade",
+      "cvv": "CVV",
+      "installments": "Parcelas"
+    },
+    "review": {
+      "title": "Revisão do Pedido",
+      "orderSummary": "Resumo do Pedido",
+      "items": "Itens",
+      "deliveryAddress": "Endereço de Entrega",
+      "paymentMethod": "Método de Pagamento",
+      "shippingMethod": "Método de Entrega"
+    },
+    "summary": {
+      "title": "Resumo",
+      "items": "Itens ({{count}})",
+      "subtotal": "Subtotal",
+      "shipping": "Frete",
+      "total": "Total"
+    },
+    "validation": {
+      "addressRequired": "Selecione um endereço de entrega",
+      "shippingRequired": "Selecione uma opção de frete",
+      "paymentRequired": "Selecione um método de pagamento",
+      "cardNumberRequired": "Número do cartão é obrigatório",
+      "cardHolderRequired": "Nome no cartão é obrigatório",
+      "expiryRequired": "Validade é obrigatória",
+      "cvvRequired": "CVV é obrigatório"
+    }
+  },
+  "address": {
+    "title": "Endereços",
+    "add": "Adicionar Endereço",
+    "edit": "Editar Endereço",
+    "delete": "Excluir Endereço",
+    "create": "Cadastrar Endereço",
+    "update": "Atualizar Endereço",
+    "found": "Endereço encontrado!",
+    "notFound": "CEP não encontrado",
+    "createSuccess": "Endereço cadastrado com sucesso!",
+    "createError": "Erro ao cadastrar endereço",
+    "updateSuccess": "Endereço atualizado com sucesso!",
+    "updateError": "Erro ao atualizar endereço",
+    "noAddress": "Nenhum endereço cadastrado",
+    "selectDelivery": "Selecione o endereço de entrega",
+    "newAddress": "Novo Endereço",
+    "registerFirst": "Cadastrar Primeiro Endereço",
+    "modalTitle": "Cadastrar Novo Endereço",
+    "streetPlaceholder": "Rua, Avenida, etc.",
+    "complementPlaceholder": "Apto, Bloco, etc.",
+    "neighborhoodPlaceholder": "Bairro",
+    "cityPlaceholder": "Cidade",
+    "selectState": "Selecione",
+    "street": "Logradouro",
+    "number": "Número",
+    "complement": "Complemento",
+    "zipCode": "CEP",
+    "neighborhood": "Bairro",
+    "city": "Cidade",
+    "state": "Estado",
+    "searchZipCode": "Buscar CEP",
+    "zipCodeNotFound": "CEP não encontrado",
+    "validation": {
+      "streetRequired": "Rua é obrigatória",
+      "numberRequired": "Número é obrigatório",
+      "zipCodeRequired": "CEP é obrigatório",
+      "zipCodeInvalid": "CEP inválido",
+      "neighborhoodRequired": "Bairro é obrigatório",
+      "cityRequired": "Cidade é obrigatória",
+      "stateRequired": "Estado é obrigatório"
+    },
+    "messages": {
+      "addSuccess": "Endereço adicionado com sucesso",
+      "editSuccess": "Endereço atualizado com sucesso",
+      "deleteSuccess": "Endereço removido com sucesso",
+      "error": "Erro ao processar endereço"
+    }
+  },
+  "orders": {
+    "title": "Meus Pedidos",
+    "empty": "Você ainda não fez nenhum pedido",
+    "emptyDescription": "Comece a comprar agora!",
+    "orderNumber": "Pedido #{{id}}",
+    "orderDate": "Data do pedido",
+    "status": {
+      "pending": "Pendente",
+      "processing": "Processando",
+      "shipped": "Enviado",
+      "delivered": "Entregue",
+      "cancelled": "Cancelado"
+    },
+    "items": "Itens do Pedido",
+    "deliveryAddress": "Endereço de Entrega",
+    "payment": "Pagamento",
+    "paymentMethod": "Pagamento",
+    "subtotal": "Subtotal",
+    "shipping": "Frete",
+    "total": "Total",
+    "shippingMethod": "Método de Entrega",
+    "quantity": "Quantidade",
+    "viewDetails": "Ver Detalhes",
+    "cancelOrder": "Cancelar Pedido",
+    "confirmCancel": "Tem certeza que deseja cancelar este pedido?"
+  },
+  "profile": {
+    "title": "Meu Perfil",
+    "subtitle": "Gerencie suas informações pessoais e preferências",
+    "personalInfo": "Informações Pessoais",
+    "addresses": "Endereços",
+    "orders": "Pedidos",
+    "name": "Nome",
+    "fullName": "Nome completo",
+    "email": "E-mail",
+    "phone": "Telefone",
+    "cpfCnpj": "CPF/CNPJ",
+    "birthDate": "Data de Nascimento",
+    "edit": "Editar Perfil",
+    "saveChanges": "Salvar Alterações",
+    "addNewAddress": "Adicionar novo endereço",
+    "addressCount": "{{count}} endereço(s) cadastrado(s)",
+    "changePassword": "Alterar Senha",
+    "currentPassword": "Senha atual",
+    "newPassword": "Nova senha",
+    "confirmNewPassword": "Confirmar nova senha",
+    "updateSuccess": "Perfil atualizado com sucesso!",
+    "updateError": "Erro ao atualizar perfil",
+    "messages": {
+      "updateSuccess": "Perfil atualizado com sucesso",
+      "updateError": "Erro ao atualizar perfil",
+      "passwordChangeSuccess": "Senha alterada com sucesso",
+      "passwordChangeError": "Erro ao alterar senha"
+    }
+  },
+  "footer": {
+    "about": "Sobre Nós",
+    "contact": "Contato",
+    "terms": "Termos de Uso",
+    "privacy": "Política de Privacidade",
+    "privacyPolicy": "Política de Privacidade",
+    "returns": "Trocas e Devoluções",
+    "faq": "Perguntas Frequentes",
+    "whatsapp": "(11) 12345-5678",
+    "email": "contato@bonsaibrasil.com.br",
+    "address": "Rua dos Bonsais, 123 - São Paulo, SP",
+    "rights": "Todos os direitos reservados",
+    "rightsReserved": "Todos os direitos reservados.",
+    "copyright": "© 2024 Bonsai Brasil.",
+    "newsletterTitle": "Receba nossas novidades",
+    "newsletterDescription": "Cadastre seu e-mail e fique por dentro das melhores ofertas!",
+    "emailPlaceholder": "Seu e-mail",
+    "subscribe": "Cadastrar",
+    "newsletter": {
+      "title": "Receba nossas novidades",
+      "description": "Cadastre seu e-mail e fique por dentro das melhores ofertas!",
+      "placeholder": "Seu e-mail",
+      "submit": "Cadastrar",
+      "success": "E-mail cadastrado com sucesso!",
+      "error": "Erro ao cadastrar e-mail"
+    }
+  },
+  "home": {
+    "seoTitle": "Bonsais Aut\u00eanticos - Loja de Bonsai Online",
+    "seoDescription": "Encontre os melhores bonsais aut\u00eanticos com entrega em todo o Brasil. Cultivo tradicional, qualidade garantida.",
+    "seoKeywords": "bonsai, plantas, cultivo, jardim, decora\u00e7\u00e3o",
+    "hero": {
+      "title": "Bonsais",
+      "highlight": "Aut\u00eanticos",
+      "titleEnd": "Japoneses",
+      "subtitle": "Encontre os melhores bonsais aut\u00eanticos com entrega em todo o Brasil. Cultivo tradicional, qualidade garantida.",
+      "cta": "Ver Produtos",
+      "bannerAlt": "Bonsai em vaso"
+    },
+    "featured": "Produtos em Destaque",
+    "featuredProducts": "Produtos em Destaque",
+    "categories": "Categorias",
+    "about": {
+      "title": "Sobre Bonsai",
+      "description1": "Cultivamos bonsais há mais de 10 anos com",
+      "description2": "técnicas tradicionais e entrega em todo o Brasil.",
+      "description3": "Nosso objetivo é levar equilíbrio, beleza e natureza",
+      "description4": "para sua casa."
+    },
+    "tips": {
+      "title": "Dicas de Cuidados",
+      "subtitle1": "Aprenda como manter seu bonsai sempre",
+      "subtitle2": "saudável: rega correta, poda, adubação e luz",
+      "subtitle3": "ideal.",
+      "viewAll": "Ver todas",
+      "tip1": {
+        "title": "Rega Adequada",
+        "description": "Mantenha o solo úmido, mas não encharcado."
+      },
+      "tip2": {
+        "title": "Poda Regular",
+        "description": "Pode galhos e raízes para manter a forma."
+      },
+      "tip3": {
+        "title": "Iluminação",
+        "description": "Luz indireta é ideal para a maioria das espécies."
+      },
+      "tip4": {
+        "title": "Adubação",
+        "description": "Use fertilizante específico durante a primavera."
+      },
+      "tip5": {
+        "title": "Ventilação",
+        "description": "Mantenha em local arejado para evitar fungos."
+      },
+      "tip6": {
+        "title": "Transplante",
+        "description": "Troque o vaso a cada 2-3 anos conforme crescimento."
+      }
+    }
+  },
+  "about": {
+    "store": {
+      "title": "Sobre a loja",
+      "description": "Cultivamos bonsais há mais de 10 anos com técnicas tradicionais e entrega em todo o Brasil. Nosso objetivo é levar equilíbrio, beleza e natureza para sua casa."
+    },
+    "care": {
+      "title": "Dicas e Cuidados com Bonsai",
+      "description": "Aprenda como manter seu bonsai sempre saudável: rega correta, poda, adubação e luz ideal."
+    },
+    "tips": {
+      "watering": {
+        "title": "Rega Adequada",
+        "description": "Mantenha o solo úmido, mas não encharcado."
+      },
+      "pruning": {
+        "title": "Poda Regular",
+        "description": "Pode galhos e raízes para manter a forma."
+      },
+      "lighting": {
+        "title": "Iluminação",
+        "description": "Luz indireta é ideal para a maioria das espécies."
+      },
+      "fertilizing": {
+        "title": "Adubação",
+        "description": "Use fertilizante específico durante a primavera."
+      }
+    }
+  },
+  "errors": {
+    "404": "Página não encontrada",
+    "500": "Erro no servidor",
+    "network": "Erro de conexão",
+    "unknown": "Erro desconhecido",
+    "tryAgain": "Tentar novamente"
+  }
+}

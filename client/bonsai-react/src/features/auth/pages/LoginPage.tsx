@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { LoginForm, RegisterForm } from '@/features/auth';
+import { useTranslation } from '@/hooks/use-translation';
 import { ROUTES } from '@/constants/routes';
 import registerImage from '@/assets/images/register.svg';
 import loginImage from '@/assets/images/login.svg';
@@ -10,6 +11,7 @@ import './LoginPage.css';
 export const LoginPage = () => {
   const [isSignUpMode, setIsSignUpMode] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className={`auth-container ${isSignUpMode ? 'sign-up-mode' : ''}`}>
@@ -17,18 +19,18 @@ export const LoginPage = () => {
         <div className="auth-form-wrapper">
           {/* Login Form */}
           <div className="auth-signin-form">
-            <h2 className="auth-title">Entrar</h2>
+            <h2 className="auth-title">{t('auth.login.title')}</h2>
             <LoginForm />
             <div className="auth-links">
               <a href="/reset" className="auth-password-reset">
-                Esqueci minha senha
+                {t('auth.login.forgotPassword')}
               </a>
             </div>
           </div>
 
           {/* Register Form */}
           <div className="auth-signup-form">
-            <h2 className="auth-title">Cadastre-se</h2>
+            <h2 className="auth-title">{t('auth.register.title')}</h2>
             <RegisterForm />
           </div>
         </div>
@@ -37,38 +39,38 @@ export const LoginPage = () => {
       <div className="auth-panels-container">
         <div className="auth-panel auth-left-panel">
           <div className="auth-content">
-            <h3>Novo Aqui ?</h3>
-            <p>Cadastre-se já e tenha acesso a produtos incríveis!</p>
+            <h3>{t('auth.login.noAccount')}</h3>
+            <p>{t('auth.register.description')}</p>
             <button
               className="auth-btn auth-transparent"
               onClick={() => setIsSignUpMode(true)}
             >
-              Cadastre-se
+              {t('auth.login.createAccount')}
             </button>
             <button className="lang-btn" onClick={() => navigate(ROUTES.HOME)}>
-              <span>Voltar</span>
+              <span>{t('auth.login.backToHome')}</span>
             </button>
           </div>
-          <img src={registerImage} className="auth-image" alt="Ilustração de pessoa no campo" />
+          <img src={registerImage} className="auth-image" alt={t('auth.register.title')} />
         </div>
         <div className="auth-panel auth-right-panel">
           <div className="auth-content">
-            <h3>Já é um de nós?</h3>
-            <p>Entre com seus dados e aproveite nossas ofertas!</p>
+            <h3>{t('auth.register.hasAccount')}</h3>
+            <p>{t('auth.login.description')}</p>
             <button
               className="auth-btn auth-transparent"
               onClick={() => setIsSignUpMode(false)}
             >
-              Entrar
+              {t('auth.register.goToLogin')}
             </button>
             <button className="lang-btn" onClick={() => navigate(ROUTES.HOME)}>
-              <span>Voltar</span>
+              <span>{t('auth.login.backToHome')}</span>
             </button>
           </div>
           <img
             src={loginImage}
             className="auth-image"
-            alt="Ilustração de pessoa em uma ilha com arvores"
+            alt={t('auth.login.title')}
           />
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { Search } from 'lucide-react';
 import { FormControl, MenuItem, Select } from '@mui/material';
+import { useTranslation } from '@/hooks/use-translation';
 import type { Category } from '@/types/product.types';
 
 interface ProductFiltersProps {
@@ -19,10 +20,11 @@ export const ProductFilters = ({
   categories,
   isLoadingCategories = false,
 }: ProductFiltersProps) => {
+  const { t } = useTranslation();
   const safeCategories = Array.isArray(categories) ? categories : [];
   
   const categoryOptions = [
-    { value: '', label: 'Todas as categorias' },
+    { value: '', label: t('products.allCategories') },
     ...safeCategories.map((cat) => ({ value: cat.name, label: cat.name })),
   ];
 
@@ -32,7 +34,7 @@ export const ProductFilters = ({
         <Search className="search-icon" size={20} />
         <input
           type="text"
-          placeholder="Buscar produtos..."
+          placeholder={t('products.searchPlaceholder')}
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
         />

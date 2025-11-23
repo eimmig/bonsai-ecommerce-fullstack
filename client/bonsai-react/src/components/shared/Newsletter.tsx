@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useTranslation } from '@/hooks/use-translation';
 import './Newsletter.css';
 
 export const Newsletter = () => {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -12,10 +14,10 @@ export const Newsletter = () => {
     setIsSubmitting(true);
     try {
       console.log('Newsletter subscription:', email);
-      alert('Inscrição realizada com sucesso!');
+      alert(t('footer.subscriptionSuccess'));
       setEmail('');
     } catch (error) {
-      alert('Erro ao se inscrever. Tente novamente.');
+      alert(t('footer.subscriptionError'));
     } finally {
       setIsSubmitting(false);
     }
@@ -24,18 +26,18 @@ export const Newsletter = () => {
   return (
     <section className="newsletter-section">
       <div className="newsletter-container">
-        <h2>Receba ofertas e novidades.</h2>
-        <p>Cadastre seu e-mail e fique por dentro das promoções e novos produtos</p>
+        <h2>{t('footer.newsletterTitle')}</h2>
+        <p>{t('footer.newsletterDescription')}</p>
         <form className="newsletter-form" onSubmit={handleSubmit}>
           <input
             type="email"
-            placeholder="Seu e-mail"
+            placeholder={t('footer.emailPlaceholder')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
           <button type="submit" className="btn-subscribe" disabled={isSubmitting}>
-            {isSubmitting ? 'Inscrevendo...' : 'Inscrever-se'}
+            {isSubmitting ? t('footer.subscribing') : t('footer.subscribe')}
           </button>
         </form>
       </div>

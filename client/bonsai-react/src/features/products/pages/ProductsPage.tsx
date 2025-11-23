@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 
 import { useProducts, useCategories } from '@/hooks/use-products';
 import { useAddToCart } from '@/hooks/use-add-to-cart';
+import { useTranslation } from '@/hooks/use-translation';
 import { SEO } from '@/components/seo';
 import { ProductGrid, ProductFilters } from '../components';
 import type { Product } from '@/types/product.types';
@@ -10,6 +11,7 @@ import './ProductsPage.css';
 export const ProductsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('');
+  const { t } = useTranslation();
 
   const { data: productsData, isLoading } = useProducts();
   const { data: categoriesData, isLoading: isLoadingCategories } = useCategories();
@@ -29,21 +31,21 @@ export const ProductsPage: React.FC = () => {
   }, [allProducts, searchTerm, category]);
 
   const seoDescription = category
-    ? `Explore nossa seleção de ${category.toLowerCase()} para bonsai. Produtos de qualidade com entrega para todo o Brasil.`
-    : 'Confira todos os nossos produtos: bonsais autênticos, ferramentas profissionais, acessórios exclusivos e kits completos.';
+    ? t('products.seoDescriptionCategory', { category: category.toLowerCase() })
+    : t('products.seoDescription');
 
   return (
     <div className="products-page">
       <div className="container">
         <SEO
-          title="Produtos"
+          title={t('products.title')}
           description={seoDescription}
           keywords={`bonsai, produtos bonsai, ${category.toLowerCase()}, comprar bonsai online, loja bonsai`}
           url="/produtos"
         />
 
         <h1>
-          Todos os <span className="highlight">Bonsais</span>
+          {t('products.allBonsais.part1')} <span className="highlight">{t('products.allBonsais.part2')}</span>
         </h1>
 
         <ProductFilters
@@ -56,7 +58,7 @@ export const ProductsPage: React.FC = () => {
         />
 
         <p className="products-count">
-          {products.length} {products.length === 1 ? 'produto encontrado' : 'produtos encontrados'}
+          {products.length} {t(products.length === 1 ? 'products.productFound' : 'products.productsFound')}
         </p>
 
         <ProductGrid products={products} isLoading={isLoading} onAddToCart={handleAddToCart} />

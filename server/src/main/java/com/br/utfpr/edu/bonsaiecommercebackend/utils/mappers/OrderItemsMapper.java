@@ -36,7 +36,7 @@ public interface OrderItemsMapper extends DomainMapper<OrderItemsModel, OrderIte
     @Mapping(target = "updatedBy", ignore = true)
     OrderItemsModel toModel(OrderItemsInputDTO dto);
 
-    @Mapping(target = "productId", source = "product.id")
+    @Mapping(target = "product", source = "product")
     @Mapping(target = "price", source = "price")
     @Mapping(target = "createdAt", source = "createdAt")
     @Mapping(target = "updatedAt", source = "updatedAt")

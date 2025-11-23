@@ -22,7 +22,7 @@ export const orderApi = {
   },
 
   cancel: async (id: string): Promise<Order> => {
-    const response = await apiClient.patch<Order>(ENDPOINTS.ORDERS.CANCEL(id));
+    const response = await apiClient.put<Order>(ENDPOINTS.ORDERS.CANCEL(id));
     return response.data;
   },
 };

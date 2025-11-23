@@ -34,7 +34,7 @@ export const useUpdateAddress = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: Partial<Address> }) => 
+    mutationFn: ({ id, data }: { id: string; data: Partial<Address> }) => 
       addressApi.updateAddress(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['addresses'] });
@@ -46,7 +46,7 @@ export const useDeleteAddress = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => addressApi.deleteAddress(id),
+    mutationFn: (id: string) => addressApi.deleteAddress(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['addresses'] });
     },

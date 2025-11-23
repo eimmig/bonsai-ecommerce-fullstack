@@ -25,21 +25,26 @@ export const addressApi = {
   },
 
   getUserAddresses: async (): Promise<Address[]> => {
-    const response = await apiClient.get<Address[]>(ENDPOINTS.ADDRESSES);
+    const response = await apiClient.get<{ content: Address[] }>(ENDPOINTS.ADDRESSES.LIST);
+    return response.data.content;
+  },
+
+  getAddressById: async (id: string): Promise<Address> => {
+    const response = await apiClient.get<Address>(ENDPOINTS.ADDRESSES.BY_ID(id));
     return response.data;
   },
 
   createAddress: async (address: Omit<Address, 'id' | 'userId'>): Promise<Address> => {
-    const response = await apiClient.post<Address>(ENDPOINTS.ADDRESSES, address);
+    const response = await apiClient.post<Address>(ENDPOINTS.ADDRESSES.CREATE, address);
     return response.data;
   },
 
-  updateAddress: async (id: number, address: Partial<Address>): Promise<Address> => {
-    const response = await apiClient.put<Address>(`${ENDPOINTS.ADDRESSES}/${id}`, address);
+  updateAddress: async (id: string, address: Partial<Omit<Address, 'id' | 'userId'>>): Promise<Address> => {
+    const response = await apiClient.put<Address>(ENDPOINTS.ADDRESSES.UPDATE(id), address);
     return response.data;
   },
 
-  deleteAddress: async (id: number): Promise<void> => {
-    await apiClient.delete(`${ENDPOINTS.ADDRESSES}/${id}`);
+  deleteAddress: async (id: string): Promise<void> => {
+    await apiClient.delete(ENDPOINTS.ADDRESSES.DELETE(id));
   },
 };

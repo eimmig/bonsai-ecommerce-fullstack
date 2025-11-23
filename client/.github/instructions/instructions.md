@@ -17,57 +17,328 @@ Além das sugestões, sempre ter em mente essas recomendações principais:
 
 ## Bibliotecas Recomendadas
 
+### 📊 Visão Geral: Papel de Cada Biblioteca
+
+Cada biblioteca tem uma **responsabilidade específica** - não há duplicação:
+
+| Biblioteca | Responsabilidade | Exemplo de Uso |
+|------------|------------------|----------------|
+| **Zod** | Validação de schemas e tipos | Validar formulários, validar respostas de API |
+| **Zustand** | Estado global da aplicação (UI state) | Carrinho, usuário logado, tema, modals |
+| **React Query** | Gerenciar dados do servidor (cache, sync) | Produtos, pedidos, dados de API |
+| **React Hook Form** | Gerenciar formulários complexos | Formulários com múltiplos campos |
+| **date-fns** | Manipulação de datas | Formatar datas, calcular diferenças |
+
+#### Por que Zod E React Hook Form?
+
+**Zod**: Define **o que é válido** (schema de validação)
+```tsx
+const userSchema = z.object({
+  email: z.string().email(),
+  age: z.number().min(18),
+});
+// Zod valida: "isso é um email válido?"
+```
+
+**React Hook Form**: Gerencia **como o formulário funciona** (estado, submissão, errors)
+```tsx
+const { register, handleSubmit } = useForm();
+// RHF gerencia: input values, touched, dirty, submit
+```
+
+**Juntos**: React Hook Form usa Zod para validação
+```tsx
+useForm({ resolver: zodResolver(userSchema) });
+// RHF gerencia o form + usa Zod para validar
+```
+
+#### Por que Zustand E React Query?
+
+**Zustand**: Estado de **UI/aplicação** (você controla)
+```tsx
+const useCartStore = create((set) => ({
+  items: [],
+  addItem: (item) => set((state) => ({ items: [...state.items, item] })),
+}));
+// Estado que VOCÊ muda: carrinho, tema, modal aberto/fechado
+```
+
+**React Query**: Dados do **servidor** (cache automático, sync)
+```tsx
+const { data } = useQuery({
+  queryKey: ['products'],
+  queryFn: fetchProducts,
+});
+// Dados que VÊM DO SERVIDOR: produtos, usuários, pedidos
+// React Query gerencia: cache, refetch, loading, error
+```
+
+**Nunca duplique**: Se vem do servidor → React Query. Se é estado local → Zustand.
+
+---
+
 ### Core Dependencies
 ```json
 {
-  "react": "^18.0.0",
-  "react-dom": "^18.0.0",
-  "typescript": "^5.0.0",
-  "@types/react": "^18.0.0",
-  "@types/react-dom": "^18.0.0"
+  "react": "^19.1.0",
+  "react-dom": "^19.1.0",
+  "typescript": "^5.7.0",
+  "@types/react": "^19.0.0",
+  "@types/react-dom": "^19.0.0"
 }
 ```
 
 ### State Management
 ```json
 {
-  "zustand": "^4.4.0",
-  "@tanstack/react-query": "^5.0.0"
+  "zustand": "^5.0.0",
+  "@tanstack/react-query": "^5.90.0"
 }
+```
+
+**Quando usar cada um:**
+
+```tsx
+// ✅ Zustand: Estado de UI que você controla
+const useUIStore = create((set) => ({
+  sidebarOpen: false,
+  theme: 'light',
+  cart: [],
+  toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
+}));
+
+// ✅ React Query: Dados do servidor (cache automático)
+const useProducts = () => {
+  return useQuery({
+    queryKey: ['products'],
+    queryFn: () => fetch('/api/products').then(r => r.json()),
+    staleTime: 5 * 60 * 1000, // Cache por 5min
+  });
+};
+
+// ❌ NUNCA: Duplicar dados do servidor no Zustand
+const useBadStore = create((set) => ({
+  products: [], // ❌ Não fazer! Use React Query
+  setProducts: (products) => set({ products }), // ❌ React Query já faz isso
+}));
 ```
 
 ### Forms & Validation
 ```json
 {
-  "react-hook-form": "^7.45.0",
-  "zod": "^3.22.0",
-  "@hookform/resolvers": "^3.3.0"
+  "react-hook-form": "^7.65.0",
+  "zod": "^4.1.0",
+  "@hookform/resolvers": "^5.2.0"
 }
 ```
+
+**Como trabalham juntos:**
+
+```tsx
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+// 1️⃣ Zod: Define REGRAS de validação (schema)
+const loginSchema = z.object({
+  email: z.string().email('Email inválido'),
+  password: z.string().min(6, 'Mínimo 6 caracteres'),
+});
+
+type LoginForm = z.infer<typeof loginSchema>; // Gera TypeScript types automaticamente!
+
+// 2️⃣ React Hook Form: GERENCIA o formulário
+function LoginForm() {
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>({
+    resolver: zodResolver(loginSchema), // Conecta Zod com RHF
+  });
+  
+  const onSubmit = (data: LoginForm) => {
+    // data já está validado pelo Zod!
+    console.log(data); // { email: string, password: string }
+  };
+  
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register('email')} />
+      {errors.email && <span>{errors.email.message}</span>}
+      
+      <input type="password" {...register('password')} />
+      {errors.password && <span>{errors.password.message}</span>}
+      
+      <button type="submit">Entrar</button>
+    </form>
+  );
+}
+```
+
+**Benefícios:**
+- ✅ Zod valida + gera TypeScript types (DRY - Don't Repeat Yourself)
+- ✅ RHF gerencia performance (não re-renderiza a cada keystroke)
+- ✅ Validação tanto no cliente quanto reutilizável no servidor
 
 ### Routing & HTTP
 ```json
 {
-  "react-router-dom": "^6.15.0",
-  "axios": "^1.5.0"
+  "react-router-dom": "^7.0.0"
 }
 ```
+
+> **Nota**: Axios foi removido em favor do `fetch` nativo do JavaScript, que agora possui suporte completo em navegadores modernos e oferece melhor performance. Para TypeScript, use tipos nativos como `Response` e `RequestInit`.
 
 ### Styling
 ```json
 {
-  "styled-components": "^6.0.0",
-  "@types/styled-components": "^5.1.0",
-  "tailwindcss": "^3.3.0"
+  "tailwindcss": "^4.0.0",
+  "class-variance-authority": "^0.7.0",
+  "clsx": "^2.1.0"
 }
 ```
+
+> **Nota**: Tailwind CSS v4 com melhor performance e DX. Para componentes com variantes, use `class-variance-authority` (CVA) ao invés de styled-components. CSS Modules continuam válidos para casos específicos.
 
 ### Utilities
 ```json
 {
-  "date-fns": "^2.30.0",
-  "clsx": "^2.0.0",
-  "react-error-boundary": "^4.0.0"
+  "date-fns": "^4.1.0",
+  "clsx": "^2.1.0",
+  "react-error-boundary": "^6.0.0"
+}
+```
+
+---
+
+## 🎯 Exemplos Práticos: Quando Usar Cada Biblioteca
+
+### Exemplo 1: E-commerce (Carrinho de Compras)
+
+```tsx
+// ✅ React Query: Buscar produtos do servidor
+const useProducts = () => {
+  return useQuery({
+    queryKey: ['products'],
+    queryFn: () => fetch('/api/products').then(r => r.json()),
+  });
+};
+
+// ✅ Zustand: Gerenciar carrinho (estado local da UI)
+const useCartStore = create<CartState>((set) => ({
+  items: [],
+  addToCart: (product) => set((state) => ({
+    items: [...state.items, product],
+  })),
+  removeFromCart: (productId) => set((state) => ({
+    items: state.items.filter(item => item.id !== productId),
+  })),
+  clearCart: () => set({ items: [] }),
+}));
+
+// ✅ Zod: Validar formulário de checkout
+const checkoutSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  address: z.string().min(10),
+  cardNumber: z.string().regex(/^\d{16}$/),
+});
+
+// Componente que usa TUDO junto:
+function CheckoutPage() {
+  const { data: products } = useProducts(); // React Query
+  const { items, clearCart } = useCartStore(); // Zustand
+  
+  const { register, handleSubmit } = useForm({
+    resolver: zodResolver(checkoutSchema), // Zod + RHF
+  });
+  
+  const onSubmit = async (data: CheckoutForm) => {
+    // data validado pelo Zod
+    // items vem do Zustand
+    await submitOrder({ ...data, items });
+    clearCart();
+  };
+  
+  return <form onSubmit={handleSubmit(onSubmit)}>...</form>;
+}
+```
+
+### Exemplo 2: Dashboard com Filtros
+
+```tsx
+// ✅ Zustand: Estado dos filtros (UI state)
+const useFilterStore = create<FilterState>((set) => ({
+  dateRange: { start: null, end: null },
+  category: 'all',
+  setDateRange: (range) => set({ dateRange: range }),
+  setCategory: (category) => set({ category }),
+}));
+
+// ✅ React Query: Buscar dados baseado nos filtros
+const useOrders = () => {
+  const { dateRange, category } = useFilterStore();
+  
+  return useQuery({
+    queryKey: ['orders', dateRange, category], // Refetch quando filtros mudam
+    queryFn: () => fetchOrders({ dateRange, category }),
+  });
+};
+
+// ✅ Zod: Validar parâmetros de busca
+const filterSchema = z.object({
+  dateRange: z.object({
+    start: z.date(),
+    end: z.date(),
+  }),
+  category: z.enum(['all', 'electronics', 'clothing']),
+});
+
+function Dashboard() {
+  const { data: orders, isLoading } = useOrders(); // React Query
+  const { setCategory } = useFilterStore(); // Zustand
+  
+  return (
+    <div>
+      <select onChange={(e) => setCategory(e.target.value)}>
+        <option value="all">Todos</option>
+        <option value="electronics">Eletrônicos</option>
+      </select>
+      
+      {isLoading ? <Spinner /> : <OrderTable orders={orders} />}
+    </div>
+  );
+}
+```
+
+### Exemplo 3: Validação de API Response
+
+```tsx
+// ✅ Zod: Validar que a resposta da API está correta
+const userSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  email: z.string().email(),
+  createdAt: z.string().datetime(),
+});
+
+// ✅ React Query com validação Zod
+const useUser = (id: string) => {
+  return useQuery({
+    queryKey: ['user', id],
+    queryFn: async () => {
+      const response = await fetch(`/api/users/${id}`);
+      const data = await response.json();
+      
+      // Valida resposta da API em runtime
+      return userSchema.parse(data); // Lança erro se inválido
+    },
+  });
+};
+
+// Agora você tem type-safety REAL (não só types do TS)
+function UserProfile({ userId }: { userId: string }) {
+  const { data: user } = useUser(userId);
+  
+  // TypeScript + Runtime validation garantem que user.email existe!
+  return <div>{user?.email}</div>;
 }
 ```
 
@@ -89,6 +360,19 @@ Além das sugestões, sempre ter em mente essas recomendações principais:
 
 Nessa seção estão definidas as convenções de estilização do código React + TypeScript, baseadas nas melhores práticas da comunidade React.
 
+### Mudanças Importantes no React 19
+
+- **Não use `React.FC`**: A tipagem explícita de componentes funcionais não é mais recomendada. Use inferência de tipos do TypeScript.
+- **`isLoading` → `isPending`**: React Query v5 mudou a nomenclatura para melhor clareza semântica.
+- **Compiler automático**: React 19 otimiza automaticamente muitas re-renderizações, reduzindo a necessidade de `React.memo` e `useMemo`.
+- **Fetch nativo**: Preferir `fetch` ao invés de bibliotecas como axios para requisições HTTP.
+- **`use()` hook**: Novo hook para ler promises e contextos em componentes.
+- **Actions**: Funções que gerenciam transições de estado automaticamente com `useActionState`.
+- **`useOptimistic()`**: Para updates otimistas de UI antes da confirmação do servidor.
+- **`useFormStatus()`**: Hook para acessar status de formulários em componentes filhos.
+- **`ref` como prop**: Não é mais necessário `forwardRef` - `ref` é uma prop normal agora.
+- **Metadata e Document head**: Use `<title>`, `<meta>` e `<link>` diretamente nos componentes.
+
 ### Convenções de Nomenclatura
 
 #### Componentes React
@@ -99,6 +383,7 @@ Componentes devem usar **PascalCase** e sempre ser nomeados com substantivos:
 // ❌ Não fazer
 const userProfile = () => { };
 const User_Profile = () => { };
+const UserProfile: React.FC = () => { }; // React.FC não é mais recomendado
 
 // ✅ Fazer
 const UserProfile = () => { };
@@ -169,7 +454,7 @@ import './UserProfile.styles.css';
 #### Ordem dentro do Componente
 
 ```tsx
-const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
+const UserProfile = ({ userId }: { userId: string }) => {
   // 1. State hooks
   const [loading, setLoading] = useState(false);
   
@@ -278,11 +563,13 @@ const processData = (data: unknown) => {
 
 ### React.memo e useMemo (!)
 
-Use `React.memo` para componentes que renderizam frequentemente sem mudanças nas props:
+> **Importante**: No React 19, o compilador React automático otimiza muitas re-renderizações. Use `React.memo` apenas quando necessário após medir performance.
+
+Use `React.memo` criteriosamente para componentes que renderizam frequentemente sem mudanças nas props:
 
 ```tsx
-// ✅ Para componentes puros/dummy
-const UserCard = React.memo<UserCardProps>(({ user }) => {
+// ✅ Para componentes puros/dummy COM problema de performance comprovado
+const UserCard = React.memo(({ user }: { user: User }) => {
   return (
     <div>
       <h3>{user.name}</h3>
@@ -346,9 +633,115 @@ const AppRoutes = () => (
 );
 ```
 
+### React 19 Actions e Form Handling (!)
+
+#### Usando useActionState para Formulários
+
+```tsx
+import { useActionState } from 'react';
+
+// Action que retorna estado e errors
+async function updateUserAction(prevState: any, formData: FormData) {
+  const name = formData.get('name') as string;
+  const email = formData.get('email') as string;
+  
+  try {
+    const user = await fetch('/api/users', {
+      method: 'POST',
+      body: JSON.stringify({ name, email }),
+    });
+    return { success: true, user };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}
+
+function UserForm() {
+  const [state, formAction, isPending] = useActionState(updateUserAction, { success: false });
+  
+  return (
+    <form action={formAction}>
+      <input name="name" required />
+      <input name="email" type="email" required />
+      <button disabled={isPending}>
+        {isPending ? 'Salvando...' : 'Salvar'}
+      </button>
+      {state.error && <p className="error">{state.error}</p>}
+    </form>
+  );
+}
+```
+
+#### Usando useFormStatus em Componentes Filhos
+
+```tsx
+import { useFormStatus } from 'react-dom';
+
+function SubmitButton() {
+  const { pending, data, method, action } = useFormStatus();
+  
+  return (
+    <button type="submit" disabled={pending}>
+      {pending ? 'Enviando...' : 'Enviar'}
+    </button>
+  );
+}
+
+function MyForm() {
+  return (
+    <form action={submitAction}>
+      <input name="message" />
+      <SubmitButton /> {/* Acessa o status do form automaticamente */}
+    </form>
+  );
+}
+```
+
+#### Usando useOptimistic para Updates Otimistas
+
+```tsx
+import { useOptimistic } from 'react';
+
+function TodoList({ todos }: { todos: Todo[] }) {
+  const [optimisticTodos, addOptimisticTodo] = useOptimistic(
+    todos,
+    (state, newTodo: Todo) => [...state, newTodo]
+  );
+  
+  async function addTodo(formData: FormData) {
+    const newTodo = { id: crypto.randomUUID(), text: formData.get('text'), pending: true };
+    
+    // UI atualiza imediatamente
+    addOptimisticTodo(newTodo);
+    
+    // Requisição ao servidor
+    await fetch('/api/todos', {
+      method: 'POST',
+      body: JSON.stringify(newTodo),
+    });
+  }
+  
+  return (
+    <>
+      <form action={addTodo}>
+        <input name="text" />
+        <button type="submit">Adicionar</button>
+      </form>
+      <ul>
+        {optimisticTodos.map(todo => (
+          <li key={todo.id} style={{ opacity: todo.pending ? 0.5 : 1 }}>
+            {todo.text}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+```
+
 ### Custom Hooks para Lógica de Formulários (!)
 
-Use React Hook Form com Zod para validação:
+Use React Hook Form com Zod para validação (quando não usar Actions nativas):
 
 ```tsx
 import { useForm } from 'react-hook-form';
@@ -399,30 +792,48 @@ export const DateUtils = {
 };
 ```
 
-### Usar CSS-in-JS ou CSS Modules
+### Usar Tailwind + CVA ou CSS Modules
 
-Preferir Styled Components ou CSS Modules para isolamento:
+Preferir Tailwind CSS com Class Variance Authority (CVA) ou CSS Modules:
 
 ```tsx
-// styled-components
-import styled from 'styled-components';
+// Tailwind + CVA (Recomendado)
+import { cva, type VariantProps } from 'class-variance-authority';
+import { clsx } from 'clsx';
 
-const StyledButton = styled.button<{ variant: 'primary' | 'secondary' }>`
-  padding: 12px 24px;
-  border: none;
-  border-radius: 4px;
-  background-color: ${props => 
-    props.variant === 'primary' ? '#007bff' : '#6c757d'
-  };
-  color: white;
-  cursor: pointer;
-  
-  &:hover {
-    opacity: 0.8;
+const buttonVariants = cva(
+  'rounded-md font-medium transition-opacity hover:opacity-80',
+  {
+    variants: {
+      variant: {
+        primary: 'bg-blue-600 text-white',
+        secondary: 'bg-gray-600 text-white',
+        danger: 'bg-red-600 text-white',
+      },
+      size: {
+        sm: 'px-3 py-1.5 text-sm',
+        md: 'px-6 py-3 text-base',
+        lg: 'px-8 py-4 text-lg',
+      },
+    },
+    defaultVariants: {
+      variant: 'primary',
+      size: 'md',
+    },
   }
-`;
+);
 
-// CSS Modules
+interface ButtonProps extends VariantProps<typeof buttonVariants> {
+  children: React.ReactNode;
+}
+
+const Button = ({ children, variant, size }: ButtonProps) => (
+  <button className={buttonVariants({ variant, size })}>
+    {children}
+  </button>
+);
+
+// CSS Modules (alternativa)
 import styles from './Button.module.css';
 
 const Button = ({ children, variant = 'primary' }) => (
@@ -430,6 +841,49 @@ const Button = ({ children, variant = 'primary' }) => (
     {children}
   </button>
 );
+```
+
+### Ref como Prop (React 19) (!)
+
+No React 19, `ref` é uma prop normal - não é mais necessário `forwardRef`:
+
+```tsx
+// ✅ React 19 - ref como prop
+function Input({ ref, ...props }: { ref?: React.Ref<HTMLInputElement> } & React.ComponentProps<'input'>) {
+  return <input ref={ref} {...props} />;
+}
+
+// ❌ React 18 - forwardRef (não mais necessário)
+const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+  return <input ref={ref} {...props} />;
+});
+
+// Uso (igual em ambas versões)
+function MyForm() {
+  const inputRef = useRef<HTMLInputElement>(null);
+  
+  return <Input ref={inputRef} placeholder="Nome" />;
+}
+```
+
+### use() Hook para Promises e Context (!)
+
+```tsx
+import { use } from 'react';
+
+// Ler promises diretamente
+function UserProfile({ userPromise }: { userPromise: Promise<User> }) {
+  const user = use(userPromise); // Suspende até resolver
+  
+  return <div>{user.name}</div>;
+}
+
+// Ler context condicionalmente
+function ConditionalTheme({ useTheme }: { useTheme: boolean }) {
+  const theme = useTheme ? use(ThemeContext) : 'light';
+  
+  return <div className={theme}>Content</div>;
+}
 ```
 
 ### Evitar Props Drilling
@@ -528,6 +982,161 @@ export const USER_STATUS = {
 } as const;
 ```
 
+### Acessibilidade (a11y) (!)
+
+Sempre implementar acessibilidade:
+
+```tsx
+// ✅ Boas práticas de acessibilidade
+function AccessibleButton() {
+  return (
+    <button
+      type="button"
+      aria-label="Fechar modal"
+      onClick={handleClose}
+    >
+      <XIcon aria-hidden="true" />
+    </button>
+  );
+}
+
+function AccessibleForm() {
+  return (
+    <form>
+      <label htmlFor="email">Email</label>
+      <input
+        id="email"
+        type="email"
+        name="email"
+        aria-required="true"
+        aria-describedby="email-error"
+      />
+      <span id="email-error" role="alert">
+        Email inválido
+      </span>
+    </form>
+  );
+}
+
+// Navegação por teclado
+function KeyboardNav() {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleClick();
+    }
+  };
+  
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      onClick={handleClick}
+    >
+      Clicável
+    </div>
+  );
+}
+
+// Focus management
+function Modal({ isOpen, onClose }: ModalProps) {
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  
+  useEffect(() => {
+    if (isOpen) {
+      closeButtonRef.current?.focus();
+    }
+  }, [isOpen]);
+  
+  if (!isOpen) return null;
+  
+  return (
+    <div role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <h2 id="modal-title">Título do Modal</h2>
+      <button ref={closeButtonRef} onClick={onClose}>
+        Fechar
+      </button>
+    </div>
+  );
+}
+```
+
+### SEO e Meta Tags (React 19) (!)
+
+No React 19, use tags meta diretamente nos componentes:
+
+```tsx
+function ProductPage({ product }: { product: Product }) {
+  return (
+    <>
+      <title>{product.name} - Loja Bonsai</title>
+      <meta name="description" content={product.description} />
+      <meta property="og:title" content={product.name} />
+      <meta property="og:image" content={product.image} />
+      <link rel="canonical" href={`https://example.com/products/${product.id}`} />
+      
+      <div>
+        <h1>{product.name}</h1>
+        <p>{product.description}</p>
+      </div>
+    </>
+  );
+}
+
+// Para projetos com react-helmet-async (compatibilidade)
+import { Helmet } from 'react-helmet-async';
+
+function LegacySEO() {
+  return (
+    <Helmet>
+      <title>Título da Página</title>
+      <meta name="description" content="Descrição" />
+    </Helmet>
+  );
+}
+```
+
+### Performance - Code Splitting (!)
+
+```tsx
+import { lazy, Suspense } from 'react';
+
+// Lazy loading de componentes pesados
+const HeavyChart = lazy(() => import('@/components/HeavyChart'));
+const VideoPlayer = lazy(() => import('@/components/VideoPlayer'));
+
+function Dashboard() {
+  const [showChart, setShowChart] = useState(false);
+  
+  return (
+    <div>
+      <button onClick={() => setShowChart(true)}>Mostrar Gráfico</button>
+      
+      {showChart && (
+        <Suspense fallback={<ChartSkeleton />}>
+          <HeavyChart data={data} />
+        </Suspense>
+      )}
+    </div>
+  );
+}
+
+// Preload on hover para melhor UX
+function ProductCard({ product }: { product: Product }) {
+  const handleMouseEnter = () => {
+    // Precarrega a página de detalhes
+    import('@/pages/ProductDetail');
+  };
+  
+  return (
+    <Link to={`/products/${product.id}`} onMouseEnter={handleMouseEnter}>
+      {product.name}
+    </Link>
+  );
+}
+```
+
 ### Adapter Pattern para Bibliotecas Externas
 
 Criar camada de abstração para bibliotecas:
@@ -592,7 +1201,7 @@ export const useEmployee = () => {
   
   const {
     data: employeeData,
-    isLoading,
+    isPending,
     error,
   } = useQuery({
     queryKey: ['employee', employee?.id],
@@ -630,7 +1239,7 @@ Funções puras para chamadas HTTP, substituindo `entity-requisition.service.ts`
 
 ```tsx
 // src/api/employee-api.ts
-import { ApiClient } from '@/lib/api-client';
+import { apiClient } from '@/lib/api-client';
 import { ENDPOINTS } from '@/constants/endpoints';
 import {
   GetEmployeeInfoRequest,
@@ -640,26 +1249,44 @@ import {
 
 export const employeeApi = {
   getById: async (id: string): Promise<Employee> => {
-    const response = await ApiClient.get<Employee>(`${ENDPOINTS.EMPLOYEES}/${id}`);
-    return response.data;
+    const response = await apiClient.get<Employee>(`${ENDPOINTS.EMPLOYEES}/${id}`);
+    return response;
   },
   
   getInfo: async (request: GetEmployeeInfoRequest): Promise<GetEmployeeInfoResponse> => {
-    const response = await ApiClient.post<GetEmployeeInfoResponse>(
+    const response = await apiClient.post<GetEmployeeInfoResponse>(
       `${ENDPOINTS.QUERIES}/${ENDPOINTS.GET_EMPLOYEE_INFO}`,
       request
     );
-    return response.data;
+    return response;
   },
   
   update: async (employee: Partial<Employee>): Promise<Employee> => {
-    const response = await ApiClient.put<Employee>(
+    const response = await apiClient.put<Employee>(
       `${ENDPOINTS.EMPLOYEES}/${employee.id}`,
       employee
     );
-    return response.data;
+    return response;
   },
 };
+
+// Exemplo de apiClient com fetch nativo:
+// export const apiClient = {
+//   get: async <T>(url: string): Promise<T> => {
+//     const response = await fetch(url);
+//     if (!response.ok) throw new Error('Request failed');
+//     return response.json();
+//   },
+//   post: async <T>(url: string, data: unknown): Promise<T> => {
+//     const response = await fetch(url, {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify(data),
+//     });
+//     if (!response.ok) throw new Error('Request failed');
+//     return response.json();
+//   },
+// };
 ```
 
 ### Zustand Store (entity-store.ts)
@@ -735,7 +1362,7 @@ import { UserList } from './components/UserList';
 import { UserFilters } from './components/UserFilters';
 import { useUserManagement } from './hooks/use-user-management';
 
-export const UserManagement: React.FC = () => {
+export const UserManagement = () => {
   const {
     users,
     filters,
@@ -795,7 +1422,7 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
-export const Button: React.FC<ButtonProps> = ({
+export const Button = ({
   children,
   variant = 'primary',
   size = 'md',
@@ -855,7 +1482,7 @@ interface LinkModalProps {
   onSubmit: (data: LinkFormData) => void;
 }
 
-export const LinkModal: React.FC<LinkModalProps> = ({
+export const LinkModal = ({
   isOpen,
   onClose,
   onSubmit,
@@ -1031,25 +1658,258 @@ export const formatDate = (
 ## Resumo das Boas Práticas
 
 ### ✅ Fazer
-- Usar TypeScript com tipagem forte
+
+#### Tipagem e Código
+- Usar TypeScript com tipagem forte e evitar `any`
 - Implementar custom hooks para lógica reutilizável
+- Usar inferência de tipos ao invés de `React.FC`
+- Preferir `unknown` quando o tipo for desconhecido
+
+#### Estado e Dados
 - Usar Zustand para estado global simples
-- Usar React Query para server state
-- Implementar Error Boundaries
-- Usar React.memo para componentes puros
+- Usar React Query para server state e cache
+- Usar `useActionState` para formulários com servidor
+- Usar `useOptimistic` para updates otimistas
 - Sempre fazer cleanup de effects
-- Usar lazy loading para rotas
+
+#### Performance
+- Lazy loading de rotas e componentes pesados
+- Code splitting estratégico
+- Usar `React.memo` apenas quando medir necessidade
+- Preload de recursos em hover/interaction
+
+#### Qualidade e Manutenibilidade
+- Implementar Error Boundaries
 - Criar adapter patterns para bibliotecas externas
-- Usar Zod + React Hook Form para formulários
+- Testes unitários com Vitest/Testing Library
+- Documentar componentes complexos
+
+#### Acessibilidade e SEO
+- Sempre implementar ARIA labels apropriados
+- Gerenciar foco em modais e navegação
+- Suporte completo a teclado
+- Meta tags e structured data para SEO
+- Usar tags semânticas HTML
+
+#### Formulários
+- Usar Zod + React Hook Form para validação
+- Usar `useFormStatus` para status em componentes filhos
+- Implementar mensagens de erro claras e acessíveis
 
 ### ❌ Não Fazer
-- Usar `any` sem necessidade real
+
+#### Tipagem
+- Usar `any` sem necessidade crítica comprovada
+- Usar `React.FC` (descontinuado no React 19)
+- Ignorar erros do TypeScript
+
+#### Estado
 - Fazer mutações diretas no estado
+- Props drilling excessivo (usar Context/Zustand)
+- Usar `useEffect` para sincronização derivável
+- Duplicar server state no estado local
+
+#### Componentes
 - Criar componentes compartilhados com lógica de negócio
-- Props drilling excessivo
 - Renderização com métodos complexos
 - Ignorar cleanup de effects
-- Usar `useEffect` para sincronização que pode ser derivada
+- Componentes com múltiplas responsabilidades
+
+#### Performance
+- Usar `React.memo`/`useMemo` prematuramente
+- Importar bibliotecas inteiras sem tree-shaking
+- Carregar todos os componentes eager
+
+#### Acessibilidade
+- Divs clicáveis sem role="button" e handlers de teclado
+- Ignorar labels em inputs
+- Remover outline de focus sem substituto
+- Usar cores como único indicador
+
+#### Segurança
+- Usar `dangerouslySetInnerHTML` sem sanitização
+- Expor tokens/secrets no código cliente
+- Confiar em validação apenas no cliente
+
+---
+
+## Testes (!)
+
+### Configuração Recomendada
+
+```json
+// package.json
+{
+  "devDependencies": {
+    "vitest": "^2.0.0",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/user-event": "^14.0.0",
+    "@vitest/ui": "^2.0.0",
+    "jsdom": "^25.0.0"
+  }
+}
+```
+
+### Testes de Componentes
+
+```tsx
+// src/components/Button.test.tsx
+import { render, screen } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
+import { describe, it, expect, vi } from 'vitest';
+import { Button } from './Button';
+
+describe('Button', () => {
+  it('renderiza com children', () => {
+    render(<Button>Clique aqui</Button>);
+    expect(screen.getByText('Clique aqui')).toBeInTheDocument();
+  });
+  
+  it('chama onClick quando clicado', async () => {
+    const handleClick = vi.fn();
+    render(<Button onClick={handleClick}>Clique</Button>);
+    
+    await userEvent.click(screen.getByText('Clique'));
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+  
+  it('está desabilitado quando disabled=true', () => {
+    render(<Button disabled>Clique</Button>);
+    expect(screen.getByRole('button')).toBeDisabled();
+  });
+});
+```
+
+### Testes de Hooks
+
+```tsx
+// src/hooks/use-counter.test.ts
+import { renderHook, act } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { useCounter } from './use-counter';
+
+describe('useCounter', () => {
+  it('inicia com valor 0', () => {
+    const { result } = renderHook(() => useCounter());
+    expect(result.current.count).toBe(0);
+  });
+  
+  it('incrementa o contador', () => {
+    const { result } = renderHook(() => useCounter());
+    
+    act(() => {
+      result.current.increment();
+    });
+    
+    expect(result.current.count).toBe(1);
+  });
+});
+```
+
+### Testes com React Query
+
+```tsx
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderHook, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { useUsers } from './use-users';
+
+const createWrapper = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: { retry: false },
+    },
+  });
+  
+  return ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={queryClient}>
+      {children}
+    </QueryClientProvider>
+  );
+};
+
+describe('useUsers', () => {
+  it('carrega usuários com sucesso', async () => {
+    const mockUsers = [{ id: 1, name: 'João' }];
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(mockUsers),
+      })
+    ) as any;
+    
+    const { result } = renderHook(() => useUsers(), {
+      wrapper: createWrapper(),
+    });
+    
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toEqual(mockUsers);
+  });
+});
+```
+
+### Testes de Integração
+
+```tsx
+// src/features/auth/LoginForm.integration.test.tsx
+import { render, screen } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { LoginForm } from './LoginForm';
+import { BrowserRouter } from 'react-router-dom';
+
+describe('LoginForm Integration', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+  
+  it('realiza login com sucesso', async () => {
+    const mockLogin = vi.fn(() => Promise.resolve({ token: 'abc123' }));
+    
+    render(
+      <BrowserRouter>
+        <LoginForm onLogin={mockLogin} />
+      </BrowserRouter>
+    );
+    
+    await userEvent.type(screen.getByLabelText('Email'), 'user@example.com');
+    await userEvent.type(screen.getByLabelText('Senha'), 'password123');
+    await userEvent.click(screen.getByRole('button', { name: 'Entrar' }));
+    
+    expect(mockLogin).toHaveBeenCalledWith({
+      email: 'user@example.com',
+      password: 'password123',
+    });
+  });
+  
+  it('mostra erros de validação', async () => {
+    render(
+      <BrowserRouter>
+        <LoginForm />
+      </BrowserRouter>
+    );
+    
+    await userEvent.click(screen.getByRole('button', { name: 'Entrar' }));
+    
+    expect(screen.getByText('Email é obrigatório')).toBeInTheDocument();
+    expect(screen.getByText('Senha é obrigatória')).toBeInTheDocument();
+  });
+});
+```
+
+### Cobertura de Testes
+
+```bash
+# Executar testes com cobertura
+npm run test:coverage
+
+# Meta de cobertura recomendada:
+# - Statements: > 80%
+# - Branches: > 75%
+# - Functions: > 80%
+# - Lines: > 80%
+```
 
 ---
 
@@ -1058,21 +1918,118 @@ export const formatDate = (
 ```
 src/
 ├── components/
-│   ├── ui/                    # Componentes base (Button, Input, etc)
-│   └── shared/                # Componentes compartilhados complexos
-├── features/
-│   └── [feature-name]/
+│   ├── ui/                    # Componentes base (Button, Input, Card, Badge, etc)
+│   │   ├── Button.tsx
+│   │   ├── Button.test.tsx
+│   │   ├── Input.tsx
+│   │   └── index.ts           # Barrel export
+│   ├── shared/                # Componentes compartilhados complexos
+│   │   ├── Header.tsx
+│   │   ├── Footer.tsx
+│   │   ├── Layout.tsx
+│   │   └── index.ts
+│   └── seo/                   # Componentes de SEO
+│       ├── SEO.tsx
+│       └── index.ts
+├── features/                  # Features organizadas por domínio
+│   ├── auth/
+│   │   ├── components/
+│   │   │   ├── LoginForm.tsx
+│   │   │   └── RegisterForm.tsx
+│   │   ├── hooks/
+│   │   │   └── use-auth.ts
+│   │   ├── pages/
+│   │   │   └── LoginPage.tsx
+│   │   ├── schemas/
+│   │   │   └── auth.schemas.ts
+│   │   └── index.ts
+│   ├── products/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── pages/
+│   │   └── index.ts
+│   └── cart/
 │       ├── components/
 │       ├── hooks/
-│       └── types/
+│       └── pages/
 ├── hooks/                     # Custom hooks globais
+│   ├── use-auth.ts
+│   ├── use-cart.ts
+│   ├── use-toast.ts
+│   └── index.ts
 ├── stores/                    # Zustand stores
+│   ├── auth-store.ts
+│   ├── auth-store.test.ts
+│   ├── cart-store.ts
+│   └── index.ts
 ├── api/                       # API functions
-├── utils/                     # Funções utilitárias
-├── types/                     # Tipos TypeScript globais
-├── constants/                 # Constantes e enums
+│   ├── auth-api.ts
+│   ├── product-api.ts
+│   └── index.ts
 ├── lib/                       # Configurações de bibliotecas
-└── pages/                     # Componentes de página/rota
+│   ├── api-client.ts          # Fetch wrapper
+│   ├── react-query.ts         # Query client config
+│   └── utils.ts               # cn() helper, etc
+├── utils/                     # Funções utilitárias
+│   ├── formatters.ts
+│   ├── validators.ts
+│   ├── currency.ts
+│   ├── currency.test.ts
+│   └── index.ts
+├── types/                     # Tipos TypeScript globais
+│   ├── api.types.ts
+│   ├── user.types.ts
+│   ├── product.types.ts
+│   └── index.ts
+├── constants/                 # Constantes e enums
+│   ├── routes.ts
+│   ├── endpoints.ts
+│   └── index.ts
+├── styles/                    # Estilos globais
+│   ├── globals.css
+│   └── theme.ts
+├── routes/                    # Configuração de rotas
+│   └── index.tsx
+├── test/                      # Configuração de testes
+│   ├── setup.ts
+│   └── utils.tsx              # Test helpers
+├── App.tsx
+├── main.tsx
+└── vite-env.d.ts
+```
+
+### Convenções de Nomenclatura de Arquivos
+
+- **Componentes**: `PascalCase.tsx` (ex: `UserProfile.tsx`)
+- **Hooks**: `use-kebab-case.ts` (ex: `use-user-data.ts`)
+- **Utils**: `kebab-case.ts` (ex: `date-formatters.ts`)
+- **Types**: `kebab-case.types.ts` (ex: `user.types.ts`)
+- **Stores**: `kebab-case-store.ts` (ex: `auth-store.ts`)
+- **Testes**: `*.test.tsx` ou `*.test.ts` (ao lado do arquivo testado)
+- **CSS Modules**: `*.module.css` (ex: `Button.module.css`)
+- **Barrel exports**: `index.ts` em cada pasta
+
+### Organização por Feature
+
+Cada feature deve ser auto-contida:
+
+```
+features/products/
+├── components/           # Componentes específicos da feature
+│   ├── ProductCard.tsx
+│   ├── ProductGrid.tsx
+│   └── ProductFilters.tsx
+├── hooks/               # Hooks específicos
+│   ├── use-products.ts
+│   └── use-product-filters.ts
+├── pages/               # Páginas da feature
+│   ├── ProductListPage.tsx
+│   └── ProductDetailPage.tsx
+├── schemas/             # Schemas de validação
+│   └── product.schemas.ts
+├── types/               # Tipos específicos (se não forem globais)
+│   └── product.types.ts
+└── index.ts             # Exports públicos da feature
 ```
 
 ---

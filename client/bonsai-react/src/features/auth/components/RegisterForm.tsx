@@ -3,6 +3,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { TextField, Button, Box, Typography } from '@mui/material';
 
 import { useAuth } from '@/hooks/use-auth';
+import { useTranslation } from '@/hooks/use-translation';
+import { useZodErrorTranslation } from '@/utils/zod-i18n';
+import { maskCPFCNPJ, maskPhone } from '@/utils/input-masks';
 import { registerSchema, type RegisterFormData } from '../schemas/auth.schemas';
 
 interface RegisterFormProps {
@@ -11,15 +14,27 @@ interface RegisterFormProps {
 
 export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
   const { register: registerUser, isRegistering } = useAuth();
+  const { t } = useTranslation();
+  const { translateError } = useZodErrorTranslation();
 
-  const { control, handleSubmit, formState: { errors } } = useForm<RegisterFormData>({
+  const { control, handleSubmit, formState: { errors }, reset } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     mode: 'onBlur',
     reValidateMode: 'onChange',
   });
 
   const onSubmit = (data: RegisterFormData) => {
-    registerUser(data);
+    // Remove máscaras antes de enviar para o backend
+    const cleanData = {
+      ...data,
+      cpfCnpj: data.cpfCnpj.replaceAll(/\D/g, ''),
+      phone: data.phone ? data.phone.replaceAll(/\D/g, '') : undefined,
+    };
+    registerUser(cleanData, {
+      onSuccess: () => {
+        reset();
+      },
+    });
   };
 
   return (
@@ -31,12 +46,12 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
         render={({ field }) => (
           <TextField
             {...field}
-            label="Nome completo"
+            label={t('auth.register.name')}
             variant="outlined"
             fullWidth
             error={!!errors.name}
-            helperText={errors.name?.message}
-            placeholder="Digite seu nome completo"
+            helperText={translateError(errors.name)}
+            placeholder={t('auth.register.namePlaceholder')}
             slotProps={{
               htmlInput: {
                 'aria-required': 'true'
@@ -50,18 +65,24 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
         name="cpfCnpj"
         control={control}
         defaultValue=""
-        render={({ field }) => (
+        render={({ field: { onChange, value, ...rest } }) => (
           <TextField
-            {...field}
-            label="CPF/CNPJ"
+            {...rest}
+            value={value}
+            onChange={(e) => {
+              const maskedValue = maskCPFCNPJ(e.target.value);
+              onChange(maskedValue);
+            }}
+            label={t('auth.register.cpfCnpj')}
             variant="outlined"
             fullWidth
             error={!!errors.cpfCnpj}
-            helperText={errors.cpfCnpj?.message}
-            placeholder="Digite seu CPF ou CNPJ"
+            helperText={translateError(errors.cpfCnpj)}
+            placeholder={t('auth.register.cpfCnpjPlaceholder')}
             slotProps={{
               htmlInput: {
-                'aria-required': 'true'
+                'aria-required': 'true',
+                maxLength: 18
               }
             }}
           />
@@ -72,15 +93,25 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
         name="phone"
         control={control}
         defaultValue=""
-        render={({ field }) => (
+        render={({ field: { onChange, value, ...rest } }) => (
           <TextField
-            {...field}
-            label="Telefone"
+            {...rest}
+            value={value}
+            onChange={(e) => {
+              const maskedValue = maskPhone(e.target.value);
+              onChange(maskedValue);
+            }}
+            label={t('auth.register.phone')}
             variant="outlined"
             fullWidth
             error={!!errors.phone}
-            helperText={errors.phone?.message}
-            placeholder="Digite seu telefone"
+            helperText={translateError(errors.phone)}
+            placeholder={t('auth.register.phonePlaceholder')}
+            slotProps={{
+              htmlInput: {
+                maxLength: 15
+              }
+            }}
           />
         )}
       />
@@ -92,13 +123,13 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
         render={({ field }) => (
           <TextField
             {...field}
-            label="E-mail"
+            label={t('auth.register.email')}
             type="email"
             variant="outlined"
             fullWidth
             error={!!errors.email}
-            helperText={errors.email?.message}
-            placeholder="seu.email@exemplo.com"
+            helperText={translateError(errors.email)}
+            placeholder={t('auth.register.emailPlaceholder')}
             slotProps={{
               htmlInput: {
                 'aria-required': 'true'
@@ -115,13 +146,13 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
         render={({ field }) => (
           <TextField
             {...field}
-            label="Senha"
+            label={t('auth.register.password')}
             type="password"
             variant="outlined"
             fullWidth
             error={!!errors.password}
-            helperText={errors.password?.message}
-            placeholder="Mínimo 6 caracteres"
+            helperText={translateError(errors.password)}
+            placeholder={t('auth.register.passwordPlaceholder')}
             slotProps={{
               htmlInput: {
                 'aria-required': 'true'
@@ -151,7 +182,7 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
           },
         }}
       >
-        {isRegistering ? 'Cadastrando...' : 'Cadastrar'}
+        {isRegistering ? t('auth.register.registering') : t('auth.register.signUp')}
       </Button>
 
       {onToggleForm && (
@@ -172,7 +203,7 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
               },
             }}
           >
-            Já tem conta? Entrar
+            {t('auth.register.hasAccountLink')}
           </Typography>
         </Box>
       )}

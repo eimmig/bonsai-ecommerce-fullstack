@@ -6,6 +6,7 @@ import com.br.utfpr.edu.bonsaiecommercebackend.entities.UserEntity;
 import com.br.utfpr.edu.bonsaiecommercebackend.exceptions.AuthenticationException;
 import com.br.utfpr.edu.bonsaiecommercebackend.repositories.UserRepository;
 import com.br.utfpr.edu.bonsaiecommercebackend.services.AuthService;
+import com.br.utfpr.edu.bonsaiecommercebackend.services.TokenBlacklistService;
 import com.br.utfpr.edu.bonsaiecommercebackend.utils.JwtUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,12 @@ public class AuthServiceImpl implements AuthService {
     private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final TokenBlacklistService tokenBlacklistService;
 
-    public AuthServiceImpl(UserRepository userRepository, JwtUtil jwtUtil) {
+    public AuthServiceImpl(UserRepository userRepository, JwtUtil jwtUtil, TokenBlacklistService tokenBlacklistService) {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
+        this.tokenBlacklistService = tokenBlacklistService;
     }
 
     @Override
@@ -37,6 +40,17 @@ public class AuthServiceImpl implements AuthService {
         }
         String token = jwtUtil.generateToken(user.getId());
         return new AuthResponseDTO(token, user.getId(), user.getEmail(), user.getName());
+    }
+    
+    @Override
+    public void logout(String token) {
+        try {
+            tokenBlacklistService.invalidateToken(token);
+            logger.info("Logout realizado com sucesso");
+        } catch (Exception e) {
+            logger.error("Erro ao realizar logout", e);
+            throw new AuthenticationException("Erro ao realizar logout");
+        }
     }
 }
 

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 
-import type { LoginRequest, RegisterRequest, AuthResponse } from '@/types/user.types';
+import type { LoginRequest, RegisterRequest, AuthResponse, User } from '@/types/user.types';
 import { authApi } from '@/api/auth-api';
 import { useAuthStore } from '@/stores/auth-store';
 import { useToast } from '@/hooks/use-toast';
@@ -17,27 +17,30 @@ export const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginRequest) => authApi.login(credentials),
     onSuccess: (data: AuthResponse) => {
-      setAuth(data.user, data.token);
+      const user: User = {
+        id: data.userId,
+        name: data.name,
+        email: data.email,
+      };
+      setAuth(user, data.token);
       queryClient.invalidateQueries({ queryKey: ['user'] });
-      toast.success('Login realizado com sucesso!', `Bem-vindo, ${data.user.name}!`);
+      toast.success('Login realizado com sucesso!', `Bem-vindo, ${user.name}!`);
       navigate(ROUTES.HOME);
     },
     onError: (error: AxiosError) => {
-      const message = (error as any).userMessage || 'Erro ao fazer login';
+      const message = (error as any).userMessage || 'Email ou senha incorretos';
       toast.error('Erro no login', message);
     },
   });
 
   const registerMutation = useMutation({
     mutationFn: (data: RegisterRequest) => authApi.register(data),
-    onSuccess: (data: AuthResponse) => {
-      setAuth(data.user, data.token);
-      queryClient.invalidateQueries({ queryKey: ['user'] });
-      toast.success('Cadastro realizado!', 'Sua conta foi criada com sucesso!');
-      navigate(ROUTES.HOME);
+    onSuccess: () => {
+      toast.success('Cadastro realizado!', 'Faça login para continuar');
+      navigate(ROUTES.LOGIN);
     },
     onError: (error: AxiosError) => {
-      const message = (error as any).userMessage || 'Erro ao criar conta';
+      const message = (error as any).userMessage || 'Erro ao criar conta. Email pode já estar cadastrado.';
       toast.error('Erro no cadastro', message);
     },
   });

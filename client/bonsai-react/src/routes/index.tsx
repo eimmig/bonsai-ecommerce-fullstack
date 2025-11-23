@@ -45,8 +45,14 @@ const ProfilePage = lazy(() =>
 
 // Protected Route wrapper
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated } = useAuthStore();
-  return isAuthenticated ? <>{children}</> : <Navigate to={ROUTES.LOGIN} />;
+  const { isAuthenticated, token } = useAuthStore();
+  
+  // Verifica se realmente está autenticado (tem token válido)
+  if (!isAuthenticated || !token) {
+    return <Navigate to={ROUTES.LOGIN} replace />;
+  }
+  
+  return <>{children}</>;
 };
 
 export const AppRoutes = () => {

@@ -21,10 +21,19 @@ export const ENDPOINTS = {
     CLEAR: 'cart',
   },
   ORDERS: {
-    LIST: 'order',
-    BY_ID: (id: string) => `order/${id}`,
-    CREATE: 'order',
-    CANCEL: (id: string) => `order/${id}/cancel`,
+    LIST: 'orders',
+    BY_ID: (id: string) => `orders/${id}`,
+    CREATE: 'orders',
+    CANCEL: (id: string) => `orders/${id}/cancel`,
   },
-  ADDRESSES: 'address',
+  ADDRESSES: {
+    LIST: 'addresses',
+    BY_ID: (id: string) => `addresses/${id}`,
+    CREATE: 'addresses',
+    UPDATE: (id: string) => `addresses/${id}`,
+    DELETE: (id: string) => `addresses/${id}`,
+  },
+  SHIPPING: {
+    CALCULATE: 'shipping/calculate',
+  },
 } as const;

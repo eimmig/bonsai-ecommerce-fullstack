@@ -34,4 +34,21 @@ public class AuthController {
         AuthResponseDTO response = authService.authenticate(request);
         return ResponseEntity.ok(response);
     }
+    
+    /**
+     * Realiza o logout do usuário, invalidando o token.
+     * @param authorization Header Authorization com o token Bearer.
+     * @return Resposta vazia com status 204 em caso de sucesso.
+     */
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String authorization) {
+        if (authorization != null && authorization.startsWith("Bearer ")) {
+            String token = authorization.substring(7);
+            authService.logout(token);
+            logger.info("Logout realizado com sucesso");
+            return ResponseEntity.noContent().build();
+        }
+        logger.warn("Tentativa de logout sem token válido");
+        return ResponseEntity.badRequest().build();
+    }
 }

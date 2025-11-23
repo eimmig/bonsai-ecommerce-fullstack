@@ -2,24 +2,32 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  password?: string;
-  cpfCnpj?: string;        
-  phone?: string;          
-  birthDate?: string;      
+}
+
+// UserOutputDTO completo do backend
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  cpfCnpj?: string;
+  phone?: string;
+  birthDate?: string;
+  addresses: Address[];
   createdAt: string;
   updatedAt: string;
 }
 
 export interface Address {
-  id?: number;
-  zipCode: string;
+  id?: string;
   street: string;
   number: string;
   complement?: string;
+  zipCode: string;
   neighborhood: string;
   city: string;
   state: string;
-  userId: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface LoginRequest {
@@ -38,5 +46,20 @@ export interface RegisterRequest {
 
 export interface AuthResponse {
   token: string;
-  user: User;
+  userId: string;
+  name: string;
+  email: string;
+}
+
+// UserOutputDTO retornado após registro
+export interface RegisterResponse {
+  id: string;
+  name: string;
+  email: string;
+  cpfCnpj?: string;
+  phone?: string;
+  birthDate?: string;
+  addresses: Address[];
+  createdAt: string;
+  updatedAt: string;
 }

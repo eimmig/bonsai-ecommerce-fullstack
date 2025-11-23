@@ -8,6 +8,12 @@ const API_BASE_URL = 'http://localhost:8080/api';
 const getErrorMessage = (error: AxiosError): string => {
   if (error.response?.data) {
     const data = error.response.data as any;
+    
+    // Se vier um array de erros (formato de validação do backend)
+    if (data.errors && Array.isArray(data.errors)) {
+      return data.errors.join('\n');
+    }
+    
     return data.message || data.error || data.mensagem || 'Erro desconhecido';
   }
   if (error.request) {
@@ -54,15 +60,22 @@ class ApiClient {
           const { status } = error.response;
 
           // Logout automático em caso de token expirado (401)
+          // Mas apenas se houver um token presente (evita redirecionar ao abrir a app)
           if (status === 401) {
-            toast.error('Sessão expirada', 'Faça login novamente.');
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
+            const hasToken = localStorage.getItem('token');
             
-            // Evitar loop infinito se já estiver na página de login
-            if (!globalThis.location.pathname.includes('/login')) {
-              globalThis.location.href = '/login';
+            if (hasToken) {
+              // Só redireciona se tinha token e ele expirou
+              toast.error('Sessão expirada', 'Faça login novamente.');
+              localStorage.removeItem('token');
+              localStorage.removeItem('user');
+              
+              // Evitar loop infinito se já estiver na página de login
+              if (!globalThis.location.pathname.includes('/login')) {
+                globalThis.location.href = '/login';
+              }
             }
+            // Se não tinha token, deixa a requisição falhar normalmente
           }
 
           // Forbidden (403) - Não mostrar toast aqui, deixar para os hooks tratarem

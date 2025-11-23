@@ -1,5 +1,6 @@
 ﻿import { useFeaturedProducts } from '@/hooks/use-products';
 import { useAddToCart } from '@/hooks/use-add-to-cart';
+import { useTranslation } from '@/hooks/use-translation';
 import { ProductGrid } from '@/features/products';
 import { SEO } from '@/components/seo';
 import { TipsCard, Newsletter } from '@/components/shared';
@@ -9,13 +10,14 @@ import './HomePage.css';
 export const HomePage: React.FC = () => {
   const { data: products, isLoading } = useFeaturedProducts();
   const { handleAddToCart } = useAddToCart();
+  const { t } = useTranslation();
 
   return (
     <div className="home-container">
       <SEO
-        title="Início"
-        description="Encontre bonsais autênticos, ferramentas profissionais e acessórios exclusivos. Cultivados com técnicas tradicionais japonesas há mais de 10 anos."
-        keywords="bonsai, bonsais, comprar bonsai, loja de bonsai, plantas ornamentais, árvores em miniatura"
+        title={t('home.seoTitle')}
+        description={t('home.seoDescription')}
+        keywords={t('home.seoKeywords')}
         url="/"
       />
 
@@ -23,22 +25,22 @@ export const HomePage: React.FC = () => {
       <section className="hero-banner">
         <div className="hero-content">
           <h1>
-            Encontre seu <br />
-            <span className="highlight">bonsai</span> perfeito.
+            {t('home.hero.title')} <br />
+            <span className="highlight">{t('home.hero.highlight')}</span> {t('home.hero.titleEnd')}
           </h1>
           <p>
-            Descubra espécies selecionadas, cultivadas com cuidado e tradição japonesa.
+            {t('home.hero.subtitle')}
           </p>
         </div>
         <div className="banner-image">
-          <img src={BannerImage} alt="Banner de Bonsai" />
+          <img src={BannerImage} alt={t('home.hero.bannerAlt')} />
         </div>
       </section>
 
       {/* Featured Products Section */}
       <section className="featured-section">
         <div className="container mx-auto px-4">
-          <h2>Produtos em Destaque</h2>
+          <h2>{t('home.featuredProducts')}</h2>
           <ProductGrid
             products={products || []}
             isLoading={isLoading}
@@ -51,20 +53,20 @@ export const HomePage: React.FC = () => {
       <section className="about-section">
         <div className="container">
           <div className="about-content">
-            <h1>Sobre a loja</h1>
+            <h1>{t('home.about.title')}</h1>
             <p>
-              Cultivamos bonsais há mais de 10 anos com<br />
-              técnicas tradicionais e entrega em todo o Brasil.<br />
-              Nosso objetivo é levar equilíbrio, beleza e natureza<br />
-              para sua casa.
+              {t('home.about.description1')}<br />
+              {t('home.about.description2')}<br />
+              {t('home.about.description3')}<br />
+              {t('home.about.description4')}
             </p>
           </div>
           <div className="tips-intro">
-            <h1>Dicas e Cuidados com Bonsai</h1>
+            <h1>{t('home.tips.title')}</h1>
             <p>
-              Aprenda como manter seu bonsai sempre<br />
-              saudável: rega correta, poda, adubação e luz<br />
-              ideal.
+              {t('home.tips.subtitle1')}<br />
+              {t('home.tips.subtitle2')}<br />
+              {t('home.tips.subtitle3')}
             </p>
           </div>
         </div>
@@ -76,33 +78,33 @@ export const HomePage: React.FC = () => {
           <div className="tips-grid">
             <TipsCard
               icon={<i className="fa-solid fa-droplet" />}
-              title="Dica 1 - Rega na medida certa"
-              description="Regue apenas quando a camada superior do solo estiver seca ao toque."
+              title={t('home.tips.tip1.title')}
+              description={t('home.tips.tip1.description')}
             />
             <TipsCard
               icon={<i className="fa-solid fa-scissors" />}
-              title="Dica 2 - Faça podas regulares"
-              description="A poda ajuda na saúde e na estética do bonsai. Use tesouras apropriadas."
+              title={t('home.tips.tip2.title')}
+              description={t('home.tips.tip2.description')}
             />
             <TipsCard
               icon={<i className="fa-regular fa-sun" />}
-              title="Dica 3 - Exposição à luz"
-              description="Deixe seu bonsai em local com luz indireta e evite sol forte nas horas mais quentes."
+              title={t('home.tips.tip3.title')}
+              description={t('home.tips.tip3.description')}
             />
             <TipsCard
               icon={<i className="fa-solid fa-seedling" />}
-              title="Dica 4 - Adubação equilibrada"
-              description="Use adubos específicos para bonsai na primavera e no verão, respeitando as dosagens."
+              title={t('home.tips.tip4.title')}
+              description={t('home.tips.tip4.description')}
             />
             <TipsCard
               icon={<i className="fa-solid fa-wind" />}
-              title="Dica 5 - Boa circulação de ar"
-              description="Mantenha o ambiente arejado, mas proteja de correntes de ar muito frias."
+              title={t('home.tips.tip5.title')}
+              description={t('home.tips.tip5.description')}
             />
             <TipsCard
               icon={<i className="fa-solid fa-leaf" />}
-              title="Dica 6 - Observação constante"
-              description="Fique atento a sinais de pragas ou doenças e aja rapidamente para manter a saúde."
+              title={t('home.tips.tip6.title')}
+              description={t('home.tips.tip6.description')}
             />
           </div>
         </div>

@@ -4,13 +4,16 @@ import { ShoppingCart, User, Menu, X, ChevronDown, Search } from 'lucide-react';
 
 import { useAuth } from '@/hooks/use-auth';
 import { useCartStore } from '@/stores/cart-store';
+import { useTranslation } from '@/hooks/use-translation';
 import { ROUTES } from '@/constants/routes';
+import { LanguageSelector } from './LanguageSelector';
 import LogoImage from '@/assets/images/logo.svg';
 import './Header.css';
 
 const HeaderComponent = () => {
   const { isAuthenticated, logout } = useAuth();
   const { itemCount } = useCartStore();
+  const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -52,9 +55,9 @@ const HeaderComponent = () => {
   }, []);
 
   const getCartLabel = () => {
-    if (itemCount === 0) return 'Carrinho de compras vazio';
-    const itemText = itemCount === 1 ? 'item' : 'itens';
-    return `Carrinho de compras com ${itemCount} ${itemText}`;
+    if (itemCount === 0) return t('cart.empty');
+    const itemText = t(itemCount === 1 ? 'cart.item' : 'cart.item_plural', { count: itemCount });
+    return `${t('nav.cart')} ${itemText}`;
   };
 
   return (
@@ -80,7 +83,7 @@ const HeaderComponent = () => {
                 className="nav-link"
                 onClick={handleNavClick}
               >
-                Início
+                {t('nav.home')}
               </Link>
             </li>
             <li className="nav-item" ref={productsDropdownRef}>
@@ -88,7 +91,7 @@ const HeaderComponent = () => {
                 onClick={() => setIsProductsOpen(!isProductsOpen)}
                 className="dropdown-toggle"
               >
-                Produtos
+                {t('nav.products')}
                 <ChevronDown />
               </button>
               {isProductsOpen && (
@@ -98,21 +101,21 @@ const HeaderComponent = () => {
                     className="dropdown-item"
                     onClick={handleNavClick}
                   >
-                    Bonsais
+                    {t('home.categories')}
                   </Link>
                   <Link 
                     to={ROUTES.PRODUCTS} 
                     className="dropdown-item"
                     onClick={handleNavClick}
                   >
-                    Acessórios
+                    {t('products.featured')}
                   </Link>
                   <Link 
                     to={ROUTES.PRODUCTS} 
                     className="dropdown-item"
                     onClick={handleNavClick}
                   >
-                    Kits
+                    {t('products.allCategories')}
                   </Link>
                 </div>
               )}
@@ -123,7 +126,7 @@ const HeaderComponent = () => {
                 className="nav-link"
                 onClick={handleNavClick}
               >
-                Sobre nós
+                {t('footer.about')}
               </Link>
             </li>
             <li className="nav-item">
@@ -132,7 +135,7 @@ const HeaderComponent = () => {
                 className="nav-link"
                 onClick={handleContactClick}
               >
-                Contato
+                {t('footer.contact')}
               </Link>
             </li>
           </ul>
@@ -142,13 +145,16 @@ const HeaderComponent = () => {
             <input 
               type="search"
               className="search-input"
-              placeholder="O que você procura?"
+              placeholder={t('products.search')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              aria-label="Buscar produtos"
+              aria-label={t('common.search')}
             />
             <Search className="search-icon" aria-hidden="true" />
           </div>
+
+          {/* Language Selector */}
+          <LanguageSelector />
 
           {/* Cart */}
           <Link 
@@ -172,10 +178,10 @@ const HeaderComponent = () => {
                 <button 
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                   className="user-button"
-                  aria-label="Menu do usuário"
+                  aria-label={t('nav.profile')}
                 >
                   <User />
-                  Conta
+                  {t('nav.profile')}
                 </button>
                 {isUserMenuOpen && (
                   <div className="dropdown-menu">
@@ -184,33 +190,28 @@ const HeaderComponent = () => {
                       className="dropdown-item"
                       onClick={handleNavClick}
                     >
-                      Meu Perfil
+                      {t('profile.title')}
                     </Link>
                     <Link 
                       to={ROUTES.ORDERS} 
                       className="dropdown-item"
                       onClick={handleNavClick}
                     >
-                      Meus Pedidos
+                      {t('nav.orders')}
                     </Link>
                     <button onClick={handleLogout} className="dropdown-item">
-                      Sair
+                      {t('nav.logout')}
                     </button>
                   </div>
                 )}
               </>
             ) : (
-              <Link to={ROUTES.LOGIN} className="user-button" aria-label="Entrar ou Cadastrar">
+              <Link to={ROUTES.LOGIN} className="user-button" aria-label={t('nav.login')}>
                 <User />
-                Entrar/ Cadastrar
+                {t('nav.login')}/ {t('nav.register')}
               </Link>
             )}
           </div>
-
-          {/* Language Switcher */}
-          <button className="language-button" aria-label="Alterar idioma">
-            PT/EN
-          </button>
 
           {/* Mobile Menu Toggle */}
           <button 
@@ -235,7 +236,7 @@ const HeaderComponent = () => {
                 className="mobile-menu-link"
                 onClick={handleContactClick}
               >
-                Contato
+                {t('footer.contact')}
               </Link>
               
               {isAuthenticated ? (
@@ -245,17 +246,17 @@ const HeaderComponent = () => {
                     className="mobile-menu-link"
                     onClick={handleNavClick}
                   >
-                    Meu Perfil
+                    {t('profile.title')}
                   </Link>
                   <Link 
                     to={ROUTES.CART} 
                     className="mobile-menu-link"
                     onClick={handleNavClick}
                   >
-                    Meu Carrinho
+                    {t('cart.title')}
                   </Link>
                   <button onClick={handleLogout} className="mobile-menu-button">
-                    Sair
+                    {t('nav.logout')}
                   </button>
                 </>
               ) : (
@@ -264,13 +265,9 @@ const HeaderComponent = () => {
                   className="mobile-menu-link"
                   onClick={handleNavClick}
                 >
-                  Entrar/ Cadastrar
+                  {t('nav.login')}/ {t('nav.register')}
                 </Link>
               )}
-              
-              <button className="mobile-menu-button mobile-menu-language">
-                EN/PT
-              </button>
             </div>
           </div>
         )}

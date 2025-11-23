@@ -1,0 +1,112 @@
+/* Address Form Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+}
+
+.modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 42rem;
+  border-radius: 0.5rem;
+  background-color: white;
+  padding: 2rem 3rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-close-button {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.2s ease;
+}
+
+.modal-close-button:hover {
+  color: #4b5563;
+}
+
+.modal-close-button svg {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.modal-title {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-title);
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-form-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+}
+
+.modal-form-row:last-of-type {
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Botões do modal - Padrão do sistema */
+.modal-actions button[type="submit"] {
+  background-color: var(--color-button) !important;
+  color: white !important;
+  border: none !important;
+  font-weight: 600 !important;
+  padding: 0.625rem 1.5rem !important;
+  border-radius: 5px !important;
+  transition: all 0.3s ease !important;
+}
+
+.modal-actions button[type="submit"]:hover:not(:disabled) {
+  background-color: var(--color-button-hover) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3) !important;
+}
+
+.modal-actions button[type="button"] {
+  background-color: var(--color-light-gray) !important;
+  color: var(--color-text) !important;
+  border: 1px solid var(--color-border-green) !important;
+  font-weight: 500 !important;
+  padding: 0.625rem 1.5rem !important;
+  border-radius: 5px !important;
+  transition: all 0.3s ease !important;
+}
+
+.modal-actions button[type="button"]:hover:not(:disabled) {
+  background-color: var(--color-button) !important;
+  color: white !important;
+  border-color: var(--color-button) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2) !important;
+}

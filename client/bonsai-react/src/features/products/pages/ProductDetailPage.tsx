@@ -5,6 +5,7 @@ import { ShoppingCart, ArrowLeft } from 'lucide-react';
 import { useProduct } from '@/hooks/use-products';
 import { useCart } from '@/hooks/use-cart';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from '@/hooks/use-translation';
 import { ROUTES } from '@/constants/routes';
 import { SEO } from '@/components/seo';
 import { formatCurrencyBRL } from '@/utils/currency';
@@ -15,6 +16,7 @@ export const ProductDetailPage = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const [quantity, setQuantity] = useState(1);
+  const { t } = useTranslation();
 
   const { data: product, isLoading } = useProduct(String(id));
   const { addItem, isAddingItem } = useCart();
@@ -24,7 +26,7 @@ export const ProductDetailPage = () => {
 
     // Check stock availability
     if (product.stock != null && product.stock < quantity) {
-      toast.error('Quantidade indisponível em estoque');
+      toast.error(t('products.quantityUnavailable'));
       return;
     }
 
@@ -47,7 +49,7 @@ export const ProductDetailPage = () => {
     return (
       <div className="loading-indicator">
         <div className="spinner" />
-        <p>Carregando detalhes do produto...</p>
+        <p>{t('products.loadingDetails')}</p>
       </div>
     );
   }
@@ -56,9 +58,9 @@ export const ProductDetailPage = () => {
     return (
       <div className="product-detail-container">
         <div className="error-message">
-          <h1>Produto não encontrado</h1>
+          <h1>{t('products.notFound')}</h1>
           <button onClick={() => navigate(ROUTES.PRODUCTS)}>
-            Voltar para produtos
+            {t('products.backToProducts')}
           </button>
         </div>
       </div>
@@ -83,7 +85,7 @@ export const ProductDetailPage = () => {
 
       <button className="back-button" onClick={() => navigate(-1)}>
         <ArrowLeft size={20} />
-        Voltar
+        {t('common.back')}
       </button>
 
       <section className="product-detail">
@@ -99,7 +101,7 @@ export const ProductDetailPage = () => {
             </div>
 
             <div className="product-description">
-              <h2>Sobre este produto</h2>
+              <h2>{t('products.aboutProduct')}</h2>
               <p>{product.description}</p>
             </div>
           </div>
@@ -124,19 +126,19 @@ export const ProductDetailPage = () => {
             {product.stock != null && (
               <div className="stock-info">
                 {product.stock > 10 && (
-                  <span className="stock-available">✓ {product.stock} em estoque</span>
+                  <span className="stock-available">✓ {t('products.inStock', { count: product.stock })}</span>
                 )}
                 {product.stock > 0 && product.stock <= 10 && (
-                  <span className="stock-low">⚠ Apenas {product.stock} em estoque</span>
+                  <span className="stock-low">⚠ {t('products.lowStock', { count: product.stock })}</span>
                 )}
                 {product.stock === 0 && (
-                  <span className="stock-unavailable">✗ Sem estoque</span>
+                  <span className="stock-unavailable">✗ {t('products.outOfStock')}</span>
                 )}
               </div>
             )}
 
             <div className="quantity-selector">
-              <span>Quantidade:</span>
+              <span>{t('products.quantity')}:</span>
               <div className="quantity-input">
                 <button onClick={() => handleQuantityChange(-1)} disabled={quantity <= 1}>
                   -
@@ -152,7 +154,7 @@ export const ProductDetailPage = () => {
                       setQuantity(value);
                     }
                   }}
-                  aria-label="Quantidade"
+                  aria-label={t('products.quantity')}
                 />
                 <button
                   onClick={() => handleQuantityChange(1)}
@@ -170,7 +172,7 @@ export const ProductDetailPage = () => {
                 disabled={isAddingItem || (product.stock != null && product.stock === 0)}
               >
                 <ShoppingCart size={20} />
-                {product.stock != null && product.stock === 0 ? 'Sem estoque' : 'Adicionar ao Carrinho'}
+                {product.stock != null && product.stock === 0 ? t('products.outOfStock') : t('products.addToCart')}
               </button>
             </div>
           </div>

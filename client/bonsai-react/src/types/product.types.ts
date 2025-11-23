@@ -1,8 +1,8 @@
 export interface Category {
   id: string;
   name: string;
-  createdAt: string | null;
-  updatedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Product {
@@ -15,8 +15,8 @@ export interface Product {
   imageUrl: string;
   stock: number;           
   featured: boolean;       
-  createdAt: string | null;
-  updatedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ProductFilters {

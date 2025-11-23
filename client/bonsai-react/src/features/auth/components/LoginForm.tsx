@@ -3,6 +3,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { TextField, Button, Box, Typography } from '@mui/material';
 
 import { useAuth } from '@/hooks/use-auth';
+import { useTranslation } from '@/hooks/use-translation';
+import { useZodErrorTranslation } from '@/utils/zod-i18n';
 import { loginSchema, type LoginFormData } from '../schemas/auth.schemas';
 
 interface LoginFormProps {
@@ -11,6 +13,8 @@ interface LoginFormProps {
 
 export const LoginForm = ({ onToggleForm }: LoginFormProps) => {
   const { login, isLoggingIn } = useAuth();
+  const { t } = useTranslation();
+  const { translateError } = useZodErrorTranslation();
 
   const { control, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -31,13 +35,13 @@ export const LoginForm = ({ onToggleForm }: LoginFormProps) => {
         render={({ field }) => (
           <TextField
             {...field}
-            label="E-mail"
+            label={t('auth.login.email')}
             type="email"
             variant="outlined"
             fullWidth
             error={!!errors.email}
-            helperText={errors.email?.message}
-            placeholder="seu.email@exemplo.com"
+            helperText={translateError(errors.email)}
+            placeholder={t('auth.login.emailPlaceholder')}
             slotProps={{
               htmlInput: {
                 'aria-required': 'true'
@@ -54,13 +58,13 @@ export const LoginForm = ({ onToggleForm }: LoginFormProps) => {
         render={({ field }) => (
           <TextField
             {...field}
-            label="Senha"
+            label={t('auth.login.password')}
             type="password"
             variant="outlined"
             fullWidth
             error={!!errors.password}
-            helperText={errors.password?.message}
-            placeholder="Digite sua senha"
+            helperText={translateError(errors.password)}
+            placeholder={t('auth.login.passwordPlaceholder')}
             slotProps={{
               htmlInput: {
                 'aria-required': 'true'
@@ -90,7 +94,7 @@ export const LoginForm = ({ onToggleForm }: LoginFormProps) => {
           },
         }}
       >
-        {isLoggingIn ? 'Entrando...' : 'Entrar'}
+        {isLoggingIn ? t('auth.login.signingIn') : t('auth.login.signIn')}
       </Button>
 
       {onToggleForm && (
@@ -111,7 +115,7 @@ export const LoginForm = ({ onToggleForm }: LoginFormProps) => {
               },
             }}
           >
-            Não tem conta? Cadastre-se
+            {t('auth.login.noAccountLink')}
           </Typography>
         </Box>
       )}

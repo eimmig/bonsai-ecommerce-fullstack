@@ -5,11 +5,27 @@ type Language = 'pt' | 'en';
 
 interface I18nState {
   language: Language;
-  translations: Record<string, string>;
+  translations: Record<string, any>;
   setLanguage: (language: Language) => void;
-  loadTranslations: (translations: Record<string, string>) => void;
+  loadTranslations: (translations: Record<string, any>) => void;
   t: (key: string) => string;
 }
+
+// Função para acessar propriedades aninhadas usando dot notation
+const getNestedValue = (obj: any, path: string): string => {
+  const keys = path.split('.');
+  let result = obj;
+  
+  for (const key of keys) {
+    if (result && typeof result === 'object' && key in result) {
+      result = result[key];
+    } else {
+      return path; // Retorna a chave se não encontrar
+    }
+  }
+  
+  return typeof result === 'string' ? result : path;
+};
 
 export const useI18nStore = create<I18nState>()(
   persist(
@@ -23,7 +39,7 @@ export const useI18nStore = create<I18nState>()(
 
       t: (key) => {
         const { translations } = get();
-        return translations[key] || key;
+        return getNestedValue(translations, key);
       },
     }),
     {

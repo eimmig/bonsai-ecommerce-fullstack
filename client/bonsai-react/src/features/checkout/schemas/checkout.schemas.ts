@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
 export const shippingSchema = z.object({
-  zipCode: z.string().min(8, 'CEP inválido'),
-  street: z.string().min(3, 'Logradouro é obrigatório'),
-  number: z.string().min(1, 'Número é obrigatório'),
+  zipCode: z.string().min(8, 'address.validation.zipCodeInvalid'),
+  street: z.string().min(3, 'address.validation.streetRequired'),
+  number: z.string().min(1, 'address.validation.numberRequired'),
   complement: z.string().optional(),
-  neighborhood: z.string().min(2, 'Bairro é obrigatório'),
-  city: z.string().min(2, 'Cidade é obrigatória'),
-  state: z.string().length(2, 'Estado deve ter 2 caracteres'),
+  neighborhood: z.string().min(2, 'address.validation.neighborhoodRequired'),
+  city: z.string().min(2, 'address.validation.cityRequired'),
+  state: z.string().length(2, 'address.validation.stateRequired'),
 });
 
 export const paymentSchema = z.object({

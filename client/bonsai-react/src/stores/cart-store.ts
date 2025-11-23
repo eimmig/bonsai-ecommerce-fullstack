@@ -15,10 +15,12 @@ interface CartState {
 }
 
 const calculateTotal = (items: CartItem[]): number => {
+  if (!items || items.length === 0) return 0;
   return items.reduce((sum, item) => sum + item.totalPrice, 0);
 };
 
 const calculateItemCount = (items: CartItem[]): number => {
+  if (!items || items.length === 0) return 0;
   return items.reduce((sum, item) => sum + item.quantity, 0);
 };
 
@@ -88,12 +90,14 @@ export const useCartStore = create<CartState>()(
 
       clearCart: () => set({ items: [], itemCount: 0, total: 0 }),
 
-      setCart: (items) =>
+      setCart: (items) => {
+        const validItems = items || [];
         set({
-          items,
-          itemCount: calculateItemCount(items),
-          total: calculateTotal(items),
-        }),
+          items: validItems,
+          itemCount: calculateItemCount(validItems),
+          total: calculateTotal(validItems),
+        });
+      },
     }),
     {
       name: 'cart-storage',

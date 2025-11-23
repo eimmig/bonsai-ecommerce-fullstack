@@ -1,0 +1,440 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Finish",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "add": "Add",
+    "remove": "Remove",
+    "update": "Update",
+    "close": "Close",
+    "view": "View",
+    "more": "More",
+    "less": "Less",
+    "yes": "Yes",
+    "no": "No",
+    "optional": "Optional",
+    "required": "Required"
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "cart": "Cart",
+    "orders": "My Orders",
+    "profile": "Profile",
+    "login": "Sign In",
+    "logout": "Sign Out",
+    "register": "Sign Up"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "submit": "Sign In",
+      "signIn": "Sign In",
+      "signingIn": "Signing in...",
+      "forgotPassword": "Forgot password",
+      "noAccount": "New Here?",
+      "noAccountLink": "Create an account",
+      "createAccount": "Sign Up",
+      "backToHome": "Back",
+      "description": "Sign in with your credentials and enjoy our offers!"
+    },
+    "register": {
+      "title": "Sign Up",
+      "name": "Full name",
+      "namePlaceholder": "Enter your full name",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "confirmPassword": "Confirm password",
+      "cpfCnpj": "Tax ID",
+      "cpfCnpjPlaceholder": "Enter your Tax ID",
+      "phone": "Phone",
+      "phonePlaceholder": "Enter your phone",
+      "birthDate": "Birth date",
+      "submit": "Sign Up",
+      "signUp": "Sign Up",
+      "registering": "Registering...",
+      "hasAccount": "Already one of us?",
+      "hasAccountLink": "Sign in",
+      "goToLogin": "Sign In",
+      "description": "Sign up now and get access to amazing products!"
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email",
+      "passwordRequired": "Password is required",
+      "passwordMin": "Password must be at least 6 characters",
+      "passwordMatch": "Passwords don't match",
+      "nameRequired": "Name is required",
+      "nameMin": "Name must be at least 2 characters",
+      "nameMax": "Name is too long",
+      "cpfCnpjRequired": "Tax ID is required",
+      "cpfCnpjInvalid": "Tax ID must have 11 or 14 digits",
+      "phoneRequired": "Phone is required",
+      "phoneInvalid": "Phone must have 10 or 11 digits",
+      "birthDateRequired": "Birth date is required",
+      "birthDateInvalid": "Invalid date (format: YYYY-MM-DD)"
+    },
+    "messages": {
+      "loginSuccess": "Successfully signed in!",
+      "loginError": "Invalid credentials",
+      "registerSuccess": "Successfully registered!",
+      "registerError": "Error registering user",
+      "logoutSuccess": "See you soon!",
+      "sessionExpired": "Session expired. Please sign in again."
+    }
+  },
+  "products": {
+    "title": "All Bonsais",
+    "allBonsais": {
+      "part1": "All",
+      "part2": "Bonsais"
+    },
+    "featured": "Featured Products",
+    "aboutProduct": "About Product",
+    "inStock": "In stock",
+    "search": "Search products...",
+    "searchPlaceholder": "Search products...",
+    "category": "Category",
+    "allCategories": "All categories",
+    "resultsCount": "{{count}} product found",
+    "resultsCount_plural": "{{count}} products found",
+    "addToCart": "Add to Cart",
+    "outOfStock": "Out of stock",
+    "discount": "{{percent}}% OFF",
+    "viewDetails": "View Details",
+    "description": "Description",
+    "price": "Price",
+    "stock": "Available stock",
+    "noProducts": "No products found",
+    "loadingProducts": "Loading products...",
+    "errorLoading": "Error loading products"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "emptyTitle": "Empty Cart",
+    "empty": "Your cart is empty",
+    "emptyDescription": "Add products to cart to continue",
+    "product": "Product",
+    "price": "Price",
+    "shippingCalculated": "Shipping calculated at checkout",
+    "orderSummary": "Order Summary",
+    "viewProducts": "View Products",
+    "continueShopping": "Continue Shopping",
+    "item": "{{count}} item",
+    "item_plural": "{{count}} items",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "total": "Total",
+    "checkout": "Checkout",
+    "remove": "Remove",
+    "quantity": "Quantity",
+    "clearCart": "Clear Cart",
+    "confirmClear": "Are you sure you want to clear the cart?",
+    "itemAdded": "Product added to cart",
+    "itemRemoved": "Product removed from cart",
+    "cartCleared": "Cart cleared",
+    "free": "Free"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "emptyCart": "Cart is empty",
+    "viewProducts": "View Products",
+    "continueToPayment": "Continue to Payment",
+    "confirmOrder": "Confirm Order",
+    "deliveryAddress": "Delivery Address",
+    "paymentMethod": "Payment Method",
+    "orderSummary": "Order Summary",
+    "selectAddressError": "Please select a delivery address",
+    "selectShippingError": "Select a shipping option",
+    "loginRequired": "You need to be signed in to checkout",
+    "orderSuccess": "Order placed successfully!",
+    "orderError": "Error creating order",
+    "steps": {
+      "shipping": "Shipping",
+      "payment": "Payment",
+      "review": "Review"
+    },
+    "shipping": {
+      "title": "Delivery Address",
+      "newAddress": "New Address",
+      "noAddresses": "No addresses registered",
+      "addAddress": "Add Address",
+      "calculateShipping": "Calculate Shipping",
+      "shippingOptions": "Shipping Options",
+      "selectShipping": "Select a shipping option",
+      "deliveryTime": "Delivery: {{days}} business days",
+      "calculating": "Calculating shipping...",
+      "error": "Error calculating shipping. Try again.",
+      "noOptions": "No shipping options available for this address",
+      "selectAddress": "Select an address to calculate",
+      "errorCalculating": "Error calculating shipping"
+    },
+    "payment": {
+      "title": "Payment Method",
+      "creditCard": "Credit Card",
+      "debitCard": "Debit Card",
+      "pix": "PIX",
+      "boleto": "Bank Slip",
+      "cardNumber": "Card Number",
+      "cardHolder": "Cardholder Name",
+      "cardHolderPlaceholder": "NAME AS PRINTED ON CARD",
+      "expiry": "Expiry",
+      "expiryDate": "Expiry date",
+      "cvv": "CVV",
+      "installments": "Installments"
+    },
+    "review": {
+      "title": "Order Review",
+      "orderSummary": "Order Summary",
+      "items": "Items",
+      "deliveryAddress": "Delivery Address",
+      "paymentMethod": "Payment Method",
+      "shippingMethod": "Shipping Method"
+    },
+    "summary": {
+      "title": "Summary",
+      "items": "Items ({{count}})",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "total": "Total"
+    },
+    "validation": {
+      "addressRequired": "Select a delivery address",
+      "shippingRequired": "Select a shipping option",
+      "paymentRequired": "Select a payment method",
+      "cardNumberRequired": "Card number is required",
+      "cardHolderRequired": "Cardholder name is required",
+      "expiryRequired": "Expiry date is required",
+      "cvvRequired": "CVV is required"
+    }
+  },
+  "address": {
+    "title": "Addresses",
+    "add": "Add Address",
+    "edit": "Edit Address",
+    "delete": "Delete Address",
+    "create": "Register Address",
+    "update": "Update Address",
+    "found": "Address found!",
+    "notFound": "ZIP Code not found",
+    "createSuccess": "Address registered successfully!",
+    "createError": "Error registering address",
+    "updateSuccess": "Address updated successfully!",
+    "updateError": "Error updating address",
+    "noAddress": "No addresses registered",
+    "selectDelivery": "Select delivery address",
+    "newAddress": "New Address",
+    "registerFirst": "Register First Address",
+    "modalTitle": "Register New Address",
+    "streetPlaceholder": "Street, Avenue, etc.",
+    "complementPlaceholder": "Apt, Block, etc.",
+    "neighborhoodPlaceholder": "Neighborhood",
+    "cityPlaceholder": "City",
+    "selectState": "Select",
+    "street": "Street",
+    "number": "Number",
+    "complement": "Complement",
+    "zipCode": "ZIP Code",
+    "neighborhood": "Neighborhood",
+    "city": "City",
+    "state": "State",
+    "searchZipCode": "Search ZIP Code",
+    "zipCodeNotFound": "ZIP Code not found",
+    "validation": {
+      "streetRequired": "Street is required",
+      "numberRequired": "Number is required",
+      "zipCodeRequired": "ZIP Code is required",
+      "zipCodeInvalid": "Invalid ZIP Code",
+      "neighborhoodRequired": "Neighborhood is required",
+      "cityRequired": "City is required",
+      "stateRequired": "State is required"
+    },
+    "messages": {
+      "addSuccess": "Address added successfully",
+      "editSuccess": "Address updated successfully",
+      "deleteSuccess": "Address removed successfully",
+      "error": "Error processing address"
+    }
+  },
+  "orders": {
+    "title": "My Orders",
+    "empty": "You haven't placed any orders yet",
+    "emptyDescription": "Start shopping now!",
+    "orderNumber": "Order #{{id}}",
+    "orderDate": "Order date",
+    "status": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "items": "Order Items",
+    "deliveryAddress": "Delivery Address",
+    "payment": "Payment",
+    "paymentMethod": "Payment",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "total": "Total",
+    "shippingMethod": "Shipping Method",
+    "quantity": "Quantity",
+    "viewDetails": "View Details",
+    "cancelOrder": "Cancel Order",
+    "confirmCancel": "Are you sure you want to cancel this order?"
+  },
+  "profile": {
+    "title": "My Profile",
+    "personalInfo": "Personal Information",
+    "addresses": "Addresses",
+    "orders": "Orders",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "cpfCnpj": "Tax ID",
+    "birthDate": "Birth Date",
+    "edit": "Edit Profile",
+    "changePassword": "Change Password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "messages": {
+      "updateSuccess": "Profile updated successfully",
+      "updateError": "Error updating profile",
+      "passwordChangeSuccess": "Password changed successfully",
+      "passwordChangeError": "Error changing password"
+    }
+  },
+  "footer": {
+    "about": "About Us",
+    "contact": "Contact",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "privacyPolicy": "Privacy Policy",
+    "returns": "Returns & Exchanges",
+    "faq": "FAQ",
+    "whatsapp": "(11) 12345-5678",
+    "email": "contato@bonsaibrasil.com.br",
+    "address": "Bonsai Street, 123 - São Paulo, SP",
+    "rights": "All rights reserved",
+    "rightsReserved": "All rights reserved.",
+    "copyright": "© 2024 Bonsai Brasil.",
+    "newsletterTitle": "Get our updates",
+    "newsletterDescription": "Subscribe to our newsletter and stay updated with the best offers!",
+    "emailPlaceholder": "Your email",
+    "subscribe": "Subscribe",
+    "newsletter": {
+      "title": "Get our updates",
+      "description": "Subscribe to our newsletter and stay updated with the best offers!",
+      "placeholder": "Your email",
+      "submit": "Subscribe",
+      "success": "Email registered successfully!",
+      "error": "Error registering email"
+    }
+  },
+  "home": {
+    "seoTitle": "Authentic Bonsais - Online Bonsai Store",
+    "seoDescription": "Find the best authentic bonsais with delivery throughout Brazil. Traditional cultivation, guaranteed quality.",
+    "seoKeywords": "bonsai, plants, cultivation, garden, decoration",
+    "hero": {
+      "title": "Bonsai",
+      "highlight": "Authentic",
+      "titleEnd": "Japanese",
+      "subtitle": "Find the best authentic bonsais with delivery throughout Brazil. Traditional cultivation, guaranteed quality.",
+      "cta": "View Products",
+      "bannerAlt": "Bonsai in pot"
+    },
+    "featured": "Featured Products",
+    "featuredProducts": "Featured Products",
+    "categories": "Categories",
+    "about": {
+      "title": "About Bonsai",
+      "description1": "We've been cultivating bonsai for over 10 years using",
+      "description2": "traditional techniques and deliver throughout Brazil.",
+      "description3": "Our goal is to bring balance, beauty and nature",
+      "description4": "to your home."
+    },
+    "tips": {
+      "title": "Care Tips",
+      "subtitle1": "Learn how to keep your bonsai always",
+      "subtitle2": "healthy: proper watering, pruning, fertilizing and ideal",
+      "subtitle3": "lighting.",
+      "viewAll": "View all",
+      "tip1": {
+        "title": "Proper Watering",
+        "description": "Keep the soil moist, but not waterlogged."
+      },
+      "tip2": {
+        "title": "Regular Pruning",
+        "description": "Prune branches and roots to maintain shape."
+      },
+      "tip3": {
+        "title": "Lighting",
+        "description": "Indirect light is ideal for most species."
+      },
+      "tip4": {
+        "title": "Fertilization",
+        "description": "Use specific fertilizer during spring."
+      },
+      "tip5": {
+        "title": "Ventilation",
+        "description": "Keep in a well-ventilated place to prevent fungi."
+      },
+      "tip6": {
+        "title": "Repotting",
+        "description": "Change the pot every 2-3 years as it grows."
+      }
+    }
+  },
+  "about": {
+    "store": {
+      "title": "About the store",
+      "description": "We have been cultivating bonsais for over 10 years with traditional techniques and delivery throughout Brazil. Our goal is to bring balance, beauty and nature to your home."
+    },
+    "care": {
+      "title": "Bonsai Care Tips",
+      "description": "Learn how to keep your bonsai always healthy: correct watering, pruning, fertilizing and ideal lighting."
+    },
+    "tips": {
+      "watering": {
+        "title": "Proper Watering",
+        "description": "Keep soil moist but not waterlogged."
+      },
+      "pruning": {
+        "title": "Regular Pruning",
+        "description": "Prune branches and roots to maintain shape."
+      },
+      "lighting": {
+        "title": "Lighting",
+        "description": "Indirect light is ideal for most species."
+      },
+      "fertilizing": {
+        "title": "Fertilizing",
+        "description": "Use specific fertilizer during spring."
+      }
+    }
+  },
+  "errors": {
+    "404": "Page not found",
+    "500": "Server error",
+    "network": "Connection error",
+    "unknown": "Unknown error",
+    "tryAgain": "Try again"
+  }
+}

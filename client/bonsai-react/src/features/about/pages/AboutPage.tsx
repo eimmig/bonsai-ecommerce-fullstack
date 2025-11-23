@@ -1,51 +1,48 @@
 import { TipsCard } from '@/components/shared';
 import { Newsletter } from '@/components/shared/Newsletter';
+import { useTranslation } from '@/hooks/use-translation';
 import './AboutPage.css';
 
-const tips = [
-  {
-    icon: '💧',
-    title: 'Rega Adequada',
-    description: 'Mantenha o solo úmido, mas não encharcado.',
-  },
-  {
-    icon: '✂️',
-    title: 'Poda Regular',
-    description: 'Pode galhos e raízes para manter a forma.',
-  },
-  {
-    icon: '☀️',
-    title: 'Iluminação',
-    description: 'Luz indireta é ideal para a maioria das espécies.',
-  },
-  {
-    icon: '🌱',
-    title: 'Adubação',
-    description: 'Use fertilizante específico durante a primavera.',
-  },
-];
-
 export const AboutPage = () => {
+  const { t } = useTranslation();
+
+  const tips = [
+    {
+      icon: '💧',
+      title: t('about.tips.watering.title'),
+      description: t('about.tips.watering.description'),
+    },
+    {
+      icon: '✂️',
+      title: t('about.tips.pruning.title'),
+      description: t('about.tips.pruning.description'),
+    },
+    {
+      icon: '☀️',
+      title: t('about.tips.lighting.title'),
+      description: t('about.tips.lighting.description'),
+    },
+    {
+      icon: '🌱',
+      title: t('about.tips.fertilizing.title'),
+      description: t('about.tips.fertilizing.description'),
+    },
+  ];
   return (
     <>
       {/* About Bonsai Section */}
       <section className="about-bonsai-section">
         <div className="container">
           <div className="about-store">
-            <h1>Sobre a loja</h1>
+            <h1>{t('about.store.title')}</h1>
             <p>
-              Cultivamos bonsais há mais de 10 anos com<br />
-              técnicas tradicionais e entrega em todo o Brasil.<br />
-              Nosso objetivo é levar equilíbrio, beleza e natureza<br />
-              para sua casa.
+              {t('about.store.description')}
             </p>
           </div>
           <div className="care-and-tips">
-            <h1>Dicas e Cuidados com Bonsai</h1>
+            <h1>{t('about.care.title')}</h1>
             <p>
-              Aprenda como manter seu bonsai sempre<br />
-              saudável: rega correta, poda, adubação e luz<br />
-              ideal.
+              {t('about.care.description')}
             </p>
           </div>
         </div>

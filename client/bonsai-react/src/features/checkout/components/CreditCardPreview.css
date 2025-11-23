@@ -1,0 +1,168 @@
+/* Credit Card Preview */
+.credit-card-preview {
+  perspective: 1000px;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.credit-card {
+  width: 100%;
+  max-width: 320px;
+  height: 200px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.credit-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.credit-card-front,
+.credit-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.credit-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Front Elements */
+.credit-card-chip {
+  width: 40px;
+  height: 32px;
+  background: linear-gradient(135deg, #ffd700 0%, #daa520 100%);
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.credit-card-chip::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 20px;
+  border: 2px solid rgba(139, 101, 8, 0.3);
+  border-radius: 3px;
+}
+
+.credit-card-logo {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 2px;
+  opacity: 0.9;
+}
+
+.credit-card-number {
+  font-size: 1.125rem;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.credit-card-number.focused {
+  transform: scale(1.05);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.credit-card-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.credit-card-holder,
+.credit-card-expiry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.credit-card-label {
+  font-size: 0.5625rem;
+  text-transform: uppercase;
+  opacity: 0.7;
+  letter-spacing: 1px;
+}
+
+.credit-card-value {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.credit-card-value.focused {
+  transform: scale(1.1);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+/* Back Elements */
+.credit-card-stripe {
+  width: calc(100% + 3rem);
+  height: 40px;
+  background: #000;
+  margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+}
+
+.credit-card-cvv-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.credit-card-cvv {
+  background: white;
+  color: #000;
+  padding: 0.375rem 0.875rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  letter-spacing: 2px;
+  min-width: 50px;
+  text-align: center;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
+}
+
+.credit-card-cvv.focused {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+@media (max-width: 640px) {
+  .credit-card {
+    max-width: 280px;
+    height: 175px;
+  }
+
+  .credit-card-number {
+    font-size: 1rem;
+  }
+
+  .credit-card-value {
+    font-size: 0.75rem;
+  }
+}

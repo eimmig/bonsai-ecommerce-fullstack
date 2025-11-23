@@ -1,6 +1,7 @@
 import { memo, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useTranslation } from '@/hooks/use-translation';
 import { ROUTES } from '@/constants/routes';
 import { formatCurrencyBRL } from '@/utils/currency';
 import type { Product } from '@/types/product.types';
@@ -13,6 +14,7 @@ interface ProductCardProps {
 
 const ProductCardComponent = ({ product, onAddToCart }: ProductCardProps) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   
   // Format price
   const formattedPrice = useMemo(() => formatCurrencyBRL(product.price), [product.price]);
@@ -49,7 +51,7 @@ const ProductCardComponent = ({ product, onAddToCart }: ProductCardProps) => {
       <button 
         className="product-image" 
         onClick={handleViewDetails}
-        aria-label={`Ver detalhes de ${product.name}`}
+        aria-label={t('products.viewDetailsOf', { name: product.name })}
       >
         <img src={product.imageUrl} alt={product.name} />
       </button>
@@ -71,12 +73,12 @@ const ProductCardComponent = ({ product, onAddToCart }: ProductCardProps) => {
         <div className="product-actions">
           {onAddToCart && (
             <button className="add-to-cart-btn" onClick={handleAddToCart}>
-              Adicionar ao Carrinho
+              {t('products.addToCart')}
             </button>
           )}
           
           <button className="view-details-btn" onClick={handleViewDetails}>
-            Ver Detalhes
+            {t('products.viewDetails')}
           </button>
         </div>
       </div>

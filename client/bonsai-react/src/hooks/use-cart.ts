@@ -32,9 +32,14 @@ export const useCart = () => {
       toast.success('Produto adicionado ao carrinho!');
     },
     onError: (error: AxiosError) => {
-      // Erro 403 - Não autenticado
+      if (error.response?.status === 401) {
+        toast.error('Sessão expirada', 'Faça login para adicionar produtos ao carrinho.');
+        return;
+      }
+      
+      // Erro 403 - Acesso negado
       if (error.response?.status === 403) {
-        toast.error('Acesso negado', 'Realize o login para adicionar produtos ao carrinho.');
+        toast.error('Acesso negado', 'Você não tem permissão para realizar esta ação.');
         return;
       }
       
@@ -53,8 +58,11 @@ export const useCart = () => {
       toast.success('Quantidade atualizada');
     },
     onError: (error: AxiosError) => {
+      console.error('Erro ao atualizar item do carrinho:', error);
       const message = (error as any).userMessage || 'Erro ao atualizar quantidade';
-      toast.error('Erro no carrinho', message);
+      toast.error(message);
+      // Recarrega o carrinho para sincronizar com o backend
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
   });
 
@@ -63,11 +71,23 @@ export const useCart = () => {
     onSuccess: (data: Cart) => {
       setCart(data.items);
       queryClient.invalidateQueries({ queryKey: ['cart'] });
-      toast.success('Produto removido do carrinho');
+      toast.success('Item removido do carrinho');
     },
     onError: (error: AxiosError) => {
-      const message = (error as any).userMessage || 'Erro ao remover produto';
-      toast.error('Erro no carrinho', message);
+      console.error('Erro ao remover item do carrinho:', error);
+      
+      // Se o erro for 404 (item não encontrado), ainda assim consideramos sucesso
+      // pois o item já não existe mais no carrinho
+      if (error.response?.status === 404) {
+        queryClient.invalidateQueries({ queryKey: ['cart'] });
+        toast.success('Item removido do carrinho');
+        return;
+      }
+      
+      const message = (error as any).userMessage || 'Erro ao remover item do carrinho';
+      toast.error(message);
+      // Recarrega o carrinho para sincronizar com o backend
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
   });
 

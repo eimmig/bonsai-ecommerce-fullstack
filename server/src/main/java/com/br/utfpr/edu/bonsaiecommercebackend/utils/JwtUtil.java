@@ -1,11 +1,13 @@
 package com.br.utfpr.edu.bonsaiecommercebackend.utils;
 
+import com.br.utfpr.edu.bonsaiecommercebackend.services.TokenBlacklistService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -23,8 +25,14 @@ public class JwtUtil {
     private String secretKeyString;
 
     private SecretKey secretKey;
+    
+    private final TokenBlacklistService tokenBlacklistService;
 
     private static final long EXPIRATION_TIME = 1000L * 60 * 60;
+    
+    public JwtUtil(@Lazy TokenBlacklistService tokenBlacklistService) {
+        this.tokenBlacklistService = tokenBlacklistService;
+    }
 
     @PostConstruct
     public void init() {
@@ -83,6 +91,11 @@ public class JwtUtil {
 
     public boolean validateToken(String token, UUID userId) {
         try {
+            // Verifica se o token está na blacklist
+            if (tokenBlacklistService.isTokenInvalidated(token)) {
+                return false;
+            }
+            
             final UUID extractedUserId = extractUserId(token);
             return extractedUserId.equals(userId) && !isTokenExpired(token);
         } catch (Exception e) {
