@@ -97,7 +97,7 @@ public class JwtUtil {
             
             final UUID extractedUserId = extractUserId(token);
             return extractedUserId.equals(userId) && !isTokenExpired(token);
-        } catch (Exception e) {
+        } catch (Exception _) {
             return false;
         }
     }

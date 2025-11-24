@@ -28,7 +28,7 @@ const parseShippingHtml = (html: string): ShippingOption[] => {
 
   const shippingDivs = doc.querySelectorAll('.js-list-results > div');
 
-  shippingDivs.forEach((div) => {
+  for (const div of shippingDivs) {
     const nameElement = div.querySelector('.h5');
     const deliveryElement = div.querySelector('.shipping-info-left .info');
     const priceElement = div.querySelector('.shipping-info-right .info');
@@ -38,9 +38,10 @@ const parseShippingHtml = (html: string): ShippingOption[] => {
       const deliveryTime = deliveryElement.textContent?.trim() || '';
       const priceText = priceElement.textContent?.trim() || '';
       
-      const priceMatch = priceText.match(/R\$\s*([\d.,]+)/);
+      const priceRegex = /R\$\s*([\d.,]+)/;
+      const priceMatch = priceRegex.exec(priceText);
       const price = priceMatch 
-        ? parseFloat(priceMatch[1].replace('.', '').replace(',', '.'))
+        ? Number.parseFloat(priceMatch[1].replace('.', '').replace(',', '.'))
         : 0;
 
       options.push({
@@ -50,7 +51,7 @@ const parseShippingHtml = (html: string): ShippingOption[] => {
         rawHtml: div.outerHTML,
       });
     }
-  });
+  }
 
   return options;
 };

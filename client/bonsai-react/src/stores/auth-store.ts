@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import type { User } from '@/types/user.types';
-import { getFromStorage, setToStorage, removeFromStorage } from '@/utils/storage';
+import { setToStorage, removeFromStorage } from '@/utils/storage';
 import { useCartStore } from './cart-store';
 
 interface AuthState {
@@ -16,7 +16,7 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       user: null,
       token: null,
       isAuthenticated: false,

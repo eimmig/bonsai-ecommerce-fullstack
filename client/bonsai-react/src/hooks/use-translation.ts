@@ -24,9 +24,9 @@ export const useTranslation = () => {
     let translation = t(key);
     
     if (params) {
-      Object.entries(params).forEach(([paramKey, paramValue]) => {
+      for (const [paramKey, paramValue] of Object.entries(params)) {
         translation = translation.replace(`{{${paramKey}}}`, String(paramValue));
-      });
+      }
     }
     
     return translation;

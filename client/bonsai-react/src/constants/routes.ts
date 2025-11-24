@@ -15,7 +15,7 @@ export const ROUTES = {
 export const PUBLIC_ROUTES = [
   ROUTES.HOME,
   ROUTES.PRODUCTS,
-  '/products/:id',
+  ROUTES.PRODUCT_DETAIL(':id'),
   ROUTES.LOGIN,
   ROUTES.ABOUT,
 ];

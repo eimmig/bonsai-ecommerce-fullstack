@@ -35,6 +35,44 @@ class ApiClient {
     this.setupInterceptors();
   }
 
+  private handleUnauthorized(): void {
+    const hasToken = localStorage.getItem('token');
+    
+    if (hasToken) {
+      toast.error('Sessão expirada', 'Faça login novamente.');
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      
+      if (!globalThis.location.pathname.includes('/login')) {
+        globalThis.location.href = '/login';
+      }
+    }
+  }
+
+  private handleResponseError(error: AxiosError): void {
+    const errorMessage = getErrorMessage(error);
+
+    if (!error.response) {
+      (error as any).userMessage = error.request 
+        ? 'Erro de conexão. Verifique sua internet.'
+        : errorMessage;
+      return;
+    }
+
+    const { status } = error.response;
+
+    if (status === 401) {
+      this.handleUnauthorized();
+    } else if (status === 403) {
+      console.error('Acesso negado:', errorMessage);
+    } else if (status >= 500) {
+      toast.error('Erro no servidor', 'Tente novamente mais tarde.');
+      console.error('Erro no servidor:', errorMessage);
+    }
+
+    (error as any).userMessage = errorMessage;
+  }
+
   private setupInterceptors(): void {
     this.instance.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
@@ -52,41 +90,7 @@ class ApiClient {
     this.instance.interceptors.response.use(
       (response: AxiosResponse) => response,
       (error: AxiosError) => {
-        const errorMessage = getErrorMessage(error);
-
-        if (error.response) {
-          const { status } = error.response;
-
-          if (status === 401) {
-            const hasToken = localStorage.getItem('token');
-            
-            if (hasToken) {
-              toast.error('Sessão expirada', 'Faça login novamente.');
-              localStorage.removeItem('token');
-              localStorage.removeItem('user');
-              
-              if (!globalThis.location.pathname.includes('/login')) {
-                globalThis.location.href = '/login';
-              }
-            }
-          }
-
-          if (status === 403) {
-            console.error('Acesso negado:', errorMessage);
-          }
-
-          if (status >= 500) {
-            toast.error('Erro no servidor', 'Tente novamente mais tarde.');
-            console.error('Erro no servidor:', errorMessage);
-          }
-
-          (error as any).userMessage = errorMessage;
-        } else if (error.request) {
-          (error as any).userMessage = 'Erro de conexão. Verifique sua internet.';
-        } else {
-          (error as any).userMessage = errorMessage;
-        }
-
+        this.handleResponseError(error);
         return Promise.reject(error);
       }
     );
