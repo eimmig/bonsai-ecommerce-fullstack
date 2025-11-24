@@ -16,10 +16,8 @@ const ProductCardComponent = ({ product, onAddToCart }: ProductCardProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   
-  // Format price
   const formattedPrice = useMemo(() => formatCurrencyBRL(product.price), [product.price]);
 
-  // Memoize event handler
   const handleAddToCart = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
@@ -29,7 +27,6 @@ const ProductCardComponent = ({ product, onAddToCart }: ProductCardProps) => {
     [onAddToCart, product]
   );
 
-  // Calculate discount price
   const hasDiscount = product.discount != null && product.discount > 0;
   const discountedPrice = hasDiscount
     ? product.price - (product.price * product.discount) / 100
@@ -86,5 +83,4 @@ const ProductCardComponent = ({ product, onAddToCart }: ProductCardProps) => {
   );
 };
 
-// Memoize component to prevent unnecessary re-renders
 export const ProductCard = memo(ProductCardComponent);

@@ -41,14 +41,12 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public CartModel getCart(UUID userId) {
-        // Usar query otimizada com JOIN FETCH para evitar N+1
         Optional<CartEntity> cartOpt = cartRepository.findByUserIdWithItemsAndProducts(userId);
 
         if (cartOpt.isPresent()) {
             return cartMapper.toModel(cartOpt.get());
         }
         
-        // Criar novo carrinho se não existir
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
@@ -76,41 +74,34 @@ public class CartServiceImpl implements CartService {
         ProductEntity product = productRepository.findById(dto.productId())
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
 
-        // Validar estoque
         if (product.getStock() != null && product.getStock() < dto.quantity()) {
             logger.warn("Estoque insuficiente. Produto: {}, Estoque: {}, Solicitado: {}", dto.productId(), product.getStock(), dto.quantity());
             throw new InsufficientStockException(product.getStock());
         }
 
-        // Verificar se o item já existe no carrinho
         Optional<CartItemEntity> existingItemOpt = cartItemRepository
                 .findByCartIdAndProductId(cart.getId(), dto.productId());
 
         CartItemEntity item;
         if (existingItemOpt.isPresent()) {
-            // Atualizar quantidade do item existente
             item = existingItemOpt.get();
             int newQuantity = item.getQuantity() + dto.quantity();
             
-            // Validar estoque novamente com a nova quantidade
             if (product.getStock() != null && product.getStock() < newQuantity) {
                 throw new InsufficientStockException(product.getStock());
             }
             
             item.setQuantity(newQuantity);
         } else {
-            // Criar novo item
             item = new CartItemEntity();
             item.setCart(cart);
             item.setProduct(product);
             item.setQuantity(dto.quantity());
         }
 
-        // Calcular preços
         item.recalculatePrices();
         cartItemRepository.save(item);
 
-        // Recalcular total do carrinho
         cart.recalculateTotalPrice();
         CartEntity savedCart = cartRepository.save(cart);
 
@@ -126,23 +117,19 @@ public class CartServiceImpl implements CartService {
         CartItemEntity item = cartItemRepository.findById(itemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado no carrinho"));
 
-        // Verificar se o item pertence ao carrinho do usuário
         if (!item.getCart().getId().equals(cart.getId())) {
             throw new UnauthorizedAccessException("Item não pertence a este carrinho");
         }
 
-        // Validar estoque
         ProductEntity product = item.getProduct();
         if (product.getStock() != null && product.getStock() < dto.quantity()) {
             throw new InsufficientStockException(product.getStock());
         }
 
-        // Atualizar quantidade e recalcular preços
         item.setQuantity(dto.quantity());
         item.recalculatePrices();
         cartItemRepository.save(item);
 
-        // Recalcular total do carrinho
         cart.recalculateTotalPrice();
         CartEntity savedCart = cartRepository.save(cart);
 
@@ -158,19 +145,15 @@ public class CartServiceImpl implements CartService {
         CartItemEntity item = cartItemRepository.findById(itemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Item não encontrado no carrinho"));
 
-        // Verificar se o item pertence ao carrinho do usuário
         if (!item.getCart().getId().equals(cart.getId())) {
             throw new UnauthorizedAccessException("Item não pertence a este carrinho");
         }
 
-        // Remover da coleção do carrinho ANTES de deletar (evita ObjectDeletedException)
         cart.getItems().remove(item);
         item.setCart(null);
 
-        // Deletar o item
         cartItemRepository.delete(item);
 
-        // Recalcular total do carrinho
         cart.recalculateTotalPrice();
         cartRepository.save(cart);
     }

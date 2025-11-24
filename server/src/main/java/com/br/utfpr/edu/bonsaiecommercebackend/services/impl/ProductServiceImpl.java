@@ -52,7 +52,6 @@ public class ProductServiceImpl extends GenericServiceImpl<ProductModel, Product
         Specification<ProductEntity> spec = (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            // Filtro por texto (nome ou descrição)
             if (query != null && !query.isBlank()) {
                 String likePattern = "%" + query.toLowerCase() + "%";
                 Predicate namePredicate = criteriaBuilder.like(
@@ -62,24 +61,20 @@ public class ProductServiceImpl extends GenericServiceImpl<ProductModel, Product
                 predicates.add(criteriaBuilder.or(namePredicate, descriptionPredicate));
             }
 
-            // Filtro por preço mínimo
             if (minPrice != null) {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"), minPrice));
             }
 
-            // Filtro por preço máximo
             if (maxPrice != null) {
                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"), maxPrice));
             }
 
-            // Filtro por categoria
             if (category != null && !category.isBlank()) {
                 predicates.add(criteriaBuilder.equal(
                     criteriaBuilder.lower(root.get("category").get("name")), 
                     category.toLowerCase()));
             }
 
-            // Filtro por featured
             if (featured != null && featured) {
                 predicates.add(criteriaBuilder.isTrue(root.get("featured")));
             }

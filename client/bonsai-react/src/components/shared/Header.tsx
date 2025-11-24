@@ -21,7 +21,6 @@ const HeaderComponent = () => {
   const productsDropdownRef = useRef<HTMLLIElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  // Fecha dropdown quando clicar fora
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (productsDropdownRef.current && !productsDropdownRef.current.contains(event.target as Node)) {

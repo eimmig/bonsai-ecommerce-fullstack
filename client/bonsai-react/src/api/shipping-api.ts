@@ -26,7 +26,6 @@ const parseShippingHtml = (html: string): ShippingOption[] => {
   const doc = parser.parseFromString(html, 'text/html');
   const options: ShippingOption[] = [];
 
-  // Seleciona todos os containers de opções de frete (.pac, .sedex, etc)
   const shippingDivs = doc.querySelectorAll('.js-list-results > div');
 
   shippingDivs.forEach((div) => {
@@ -39,7 +38,6 @@ const parseShippingHtml = (html: string): ShippingOption[] => {
       const deliveryTime = deliveryElement.textContent?.trim() || '';
       const priceText = priceElement.textContent?.trim() || '';
       
-      // Extrai o valor numérico do preço (ex: "R$ 17,66" -> 17.66)
       const priceMatch = priceText.match(/R\$\s*([\d.,]+)/);
       const price = priceMatch 
         ? parseFloat(priceMatch[1].replace('.', '').replace(',', '.'))

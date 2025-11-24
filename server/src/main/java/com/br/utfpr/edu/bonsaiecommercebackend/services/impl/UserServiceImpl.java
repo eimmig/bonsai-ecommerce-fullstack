@@ -151,7 +151,6 @@ public class UserServiceImpl extends GenericServiceImpl<UserModel, UserEntity>
             existingUser.setAddresses(addressModels);
         }
 
-        // Salvar usando método update padrão
         UserModel updatedUser = super.update(userId, existingUser);
         logger.info("Perfil do usuário atualizado com sucesso. ID: {}", userId);
         return updatedUser;

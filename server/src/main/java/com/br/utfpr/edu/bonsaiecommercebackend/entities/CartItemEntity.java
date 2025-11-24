@@ -49,7 +49,6 @@ public class CartItemEntity extends GenericEntity {
         BigDecimal productPrice = product.getPrice();
         BigDecimal discount = product.getDiscount();
         
-        // Cálculo inline (para evitar dependência de Spring em entidade)
         if (discount != null && discount.compareTo(BigDecimal.ZERO) > 0) {
             BigDecimal discountAmount = productPrice.multiply(discount)
                     .divide(BigDecimal.valueOf(100), 2, java.math.RoundingMode.HALF_UP);

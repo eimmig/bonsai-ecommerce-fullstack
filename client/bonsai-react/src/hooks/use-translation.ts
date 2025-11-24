@@ -12,7 +12,6 @@ export const useTranslation = () => {
   const { language, setLanguage, t } = useI18nStore();
 
   useEffect(() => {
-    // Carregar traduções do idioma atual
     useI18nStore.getState().loadTranslations(translations[language]);
   }, [language]);
 
@@ -21,7 +20,6 @@ export const useTranslation = () => {
     useI18nStore.getState().loadTranslations(translations[lang]);
   };
 
-  // Helper para tradução com interpolação
   const translate = (key: string, params?: Record<string, string | number>) => {
     let translation = t(key);
     
@@ -34,7 +32,6 @@ export const useTranslation = () => {
     return translation;
   };
 
-  // Helper para traduções com plural
   const translatePlural = (key: string, count: number, params?: Record<string, string | number>) => {
     const pluralKey = count === 1 ? key : `${key}_plural`;
     return translate(pluralKey, { count, ...params });

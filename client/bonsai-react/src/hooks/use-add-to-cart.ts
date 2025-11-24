@@ -9,7 +9,6 @@ export const useAddToCart = () => {
       productId: product.id,
       quantity: 1,
     });
-    // Toast de sucesso/erro é tratado no use-cart.ts
   };
 
   return { handleAddToCart };

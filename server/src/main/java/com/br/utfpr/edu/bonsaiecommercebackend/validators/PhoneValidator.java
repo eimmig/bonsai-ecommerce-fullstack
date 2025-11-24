@@ -19,13 +19,11 @@ public class PhoneValidator implements ConstraintValidator<ValidPhone, String> {
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null || value.isBlank()) {
-            return true; // Validação de obrigatoriedade é feita por @NotBlank
+            return true;
         }
 
-        // Remove espaços em branco extras
         String cleanValue = value.trim();
 
-        // Valida com regex
         return cleanValue.matches(PHONE_PATTERN);
     }
 }

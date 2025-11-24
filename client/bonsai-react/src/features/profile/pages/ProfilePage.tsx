@@ -62,7 +62,6 @@ export const ProfilePage = () => {
   const [isAddingNew, setIsAddingNew] = useState(false);
   const { t } = useTranslation();
 
-  // Seleciona o primeiro endereço automaticamente
   useEffect(() => {
     if (addresses && addresses.length > 0 && !selectedAddressId && addresses[0].id) {
       setSelectedAddressId(addresses[0].id);
@@ -92,7 +91,6 @@ export const ProfilePage = () => {
     },
   });
 
-  // Preenche o formulário quando o endereço for carregado ou ao adicionar novo
   useEffect(() => {
     if (isAddingNew) {
       addressForm.reset({
@@ -117,7 +115,6 @@ export const ProfilePage = () => {
     }
   }, [selectedAddress, isAddingNew, addressForm]);
 
-  // Busca endereço por CEP
   const handleCEPBlur = async (cep: string) => {
     const cleanCEP = cep.replaceAll(/\D/g, '');
     if (cleanCEP.length === 8) {
@@ -150,7 +147,6 @@ export const ProfilePage = () => {
 
   const handleAddressSubmit = (data: AddressFormData) => {
     if (isAddingNew) {
-      // Criar novo endereço
       createAddress(data, {
         onSuccess: (newAddress) => {
           toast.success(t('address.createSuccess'));
@@ -164,7 +160,6 @@ export const ProfilePage = () => {
         },
       });
     } else if (selectedAddressId) {
-      // Atualizar endereço existente
       updateAddress(
         { id: selectedAddressId, data },
         {

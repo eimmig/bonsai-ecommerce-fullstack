@@ -4,7 +4,6 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/auth-store';
 import { ROUTES } from '@/constants/routes';
 
-// Lazy load pages for code splitting
 const HomePage = lazy(() =>
   import('@/features/home').then((module) => ({ default: module.HomePage }))
 );
@@ -43,11 +42,9 @@ const ProfilePage = lazy(() =>
   }))
 );
 
-// Protected Route wrapper
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, token } = useAuthStore();
   
-  // Verifica se realmente está autenticado (tem token válido)
   if (!isAuthenticated || !token) {
     return <Navigate to={ROUTES.LOGIN} replace />;
   }

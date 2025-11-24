@@ -57,15 +57,11 @@ class GenericServiceImplTest {
 
     @Test
     void save_ShouldSaveAndReturnModel() {
-        // Given
         when(mapper.toEntity(testModel)).thenReturn(testEntity);
         when(repository.save(testEntity)).thenReturn(testEntity);
         when(mapper.toModel(testEntity)).thenReturn(testModel);
 
-        // When
         TestModel result = service.save(testModel);
-
-        // Then
         assertNotNull(result);
         assertEquals(testId, result.getId());
         verify(mapper).toEntity(testModel);
@@ -75,17 +71,14 @@ class GenericServiceImplTest {
 
     @Test
     void getAll_ShouldReturnAllModels() {
-        // Given
         List<TestEntity> entities = Arrays.asList(testEntity);
         List<TestModel> models = Arrays.asList(testModel);
 
         when(repository.findAll()).thenReturn(entities);
         when(mapper.toModelList(entities)).thenReturn(models);
 
-        // When
         List<TestModel> result = service.getAll();
 
-        // Then
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals(testId, result.get(0).getId());
@@ -95,14 +88,11 @@ class GenericServiceImplTest {
 
     @Test
     void getAll_WithEmptyRepository_ShouldReturnEmptyList() {
-        // Given
         when(repository.findAll()).thenReturn(Arrays.asList());
         when(mapper.toModelList(anyList())).thenReturn(Arrays.asList());
 
-        // When
         List<TestModel> result = service.getAll();
 
-        // Then
         assertNotNull(result);
         assertTrue(result.isEmpty());
         verify(repository).findAll();
@@ -111,17 +101,14 @@ class GenericServiceImplTest {
 
     @Test
     void getAllWithPageable_ShouldReturnPagedModels() {
-        // Given
         Pageable pageable = PageRequest.of(0, 10);
         Page<TestEntity> entityPage = new PageImpl<>(Arrays.asList(testEntity), pageable, 1);
 
         when(repository.findAll(pageable)).thenReturn(entityPage);
         when(mapper.toModel(testEntity)).thenReturn(testModel);
 
-        // When
         Page<TestModel> result = service.getAll(pageable);
 
-        // Then
         assertNotNull(result);
         assertEquals(1, result.getTotalElements());
         assertEquals(1, result.getContent().size());
@@ -132,14 +119,11 @@ class GenericServiceImplTest {
 
     @Test
     void getById_WithExistingId_ShouldReturnOptionalWithModel() {
-        // Given
         when(repository.findById(testId)).thenReturn(Optional.of(testEntity));
         when(mapper.toModel(testEntity)).thenReturn(testModel);
 
-        // When
         Optional<TestModel> result = service.getById(testId);
 
-        // Then
         assertTrue(result.isPresent());
         assertEquals(testId, result.get().getId());
         verify(repository).findById(testId);
@@ -148,13 +132,10 @@ class GenericServiceImplTest {
 
     @Test
     void getById_WithNonExistingId_ShouldReturnEmptyOptional() {
-        // Given
         when(repository.findById(testId)).thenReturn(Optional.empty());
 
-        // When
         Optional<TestModel> result = service.getById(testId);
 
-        // Then
         assertFalse(result.isPresent());
         verify(repository).findById(testId);
         verify(mapper, never()).toModel(any());
@@ -162,14 +143,11 @@ class GenericServiceImplTest {
 
     @Test
     void findByIdOrThrow_WithExistingId_ShouldReturnModel() {
-        // Given
         when(repository.findById(testId)).thenReturn(Optional.of(testEntity));
         when(mapper.toModel(testEntity)).thenReturn(testModel);
 
-        // When
         TestModel result = service.findByIdOrThrow(testId);
 
-        // Then
         assertNotNull(result);
         assertEquals(testId, result.getId());
         verify(repository).findById(testId);
@@ -178,10 +156,8 @@ class GenericServiceImplTest {
 
     @Test
     void findByIdOrThrow_WithNonExistingId_ShouldThrowResourceNotFoundException() {
-        // Given
         when(repository.findById(testId)).thenReturn(Optional.empty());
 
-        // When & Then
         ResourceNotFoundException exception = assertThrows(
             ResourceNotFoundException.class,
             () -> service.findByIdOrThrow(testId)
@@ -195,23 +171,18 @@ class GenericServiceImplTest {
 
     @Test
     void delete_WithExistingId_ShouldDeleteSuccessfully() {
-        // Given
         when(repository.existsById(testId)).thenReturn(true);
 
-        // When
         assertDoesNotThrow(() -> service.delete(testId));
 
-        // Then
         verify(repository).existsById(testId);
         verify(repository).deleteById(testId);
     }
 
     @Test
     void delete_WithNonExistingId_ShouldThrowRuntimeException() {
-        // Given
         when(repository.existsById(testId)).thenReturn(false);
 
-        // When & Then
         RuntimeException exception = assertThrows(
             RuntimeException.class,
             () -> service.delete(testId)
@@ -224,7 +195,6 @@ class GenericServiceImplTest {
 
     @Test
     void update_WithExistingId_ShouldUpdateAndReturnModel() {
-        // Given
         TestModel updateModel = new TestModel();
         updateModel.setCreatedAt(LocalDateTime.now());
 
@@ -233,10 +203,8 @@ class GenericServiceImplTest {
         when(repository.save(testEntity)).thenReturn(testEntity);
         when(mapper.toModel(testEntity)).thenReturn(testModel);
 
-        // When
         TestModel result = service.update(testId, updateModel);
 
-        // Then
         assertNotNull(result);
         assertEquals(testId, result.getId());
         assertEquals(testId, updateModel.getId()); // Verifica se o ID foi setado
@@ -248,11 +216,9 @@ class GenericServiceImplTest {
 
     @Test
     void update_WithNonExistingId_ShouldThrowRuntimeException() {
-        // Given
         TestModel updateModel = new TestModel();
         when(repository.existsById(testId)).thenReturn(false);
 
-        // When & Then
         RuntimeException exception = assertThrows(
             RuntimeException.class,
             () -> service.update(testId, updateModel)
@@ -274,7 +240,6 @@ class GenericServiceImplTest {
         // Classe de teste vazia, herda de GenericEntity
     }
 
-    // Implementação concreta do GenericServiceImpl para testes
     private static class TestGenericService extends GenericServiceImpl<TestModel, TestEntity> {
         protected TestGenericService(JpaRepository<TestEntity, UUID> repository,
                                    DomainMapper<TestModel, TestEntity, ?, ?> mapper) {

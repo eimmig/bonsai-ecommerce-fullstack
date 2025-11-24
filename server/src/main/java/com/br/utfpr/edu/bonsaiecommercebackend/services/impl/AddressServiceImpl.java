@@ -33,7 +33,6 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional
     public AddressModel createAddress(AddressModel addressModel) {
-        // Buscar userId do usuário autenticado
         UUID userId = AuthenticationUtil.getCurrentUserId();
 
         UserEntity user = userRepository.findById(userId)
@@ -48,13 +47,11 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressModel getAddress(UUID addressId) {
-        // Buscar userId do usuário autenticado
         UUID userId = AuthenticationUtil.getCurrentUserId();
 
         AddressEntity address = addressRepository.findById(addressId)
                 .orElseThrow(() -> new ResourceNotFoundException("Endereço não encontrado"));
 
-        // Validar propriedade
         if (address.getUser() == null || !address.getUser().getId().equals(userId)) {
             throw new UnauthorizedAccessException("Você não tem permissão para acessar este endereço");
         }
@@ -64,7 +61,6 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Page<AddressModel> getAllAddresses(Pageable pageable) {
-        // Buscar userId do usuário autenticado
         UUID userId = AuthenticationUtil.getCurrentUserId();
 
         Page<AddressEntity> addresses = addressRepository.findByUserId(userId, pageable);
@@ -74,18 +70,15 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional
     public AddressModel updateAddress(UUID addressId, AddressModel addressModel) {
-        // Buscar userId do usuário autenticado
         UUID userId = AuthenticationUtil.getCurrentUserId();
 
         AddressEntity existingAddress = addressRepository.findById(addressId)
                 .orElseThrow(() -> new ResourceNotFoundException("Endereço não encontrado"));
 
-        // Validar propriedade
         if (existingAddress.getUser() == null || !existingAddress.getUser().getId().equals(userId)) {
             throw new UnauthorizedAccessException("Você não tem permissão para atualizar este endereço");
         }
 
-        // Atualizar campos
         existingAddress.setStreet(addressModel.getStreet());
         existingAddress.setNumber(addressModel.getNumber());
         existingAddress.setComplement(addressModel.getComplement());
@@ -101,13 +94,11 @@ public class AddressServiceImpl implements AddressService {
     @Override
     @Transactional
     public void deleteAddress(UUID addressId) {
-        // Buscar userId do usuário autenticado
         UUID userId = AuthenticationUtil.getCurrentUserId();
 
         AddressEntity address = addressRepository.findById(addressId)
                 .orElseThrow(() -> new ResourceNotFoundException("Endereço não encontrado"));
 
-        // Validar propriedade
         if (address.getUser() == null || !address.getUser().getId().equals(userId)) {
             throw new UnauthorizedAccessException("Você não tem permissão para deletar este endereço");
         }

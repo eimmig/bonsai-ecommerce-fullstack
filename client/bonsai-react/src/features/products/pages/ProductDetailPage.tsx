@@ -24,7 +24,6 @@ export const ProductDetailPage = () => {
   const handleAddToCart = () => {
     if (!product) return;
 
-    // Check stock availability
     if (product.stock != null && product.stock < quantity) {
       toast.error(t('products.quantityUnavailable'));
       return;
@@ -35,7 +34,6 @@ export const ProductDetailPage = () => {
       quantity: quantity,
     });
     
-    // Toast de sucesso/erro é tratado no use-cart.ts
   };
 
   const handleQuantityChange = (change: number) => {

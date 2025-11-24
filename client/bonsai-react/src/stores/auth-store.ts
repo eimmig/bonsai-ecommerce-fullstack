@@ -23,15 +23,14 @@ export const useAuthStore = create<AuthState>()(
 
       setAuth: (user, token) => {
         setToStorage('user', user);
-        localStorage.setItem('token', token); // Token como string simples
+        localStorage.setItem('token', token);
         set({ user, token, isAuthenticated: true });
       },
 
       clearAuth: () => {
         removeFromStorage('user');
-        localStorage.removeItem('token'); // Remove token diretamente
+        localStorage.removeItem('token'); 
         
-        // Limpa o carrinho ao fazer logout
         useCartStore.getState().clearCart();
         
         set({ user: null, token: null, isAuthenticated: false });
@@ -45,7 +44,6 @@ export const useAuthStore = create<AuthState>()(
     {
       name: 'auth-storage',
       onRehydrateStorage: () => (state) => {
-        // Após carregar do storage, valida se realmente está autenticado
         if (state) {
           const storedToken = localStorage.getItem('token');
           const hasValidAuth = !!(state.user && storedToken);
@@ -54,7 +52,6 @@ export const useAuthStore = create<AuthState>()(
             state.token = storedToken;
             state.isAuthenticated = true;
           } else {
-            // Se não tem dados válidos mas diz estar autenticado, limpa
             state.user = null;
             state.token = null;
             state.isAuthenticated = false;

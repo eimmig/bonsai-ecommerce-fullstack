@@ -23,7 +23,6 @@ export const useToast = () => {
   return toast;
 };
 
-// Para uso fora de componentes (como no api-client)
 export const toast = {
   success: (title: string, message?: string) => {
     const content = message ? `${title}: ${message}` : title;

@@ -4,12 +4,10 @@ import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosReq
 
 const API_BASE_URL = 'http://localhost:8080/api';
 
-// Helper para extrair mensagem de erro da API
 const getErrorMessage = (error: AxiosError): string => {
   if (error.response?.data) {
     const data = error.response.data as any;
     
-    // Se vier um array de erros (formato de validação do backend)
     if (data.errors && Array.isArray(data.errors)) {
       return data.errors.join('\n');
     }
@@ -59,40 +57,31 @@ class ApiClient {
         if (error.response) {
           const { status } = error.response;
 
-          // Logout automático em caso de token expirado (401)
-          // Mas apenas se houver um token presente (evita redirecionar ao abrir a app)
           if (status === 401) {
             const hasToken = localStorage.getItem('token');
             
             if (hasToken) {
-              // Só redireciona se tinha token e ele expirou
               toast.error('Sessão expirada', 'Faça login novamente.');
               localStorage.removeItem('token');
               localStorage.removeItem('user');
               
-              // Evitar loop infinito se já estiver na página de login
               if (!globalThis.location.pathname.includes('/login')) {
                 globalThis.location.href = '/login';
               }
             }
-            // Se não tinha token, deixa a requisição falhar normalmente
           }
 
-          // Forbidden (403) - Não mostrar toast aqui, deixar para os hooks tratarem
           if (status === 403) {
             console.error('Acesso negado:', errorMessage);
           }
 
-          // Server error (500+)
           if (status >= 500) {
             toast.error('Erro no servidor', 'Tente novamente mais tarde.');
             console.error('Erro no servidor:', errorMessage);
           }
 
-          // Adicionar mensagem de erro ao objeto de erro para ser capturada pelos hooks
           (error as any).userMessage = errorMessage;
         } else if (error.request) {
-          // Erro de rede/conexão
           (error as any).userMessage = 'Erro de conexão. Verifique sua internet.';
         } else {
           (error as any).userMessage = errorMessage;

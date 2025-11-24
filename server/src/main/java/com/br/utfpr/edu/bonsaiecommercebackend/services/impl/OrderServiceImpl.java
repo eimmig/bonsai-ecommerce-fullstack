@@ -41,7 +41,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderModel createOrder(OrderModel orderModel) {
-        // Buscar userId do usuário autenticado
         UUID userId = AuthenticationUtil.getCurrentUserId();
 
         UserEntity user = userRepository.findById(userId)
@@ -50,7 +49,6 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity orderEntity = orderMapper.toEntity(orderModel);
         orderEntity.setUser(user);
 
-        // Setar status inicial como PENDING se não foi informado
         if (orderEntity.getStatus() == null) {
             orderEntity.setStatus(OrderStatus.PENDING);
         }
@@ -64,13 +62,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderModel getOrder(UUID orderId) {
-        // Buscar userId do usuário autenticado
         UUID userId = AuthenticationUtil.getCurrentUserId();
 
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
 
-        // Validar propriedade
         if (!order.getUser().getId().equals(userId)) {
             throw new UnauthorizedAccessException("Você não tem permissão para acessar este pedido");
         }
@@ -80,7 +76,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<OrderModel> getAllOrders(Pageable pageable) {
-        // Buscar userId do usuário autenticado
         UUID userId = AuthenticationUtil.getCurrentUserId();
 
         Page<OrderEntity> orders = orderRepository.findByUserId(userId, pageable);
@@ -90,20 +85,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderModel cancelOrder(UUID orderId) {
-        // Buscar userId do usuário autenticado
         UUID userId = AuthenticationUtil.getCurrentUserId();
         logger.info("Cancelando pedido: {} para usuário: {}", orderId, userId);
 
         OrderEntity order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
 
-        // Validar propriedade
         if (!order.getUser().getId().equals(userId)) {
             logger.warn("Tentativa não autorizada de cancelar pedido. User: {}, Order: {}", userId, orderId);
             throw new UnauthorizedAccessException("Usuário não tem permissão para cancelar este pedido");
         }
 
-        // Validar se o pedido pode ser cancelado
         if (order.getStatus() == OrderStatus.DELIVERED || order.getStatus() == OrderStatus.CANCELLED) {
             logger.warn("Tentativa de cancelar pedido com status inválido: {}", order.getStatus());
             throw new IllegalArgumentException("Pedido não pode ser cancelado (status: " + order.getStatus() + ")");

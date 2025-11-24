@@ -11,7 +11,6 @@ interface I18nState {
   t: (key: string) => string;
 }
 
-// Função para acessar propriedades aninhadas usando dot notation
 const getNestedValue = (obj: any, path: string): string => {
   const keys = path.split('.');
   let result = obj;
@@ -20,7 +19,7 @@ const getNestedValue = (obj: any, path: string): string => {
     if (result && typeof result === 'object' && key in result) {
       result = result[key];
     } else {
-      return path; // Retorna a chave se não encontrar
+      return path; 
     }
   }
   

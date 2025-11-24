@@ -24,7 +24,6 @@ export const RegisterForm = ({ onToggleForm }: RegisterFormProps) => {
   });
 
   const onSubmit = (data: RegisterFormData) => {
-    // Remove máscaras antes de enviar para o backend
     const cleanData = {
       ...data,
       cpfCnpj: data.cpfCnpj.replaceAll(/\D/g, ''),

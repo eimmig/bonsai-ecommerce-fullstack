@@ -4,7 +4,6 @@ export interface User {
   email: string;
 }
 
-// UserOutputDTO completo do backend
 export interface UserProfile {
   id: string;
   name: string;
@@ -51,7 +50,6 @@ export interface AuthResponse {
   email: string;
 }
 
-// UserOutputDTO retornado após registro
 export interface RegisterResponse {
   id: string;
   name: string;

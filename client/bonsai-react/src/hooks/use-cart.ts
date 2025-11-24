@@ -37,13 +37,11 @@ export const useCart = () => {
         return;
       }
       
-      // Erro 403 - Acesso negado
       if (error.response?.status === 403) {
         toast.error('Acesso negado', 'Você não tem permissão para realizar esta ação.');
         return;
       }
       
-      // Outros erros
       const message = (error as any).userMessage || 'Erro ao adicionar produto';
       toast.error('Erro no carrinho', message);
     },
@@ -61,7 +59,6 @@ export const useCart = () => {
       console.error('Erro ao atualizar item do carrinho:', error);
       const message = (error as any).userMessage || 'Erro ao atualizar quantidade';
       toast.error(message);
-      // Recarrega o carrinho para sincronizar com o backend
       queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
   });
@@ -76,8 +73,6 @@ export const useCart = () => {
     onError: (error: AxiosError) => {
       console.error('Erro ao remover item do carrinho:', error);
       
-      // Se o erro for 404 (item não encontrado), ainda assim consideramos sucesso
-      // pois o item já não existe mais no carrinho
       if (error.response?.status === 404) {
         queryClient.invalidateQueries({ queryKey: ['cart'] });
         toast.success('Item removido do carrinho');
@@ -86,7 +81,6 @@ export const useCart = () => {
       
       const message = (error as any).userMessage || 'Erro ao remover item do carrinho';
       toast.error(message);
-      // Recarrega o carrinho para sincronizar com o backend
       queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
   });

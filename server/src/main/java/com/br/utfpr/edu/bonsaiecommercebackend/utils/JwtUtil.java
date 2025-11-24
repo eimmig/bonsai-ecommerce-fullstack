@@ -91,7 +91,6 @@ public class JwtUtil {
 
     public boolean validateToken(String token, UUID userId) {
         try {
-            // Verifica se o token está na blacklist
             if (tokenBlacklistService.isTokenInvalidated(token)) {
                 return false;
             }

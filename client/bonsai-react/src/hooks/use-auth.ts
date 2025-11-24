@@ -54,7 +54,6 @@ export const useAuth = () => {
       navigate(ROUTES.LOGIN);
     },
     onError: (error: AxiosError) => {
-      // Mesmo com erro, fazemos logout local
       clearAuth();
       queryClient.clear();
       navigate(ROUTES.LOGIN);

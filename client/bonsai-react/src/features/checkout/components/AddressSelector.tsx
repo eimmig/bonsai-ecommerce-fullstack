@@ -24,7 +24,6 @@ export const AddressSelector = ({ selectedAddressId, onSelectAddress, error }: A
   };
 
   const handleNewAddressSuccess = () => {
-    // Modal vai fechar e a lista será atualizada automaticamente
   };
 
   if (isLoading) {

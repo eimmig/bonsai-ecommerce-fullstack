@@ -24,7 +24,6 @@ import {
 } from '../schemas/checkout.schemas';
 import './CheckoutPage.css';
 
-// CEP da origem (sua loja)
 const ORIGIN_ZIP_CODE = '85501288';
 
 export const CheckoutPage = () => {
@@ -51,7 +50,6 @@ export const CheckoutPage = () => {
     },
   });
 
-  // Calcula frete quando o endereço é selecionado
   useEffect(() => {
     const calculateShipping = async () => {
       if (selectedAddress && total > 0) {
@@ -64,15 +62,14 @@ export const CheckoutPage = () => {
           const response = await shippingApi.calculate({
             zipCodeOrigin: ORIGIN_ZIP_CODE,
             zipCodeDestination: selectedAddress.zipCode,
-            weight: 4000, // 4kg padrão
-            width: 50,    // 50cm
-            height: 50,   // 50cm
-            depth: 16,    // 16cm
+            weight: 4000, 
+            width: 50,    
+            height: 50,   
+            depth: 16,    
           });
           
           if (response.options && response.options.length > 0) {
             setShippingOptions(response.options);
-            // Seleciona automaticamente a primeira opção
             setSelectedShippingOption(response.options[0]);
           } else {
             setShippingError(t('checkout.shipping.noOptions'));
@@ -148,7 +145,7 @@ export const CheckoutPage = () => {
         toast.success(t('checkout.orderSuccess'));
         navigate(ROUTES.ORDERS);
       },
-      onError: (error: Error) {
+      onError: (error: Error) => {
         const message = (error as any).userMessage || t('checkout.orderError');
         toast.error(message);
       },

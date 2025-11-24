@@ -10,7 +10,7 @@ export const useProducts = (filters?: ProductFilters, pagination?: PaginationPar
     queryKey: ['products', filters, pagination],
     queryFn: () => productApi.getAll(filters, pagination),
     ...getRetryConfig(),
-    staleTime: 5 * 60 * 1000, // 5 minutos
+    staleTime: 5 * 60 * 1000, 
   });
 };
 
@@ -20,7 +20,7 @@ export const useProduct = (id: string) => {
     queryFn: () => productApi.getById(id),
     enabled: !!id,
     ...getRetryConfig(),
-    staleTime: 10 * 60 * 1000, // 10 minutos
+    staleTime: 10 * 60 * 1000,
   });
 };
 
