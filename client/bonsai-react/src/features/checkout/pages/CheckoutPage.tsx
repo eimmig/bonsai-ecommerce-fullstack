@@ -50,6 +50,16 @@ export const CheckoutPage = () => {
     },
   });
 
+  const getPaymentMethodLabel = (method: string): string => {
+    const labels: Record<string, string> = {
+      CREDIT_CARD: t('checkout.payment.creditCard'),
+      DEBIT_CARD: t('checkout.payment.debitCard'),
+      PIX: t('checkout.payment.pix'),
+      BOLETO: t('checkout.payment.boleto'),
+    };
+    return labels[method] || method;
+  };
+
   useEffect(() => {
     const calculateShipping = async () => {
       if (selectedAddress && total > 0) {
@@ -348,7 +358,7 @@ export const CheckoutPage = () => {
                   <div className="review-payment">
                     <CreditCard />
                     <span>
-                      {paymentForm.getValues('paymentMethod').replaceAll('_', ' ')}
+                      {getPaymentMethodLabel(paymentForm.getValues('paymentMethod'))}
                     </span>
                   </div>
                 </CardContent>

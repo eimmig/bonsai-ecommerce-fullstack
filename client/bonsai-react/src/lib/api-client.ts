@@ -1,24 +1,9 @@
 import { toast } from '@/hooks/use-toast';
 import axios, { AxiosError } from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { ErrorTranslator, attachErrorMessage } from '@/utils/error-translator';
 
 const API_BASE_URL = 'http://localhost:8080/api';
-
-const getErrorMessage = (error: AxiosError): string => {
-  if (error.response?.data) {
-    const data = error.response.data as any;
-    
-    if (data.errors && Array.isArray(data.errors)) {
-      return data.errors.join('\n');
-    }
-    
-    return data.message || data.error || data.mensagem || 'Erro desconhecido';
-  }
-  if (error.request) {
-    return 'Erro de conexão com o servidor';
-  }
-  return error.message || 'Erro desconhecido';
-};
 
 class ApiClient {
   private readonly instance: AxiosInstance;
@@ -37,12 +22,14 @@ class ApiClient {
 
   private handleUnauthorized(): void {
     const hasToken = localStorage.getItem('token');
-    
+
     if (hasToken) {
-      toast.error('Sessão expirada', 'Faça login novamente.');
+      // Note: toast messages here will use browser's default language
+      // since we can't access translation context in api-client
+      toast.error('Session expired', 'Please sign in again.');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      
+
       if (!globalThis.location.pathname.includes('/login')) {
         globalThis.location.href = '/login';
       }
@@ -50,27 +37,21 @@ class ApiClient {
   }
 
   private handleResponseError(error: AxiosError): void {
-    const errorMessage = getErrorMessage(error);
+    // Attach error message for backward compatibility
+    attachErrorMessage(error);
 
     if (!error.response) {
-      (error as any).userMessage = error.request 
-        ? 'Erro de conexão. Verifique sua internet.'
-        : errorMessage;
       return;
     }
 
-    const { status } = error.response;
-
-    if (status === 401) {
+    if (ErrorTranslator.isSessionExpired(error)) {
       this.handleUnauthorized();
-    } else if (status === 403) {
-      console.error('Acesso negado:', errorMessage);
-    } else if (status >= 500) {
-      toast.error('Erro no servidor', 'Tente novamente mais tarde.');
-      console.error('Erro no servidor:', errorMessage);
+    } else if (ErrorTranslator.isAccessDenied(error)) {
+      console.error('Access denied:', ErrorTranslator.getErrorMessage(error));
+    } else if (ErrorTranslator.isServerError(error)) {
+      toast.error('Server error', 'Please try again later.');
+      console.error('Server error:', ErrorTranslator.getErrorMessage(error));
     }
-
-    (error as any).userMessage = errorMessage;
   }
 
   private setupInterceptors(): void {

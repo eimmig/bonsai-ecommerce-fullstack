@@ -124,7 +124,15 @@
     "stock": "Available stock",
     "noProducts": "No products found",
     "loadingProducts": "Loading products...",
-    "errorLoading": "Error loading products"
+    "errorLoading": "Error loading products",
+    "seoDescription": "Explore our collection of authentic bonsai trees cultivated with traditional Japanese techniques. Delivery throughout Brazil.",
+    "seoDescriptionCategory": "Discover bonsai from the {{category}} category. Authentic plants with delivery throughout Brazil.",
+    "quantityUnavailable": "Quantity unavailable in stock",
+    "loadingDetails": "Loading product details...",
+    "notFound": "Product not found",
+    "backToProducts": "Back to Products",
+    "productFound": "product found",
+    "productsFound": "products found"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -150,7 +158,18 @@
     "itemAdded": "Product added to cart",
     "itemRemoved": "Product removed from cart",
     "cartCleared": "Cart cleared",
-    "free": "Free"
+    "free": "Free",
+    "messages": {
+      "addSuccess": "Product added to cart!",
+      "sessionExpired": "Session expired",
+      "sessionExpiredDescription": "Please sign in to add products to cart.",
+      "accessDenied": "Access denied",
+      "accessDeniedDescription": "You don't have permission to perform this action.",
+      "error": "Cart error",
+      "quantityUpdated": "Quantity updated",
+      "removeSuccess": "Item removed from cart",
+      "clearSuccess": "Cart cleared successfully"
+    }
   },
   "checkout": {
     "title": "Checkout",
@@ -277,6 +296,9 @@
     "title": "My Orders",
     "empty": "You haven't placed any orders yet",
     "emptyDescription": "Start shopping now!",
+    "emptyTitle": "No Orders",
+    "viewProducts": "View Products",
+    "freeShipping": "Free",
     "orderNumber": "Order #{{id}}",
     "orderDate": "Order date",
     "status": {
@@ -285,6 +307,12 @@
       "shipped": "Shipped",
       "delivered": "Delivered",
       "cancelled": "Cancelled"
+    },
+    "paymentMethods": {
+      "creditCard": "Credit Card",
+      "debitCard": "Debit Card",
+      "pix": "PIX",
+      "boleto": "Bank Slip"
     },
     "items": "Order Items",
     "deliveryAddress": "Delivery Address",
@@ -301,15 +329,19 @@
   },
   "profile": {
     "title": "My Profile",
+    "subtitle": "Manage your personal information and preferences",
     "personalInfo": "Personal Information",
     "addresses": "Addresses",
     "orders": "Orders",
     "name": "Name",
+    "fullName": "Full name",
     "email": "Email",
     "phone": "Phone",
     "cpfCnpj": "Tax ID",
     "birthDate": "Birth Date",
     "edit": "Edit Profile",
+    "saveChanges": "Save Changes",
+    "addNewAddress": "Add new address",
     "changePassword": "Change Password",
     "currentPassword": "Current password",
     "newPassword": "New password",
@@ -333,8 +365,13 @@
     "email": "Email",
     "address": "Bonsai Street, 123 - São Paulo, SP",
     "rights": "All rights reserved",
-    "rightsReserved": "All rights reserved.",
-    "copyright": "© 2024 Bonsai Brasil.",
+    "rightsReserved": "All rights reserved",
+    "copyright": "© {{year}} Bonsai Brasil",
+    "institutional": "Company",
+    "customerService": "Customer Service",
+    "contactTitle": "Contact",
+    "paymentMethods": "Payment Methods",
+    "storeTitle": "Store",
     "newsletterTitle": "Get our updates",
     "newsletterDescription": "Subscribe to our newsletter and stay updated with the best offers!",
     "emailPlaceholder": "Your email",
@@ -435,6 +472,16 @@
     "500": "Server error",
     "network": "Connection error",
     "unknown": "Unknown error",
-    "tryAgain": "Try again"
+    "tryAgain": "Try again",
+    "sessionExpired": "Session expired",
+    "sessionExpiredDescription": "Please sign in again.",
+    "serverError": "Server error",
+    "serverErrorDescription": "Please try again later.",
+    "connectionError": "Connection error",
+    "connectionErrorDescription": "Check your internet connection.",
+    "accessDenied": "Access denied",
+    "validationError": "Validation error",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Access denied"
   }
 }

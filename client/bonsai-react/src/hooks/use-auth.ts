@@ -6,12 +6,15 @@ import type { LoginRequest, RegisterRequest, AuthResponse, User } from '@/types/
 import { authApi } from '@/api/auth-api';
 import { useAuthStore } from '@/stores/auth-store';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from '@/hooks/use-translation';
 import { ROUTES } from '@/constants/routes';
+import { ErrorTranslator } from '@/utils/error-translator';
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const toast = useToast();
+  const { t } = useTranslation();
   const { setAuth, clearAuth, user, isAuthenticated } = useAuthStore();
 
   const loginMutation = useMutation({
@@ -24,24 +27,24 @@ export const useAuth = () => {
       };
       setAuth(user, data.token);
       queryClient.invalidateQueries({ queryKey: ['user'] });
-      toast.success('Login realizado com sucesso!', `Bem-vindo, ${user.name}!`);
+      toast.success(t('auth.messages.loginSuccess'), `${t('common.success')}, ${user.name}!`);
       navigate(ROUTES.HOME);
     },
     onError: (error: AxiosError) => {
-      const message = (error as any).userMessage || 'Email ou senha incorretos';
-      toast.error('Erro no login', message);
+      const message = ErrorTranslator.getErrorMessage(error) || t('auth.messages.loginError');
+      toast.error(t('common.error'), message);
     },
   });
 
   const registerMutation = useMutation({
     mutationFn: (data: RegisterRequest) => authApi.register(data),
     onSuccess: () => {
-      toast.success('Cadastro realizado!', 'Faça login para continuar');
+      toast.success(t('auth.messages.registerSuccess'), t('auth.login.signIn'));
       navigate(ROUTES.LOGIN);
     },
     onError: (error: AxiosError) => {
-      const message = (error as any).userMessage || 'Erro ao criar conta. Email pode já estar cadastrado.';
-      toast.error('Erro no cadastro', message);
+      const message = ErrorTranslator.getErrorMessage(error) || t('auth.messages.registerError');
+      toast.error(t('common.error'), message);
     },
   });
 
@@ -50,16 +53,16 @@ export const useAuth = () => {
     onSuccess: () => {
       clearAuth();
       queryClient.clear();
-      toast.info('Logout realizado', 'Até logo!');
+      toast.info(t('common.success'), t('auth.messages.logoutSuccess'));
       navigate(ROUTES.LOGIN);
     },
     onError: (error: AxiosError) => {
       clearAuth();
       queryClient.clear();
       navigate(ROUTES.LOGIN);
-      
-      const message = (error as any).userMessage || 'Erro ao fazer logout';
-      toast.warning('Aviso', message);
+
+      const message = ErrorTranslator.getErrorMessage(error) || t('common.error');
+      toast.warning(t('common.error'), message);
     },
   });
 

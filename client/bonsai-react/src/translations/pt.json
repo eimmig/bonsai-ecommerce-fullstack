@@ -124,7 +124,15 @@
     "stock": "Estoque disponível",
     "noProducts": "Nenhum produto encontrado",
     "loadingProducts": "Carregando produtos...",
-    "errorLoading": "Erro ao carregar produtos"
+    "errorLoading": "Erro ao carregar produtos",
+    "seoDescription": "Explore nossa coleção de bonsais autênticos cultivados com técnicas tradicionais japonesas. Entrega para todo o Brasil.",
+    "seoDescriptionCategory": "Descubra bonsais da categoria {{category}}. Plantas autênticas com entrega para todo o Brasil.",
+    "quantityUnavailable": "Quantidade indisponível em estoque",
+    "loadingDetails": "Carregando detalhes do produto...",
+    "notFound": "Produto não encontrado",
+    "backToProducts": "Voltar para Produtos",
+    "productFound": "produto encontrado",
+    "productsFound": "produtos encontrados"
   },
   "cart": {
     "title": "Carrinho de Compras",
@@ -150,7 +158,18 @@
     "itemAdded": "Produto adicionado ao carrinho",
     "itemRemoved": "Produto removido do carrinho",
     "cartCleared": "Carrinho limpo",
-    "free": "Grátis"
+    "free": "Grátis",
+    "messages": {
+      "addSuccess": "Produto adicionado ao carrinho!",
+      "sessionExpired": "Sessão expirada",
+      "sessionExpiredDescription": "Faça login para adicionar produtos ao carrinho.",
+      "accessDenied": "Acesso negado",
+      "accessDeniedDescription": "Você não tem permissão para realizar esta ação.",
+      "error": "Erro no carrinho",
+      "quantityUpdated": "Quantidade atualizada",
+      "removeSuccess": "Item removido do carrinho",
+      "clearSuccess": "Carrinho limpo com sucesso"
+    }
   },
   "checkout": {
     "title": "Finalizar Compra",
@@ -277,6 +296,9 @@
     "title": "Meus Pedidos",
     "empty": "Você ainda não fez nenhum pedido",
     "emptyDescription": "Comece a comprar agora!",
+    "emptyTitle": "Nenhum Pedido",
+    "viewProducts": "Ver Produtos",
+    "freeShipping": "Grátis",
     "orderNumber": "Pedido #{{id}}",
     "orderDate": "Data do pedido",
     "status": {
@@ -285,6 +307,12 @@
       "shipped": "Enviado",
       "delivered": "Entregue",
       "cancelled": "Cancelado"
+    },
+    "paymentMethods": {
+      "creditCard": "Cartão de Crédito",
+      "debitCard": "Cartão de Débito",
+      "pix": "PIX",
+      "boleto": "Boleto"
     },
     "items": "Itens do Pedido",
     "deliveryAddress": "Endereço de Entrega",
@@ -340,8 +368,13 @@
     "email": "E-mail",
     "address": "Rua dos Bonsais, 123 - São Paulo, SP",
     "rights": "Todos os direitos reservados",
-    "rightsReserved": "Todos os direitos reservados.",
-    "copyright": "© 2024 Bonsai Brasil.",
+    "rightsReserved": "Todos os direitos reservados",
+    "copyright": "© {{year}} Bonsai Brasil",
+    "institutional": "Institucional",
+    "customerService": "Atendimento",
+    "contactTitle": "Contato",
+    "paymentMethods": "Formas de Pagamento",
+    "storeTitle": "Loja",
     "newsletterTitle": "Receba nossas novidades",
     "newsletterDescription": "Cadastre seu e-mail e fique por dentro das melhores ofertas!",
     "emailPlaceholder": "Seu e-mail",
@@ -442,6 +475,16 @@
     "500": "Erro no servidor",
     "network": "Erro de conexão",
     "unknown": "Erro desconhecido",
-    "tryAgain": "Tentar novamente"
+    "tryAgain": "Tentar novamente",
+    "sessionExpired": "Sessão expirada",
+    "sessionExpiredDescription": "Faça login novamente.",
+    "serverError": "Erro no servidor",
+    "serverErrorDescription": "Tente novamente mais tarde.",
+    "connectionError": "Erro de conexão",
+    "connectionErrorDescription": "Verifique sua internet.",
+    "accessDenied": "Acesso negado",
+    "validationError": "Erro de validação",
+    "unauthorized": "Não autorizado",
+    "forbidden": "Acesso negado"
   }
 }

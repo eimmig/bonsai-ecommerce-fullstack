@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import ptTranslations from '@/translations/pt.json';
 
 type Language = 'pt' | 'en';
 
@@ -30,7 +31,7 @@ export const useI18nStore = create<I18nState>()(
   persist(
     (set, get) => ({
       language: 'pt',
-      translations: {},
+      translations: ptTranslations,
 
       setLanguage: (language) => set({ language }),
 

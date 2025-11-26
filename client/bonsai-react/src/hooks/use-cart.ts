@@ -6,10 +6,13 @@ import { cartApi } from '@/api/cart-api';
 import { useCartStore } from '@/stores/cart-store';
 import { useAuthStore } from '@/stores/auth-store';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from '@/hooks/use-translation';
+import { ErrorTranslator } from '@/utils/error-translator';
 
 export const useCart = () => {
   const queryClient = useQueryClient();
   const toast = useToast();
+  const { t } = useTranslation();
   const { isAuthenticated } = useAuthStore();
   const { items, itemCount, total, setCart, clearCart: clearLocalCart } = useCartStore();
 
@@ -29,21 +32,27 @@ export const useCart = () => {
     onSuccess: (data: Cart) => {
       setCart(data.items);
       queryClient.invalidateQueries({ queryKey: ['cart'] });
-      toast.success('Produto adicionado ao carrinho!');
+      toast.success(t('cart.messages.addSuccess'));
     },
     onError: (error: AxiosError) => {
-      if (error.response?.status === 401) {
-        toast.error('Sessão expirada', 'Faça login para adicionar produtos ao carrinho.');
+      if (ErrorTranslator.isSessionExpired(error)) {
+        toast.error(
+          t('cart.messages.sessionExpired'),
+          t('cart.messages.sessionExpiredDescription')
+        );
         return;
       }
-      
-      if (error.response?.status === 403) {
-        toast.error('Acesso negado', 'Você não tem permissão para realizar esta ação.');
+
+      if (ErrorTranslator.isAccessDenied(error)) {
+        toast.error(
+          t('cart.messages.accessDenied'),
+          t('cart.messages.accessDeniedDescription')
+        );
         return;
       }
-      
-      const message = (error as any).userMessage || 'Erro ao adicionar produto';
-      toast.error('Erro no carrinho', message);
+
+      const message = ErrorTranslator.getErrorMessage(error) || t('cart.messages.error');
+      toast.error(t('cart.messages.error'), message);
     },
   });
 
@@ -53,11 +62,11 @@ export const useCart = () => {
     onSuccess: (data: Cart) => {
       setCart(data.items);
       queryClient.invalidateQueries({ queryKey: ['cart'] });
-      toast.success('Quantidade atualizada');
+      toast.success(t('cart.messages.quantityUpdated'));
     },
     onError: (error: AxiosError) => {
       console.error('Erro ao atualizar item do carrinho:', error);
-      const message = (error as any).userMessage || 'Erro ao atualizar quantidade';
+      const message = ErrorTranslator.getErrorMessage(error) || t('cart.messages.error');
       toast.error(message);
       queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
@@ -68,18 +77,18 @@ export const useCart = () => {
     onSuccess: (data: Cart) => {
       setCart(data.items);
       queryClient.invalidateQueries({ queryKey: ['cart'] });
-      toast.success('Item removido do carrinho');
+      toast.success(t('cart.messages.removeSuccess'));
     },
     onError: (error: AxiosError) => {
       console.error('Erro ao remover item do carrinho:', error);
-      
+
       if (error.response?.status === 404) {
         queryClient.invalidateQueries({ queryKey: ['cart'] });
-        toast.success('Item removido do carrinho');
+        toast.success(t('cart.messages.removeSuccess'));
         return;
       }
-      
-      const message = (error as any).userMessage || 'Erro ao remover item do carrinho';
+
+      const message = ErrorTranslator.getErrorMessage(error) || t('cart.messages.error');
       toast.error(message);
       queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
@@ -90,11 +99,11 @@ export const useCart = () => {
     onSuccess: () => {
       clearLocalCart();
       queryClient.invalidateQueries({ queryKey: ['cart'] });
-      toast.success('Carrinho limpo com sucesso');
+      toast.success(t('cart.messages.clearSuccess'));
     },
     onError: (error: AxiosError) => {
-      const message = (error as any).userMessage || 'Erro ao limpar carrinho';
-      toast.error('Erro no carrinho', message);
+      const message = ErrorTranslator.getErrorMessage(error) || t('cart.messages.error');
+      toast.error(t('cart.messages.error'), message);
     },
   });
 
