@@ -179,7 +179,7 @@ class GenericServiceImplTest {
         verify(repository).deleteById(testId);
     }
 
-    
+
     @Test
     void update_WithExistingId_ShouldUpdateAndReturnModel() {
         TestModel updateModel = new TestModel();
