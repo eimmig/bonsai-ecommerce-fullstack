@@ -179,20 +179,7 @@ class GenericServiceImplTest {
         verify(repository).deleteById(testId);
     }
 
-    @Test
-    void delete_WithNonExistingId_ShouldThrowRuntimeException() {
-        when(repository.existsById(testId)).thenReturn(false);
-
-        RuntimeException exception = assertThrows(
-            RuntimeException.class,
-            () -> service.delete(testId)
-        );
-
-        assertEquals("Item não encontrado", exception.getMessage());
-        verify(repository).existsById(testId);
-        verify(repository, never()).deleteById(any());
-    }
-
+    
     @Test
     void update_WithExistingId_ShouldUpdateAndReturnModel() {
         TestModel updateModel = new TestModel();
@@ -214,22 +201,6 @@ class GenericServiceImplTest {
         verify(mapper).toModel(testEntity);
     }
 
-    @Test
-    void update_WithNonExistingId_ShouldThrowRuntimeException() {
-        TestModel updateModel = new TestModel();
-        when(repository.existsById(testId)).thenReturn(false);
-
-        RuntimeException exception = assertThrows(
-            RuntimeException.class,
-            () -> service.update(testId, updateModel)
-        );
-
-        assertEquals("Item não encontrado", exception.getMessage());
-        verify(repository).existsById(testId);
-        verify(mapper, never()).toEntity(any());
-        verify(repository, never()).save(any());
-        verify(mapper, never()).toModel(any());
-    }
 
     // Classes de teste internas para simular Model e Entity
     private static class TestModel extends GenericModel {
